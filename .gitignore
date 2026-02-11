@@ -1,0 +1,7 @@
+# Default ignored files
+*.iws
+*.iml
+*.ipr
+*.DS_Store
+.idea/*
+

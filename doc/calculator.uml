@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>calculator.Calculator</OriginalElement>
+  <nodes>
+    <node x="345.75" y="0.0">calculator.Expression</node>
+    <node x="156.0" y="583.0">calculator.Divides</node>
+    <node x="252.0" y="682.0">calculator.Calculator</node>
+    <node x="468.0" y="583.0">calculator.Minus</node>
+    <node x="715.5" y="0.0">visitor.Visitor</node>
+    <node x="472.5" y="236.0">calculator.MyNumber</node>
+    <node x="0.0" y="870.0">calculator.IllegalConstruction</node>
+    <node x="715.5" y="126.0">visitor.Evaluator</node>
+    <node x="598.0" y="682.0">calculator.Main</node>
+    <node x="312.0" y="583.0">calculator.Times</node>
+    <node x="0.0" y="583.0">calculator.Plus</node>
+    <node x="151.5" y="170.0">calculator.Operation</node>
+    <node x="0.0" y="682.0">calculator.Notation</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="calculator.Minus" target="calculator.Operation">
+      <point x="0.0" y="-27.0" />
+      <point x="536.0" y="558.0" />
+      <point x="414.875" y="558.0" />
+      <point x="112.875" y="181.5" />
+    </edge>
+    <edge source="calculator.Divides" target="calculator.Operation">
+      <point x="0.0" y="-27.0" />
+      <point x="224.0" y="558.0" />
+      <point x="264.375" y="558.0" />
+      <point x="-37.625" y="181.5" />
+    </edge>
+    <edge source="calculator.Operation" target="calculator.Expression">
+      <point x="0.0" y="-181.5" />
+      <point x="302.0" y="145.0" />
+      <point x="391.25" y="145.0" />
+      <point x="-45.5" y="60.0" />
+    </edge>
+    <edge source="visitor.Evaluator" target="visitor.Visitor">
+      <point x="0.0" y="-60.5" />
+      <point x="0.0" y="38.0" />
+    </edge>
+    <edge source="calculator.Times" target="calculator.Operation">
+      <point x="0.0" y="-27.0" />
+      <point x="380.0" y="558.0" />
+      <point x="339.625" y="558.0" />
+      <point x="37.625" y="181.5" />
+    </edge>
+    <edge source="calculator.Plus" target="calculator.Operation">
+      <point x="0.0" y="-27.0" />
+      <point x="68.0" y="558.0" />
+      <point x="189.125" y="558.0" />
+      <point x="-112.875" y="181.5" />
+    </edge>
+    <edge source="calculator.MyNumber" target="calculator.Expression">
+      <point x="0.0" y="-115.5" />
+      <point x="571.5" y="145.0" />
+      <point x="482.25" y="145.0" />
+      <point x="45.5" y="60.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="453.5" y="454.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Methods</Category>
+    <Category>Inner Classes</Category>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>Production</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

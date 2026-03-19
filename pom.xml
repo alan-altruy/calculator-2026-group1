@@ -18,6 +18,7 @@
         <maven.surefire.version>3.5.5</maven.surefire.version>
         <jacoco.version>0.8.14</jacoco.version>
         <javadoc.version>3.12.0</javadoc.version>
+        <antlr.version>4.13.1</antlr.version>
     </properties>
 
     <dependencyManagement>
@@ -33,6 +34,13 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- ANTLR 4 Runtime -->
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>${antlr.version}</version>
+        </dependency>
+
         <!-- JUnit 6 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -62,6 +70,25 @@
 
     <build>
         <plugins>
+            <!-- ANTLR 4 Plugin -->
+            <plugin>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr4-maven-plugin</artifactId>
+                <version>${antlr.version}</version>
+                <executions>
+                    <execution>
+                        <id>antlr</id>
+                        <goals>
+                            <goal>antlr4</goal>
+                        </goals>
+                        <configuration>
+                            <visitor>true</visitor>
+                            <listener>false</listener>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- Compiler -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

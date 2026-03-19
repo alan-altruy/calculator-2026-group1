@@ -54,6 +54,12 @@ public class Main {
 		e = new Divides(params4,Notation.POSTFIX);
 		c.print(e);
 		c.eval(e);
+
+		System.out.println();
+		System.out.println("--- ANTLR Parser Example ---");
+		e = ExpressionParser.parse("3 + 5 * ( 2 - 8 )");
+		c.printExpressionDetails(e);
+		c.eval(e);
 	}
 
 	catch(IllegalConstruction exception) {

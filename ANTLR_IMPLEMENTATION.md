@@ -54,3 +54,8 @@ After the initial Infix implementation, we expanded `Calculator.g4` to parse pre
 3. **Smart Strings (Intelligent Parentheses)**: 
    - Introduced `getPrecedence()` interface for AST `Expression`.
    - Re-wrote the `Operation.toString(Notation.INFIX)` generator to compare child and parent precedences and associativities to selectively hide unneeded parentheses natively mimicking proper mathematical convention. `(4+5+6)*(7+5/2/7)*9` will now securely omit unnecessary inner parens.
+
+## Step 9: Command-Line Interface (REPL) Integration
+
+1. **Interactive Prompt**: Modified `Main.java` to include a continuous `while (true)` loop utilizing `java.util.Scanner` to read dynamic user input from `System.in`.
+2. **Commands & Error Catching**: Added dedicated logic to process basic commands (`help`, `quit`, `exit`). We encapsulated the `ExpressionParser.parse()` string evaluation under a robust `try-catch` mechanism. If invalid or malicious arithmetic strings are passed, the loop intercepts the exception, prints a `Syntax Error` gracefully, and instantly restores the text prompt without crashing the program state.

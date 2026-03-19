@@ -22,6 +22,8 @@ class TestOperation {
 	}
 
 	@Test
+	void testNotNull(){assertNotEquals(o,null);assertNotEquals(o2,null);}
+	@Test
 	void testEquals() {
 		assertEquals(o,o2);
 	}

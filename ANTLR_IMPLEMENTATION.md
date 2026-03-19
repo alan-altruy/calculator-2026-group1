@@ -41,3 +41,8 @@ Behind the scenes, it injects the string into `CharStreams`, pushes it through t
 To verify all changes, we successfully integrated the new parser:
 - Modified `Main.java` to demonstrate parsing string inputs directly: `ExpressionParser.parse("3 + 5 * ( 2 - 8 )")`.
 - Added a `TestParser.java` unit testing file to evaluate simple and complex operator precedence automatically during the standard `mvn test` stage.
+
+## Step 7: Prefix and Postfix Extensibility
+After the initial Infix implementation, we expanded `Calculator.g4` to parse prefix formatting (e.g., `+(1, 2)`) and postfix formatting (e.g., `(1, 2)+`). 
+- **Grammar Updates:** We added an `exprList` rule allowing space-separated or comma-separated expressions, enabling support for multi-argument operations natively without requiring strict parentheses around everything.
+- **Visitor Updates:** The `CalculatorVisitorImpl` now recognizes `PrefixContext` and `PostfixContext`, specifically assigning `Notation.PREFIX` or `Notation.POSTFIX` to the AST Node. This guarantees that when parsing an expression and calling `.print()` on it, the output perfectly matches the original string's structural notation.

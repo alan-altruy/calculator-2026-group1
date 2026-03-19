@@ -2,10 +2,14 @@ grammar Calculator;
 
 prog: expr EOF ;
 
-expr: '(' expr ')'                 # Parens
-    | expr op=('*' | '/') expr     # MulDiv
-    | expr op=('+' | '-') expr     # AddSub
-    | NUMBER                       # Num
+exprList: expr (','? expr)* ;
+
+expr: '(' expr ')'                          # Parens
+    | op=('*'|'/'|'+'|'-') '(' exprList ')' # Prefix
+    | '(' exprList ')' op=('*'|'/'|'+'|'-') # Postfix
+    | expr op=('*' | '/') expr              # MulDiv
+    | expr op=('+' | '-') expr              # AddSub
+    | NUMBER                                # Num
     ;
 
 NUMBER: [0-9]+ ;

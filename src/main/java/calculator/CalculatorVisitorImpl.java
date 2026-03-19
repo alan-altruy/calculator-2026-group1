@@ -15,6 +15,24 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
     public Expression visitParens(CalculatorParser.ParensContext ctx) {
         return visit(ctx.expr());
     }
+    
+    @Override
+    public Expression visitPrefix(CalculatorParser.PrefixContext ctx) {
+        List<Expression> args = new ArrayList<>();
+        for (CalculatorParser.ExprContext exprCtx : ctx.exprList().expr()) {
+            args.add(visit(exprCtx));
+        }
+        return createOperation(ctx.op.getText(), args, Notation.PREFIX);
+    }
+
+    @Override
+    public Expression visitPostfix(CalculatorParser.PostfixContext ctx) {
+        List<Expression> args = new ArrayList<>();
+        for (CalculatorParser.ExprContext exprCtx : ctx.exprList().expr()) {
+            args.add(visit(exprCtx));
+        }
+        return createOperation(ctx.op.getText(), args, Notation.POSTFIX);
+    }
 
     @Override
     public Expression visitMulDiv(CalculatorParser.MulDivContext ctx) {
@@ -22,15 +40,7 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
         Expression right = visit(ctx.expr(1));
         List<Expression> args = new ArrayList<>();
         Collections.addAll(args, left, right);
-        try {
-            if (ctx.op.getText().equals("*")) {
-                return new Times(args);
-            } else {
-                return new Divides(args);
-            }
-        } catch (IllegalConstruction e) {
-            throw new RuntimeException("Invalid operation construction", e);
-        }
+        return createOperation(ctx.op.getText(), args, Notation.INFIX);
     }
 
     @Override
@@ -39,20 +49,26 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
         Expression right = visit(ctx.expr(1));
         List<Expression> args = new ArrayList<>();
         Collections.addAll(args, left, right);
-        try {
-            if (ctx.op.getText().equals("+")) {
-                return new Plus(args);
-            } else {
-                return new Minus(args);
-            }
-        } catch (IllegalConstruction e) {
-            throw new RuntimeException("Invalid operation construction", e);
-        }
+        return createOperation(ctx.op.getText(), args, Notation.INFIX);
     }
 
     @Override
     public Expression visitNum(CalculatorParser.NumContext ctx) {
         int val = Integer.parseInt(ctx.NUMBER().getText());
         return new MyNumber(val);
+    }
+    
+    private Expression createOperation(String op, List<Expression> args, Notation notation) {
+        try {
+            switch (op) {
+                case "+": return new Plus(args, notation);
+                case "-": return new Minus(args, notation);
+                case "*": return new Times(args, notation);
+                case "/": return new Divides(args, notation);
+                default: throw new IllegalArgumentException("Unknown operator: " + op);
+            }
+        } catch (IllegalConstruction e) {
+            throw new RuntimeException("Invalid operation construction", e);
+        }
     }
 }

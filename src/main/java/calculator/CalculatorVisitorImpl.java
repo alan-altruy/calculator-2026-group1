@@ -58,6 +58,24 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
         return new MyNumber(val);
     }
     
+    @Override
+    public Expression visitImplicitMul(CalculatorParser.ImplicitMulContext ctx) {
+        Expression left = visit(ctx.expr(0));
+        Expression right = visit(ctx.expr(1));
+        List<Expression> args = new ArrayList<>();
+        Collections.addAll(args, left, right);
+        return createOperation("*", args, Notation.INFIX);
+    }
+
+    @Override
+    public Expression visitPower(CalculatorParser.PowerContext ctx) {
+        Expression left = visit(ctx.expr(0));
+        Expression right = visit(ctx.expr(1));
+        List<Expression> args = new ArrayList<>();
+        Collections.addAll(args, left, right);
+        return createOperation("**", args, Notation.INFIX);
+    }
+    
     private Expression createOperation(String op, List<Expression> args, Notation notation) {
         try {
             switch (op) {
@@ -65,6 +83,7 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
                 case "-": return new Minus(args, notation);
                 case "*": return new Times(args, notation);
                 case "/": return new Divides(args, notation);
+                case "**": return new Power(args, notation);
                 default: throw new IllegalArgumentException("Unknown operator: " + op);
             }
         } catch (IllegalConstruction e) {

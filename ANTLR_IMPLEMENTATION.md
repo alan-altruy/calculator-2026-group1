@@ -46,3 +46,11 @@ To verify all changes, we successfully integrated the new parser:
 After the initial Infix implementation, we expanded `Calculator.g4` to parse prefix formatting (e.g., `+(1, 2)`) and postfix formatting (e.g., `(1, 2)+`). 
 - **Grammar Updates:** We added an `exprList` rule allowing space-separated or comma-separated expressions, enabling support for multi-argument operations natively without requiring strict parentheses around everything.
 - **Visitor Updates:** The `CalculatorVisitorImpl` now recognizes `PrefixContext` and `PostfixContext`, specifically assigning `Notation.PREFIX` or `Notation.POSTFIX` to the AST Node. This guarantees that when parsing an expression and calling `.print()` on it, the output perfectly matches the original string's structural notation.
+
+## Step 8: Advanced AST Features (Exponentiation, Implicit Math, and Precedence Formatting)
+
+1. **Exponentiation (`**`)**: Created a new `Power` operations type and extended the Visitor to create it. We used `<assoc=right>` inside ANTLR to naturally enforce right-to-left evaluation commonly used for powers.
+2. **Implicit Multiplication**: Extended ANTLR grammar with `expr '(' expr ')'` and `'(' expr ')' expr` resolving to `ImplicitMul`. This natively converts expressions like `(4+5)(6)` into `Times(Plus(4,5), 6)`.
+3. **Smart Strings (Intelligent Parentheses)**: 
+   - Introduced `getPrecedence()` interface for AST `Expression`.
+   - Re-wrote the `Operation.toString(Notation.INFIX)` generator to compare child and parent precedences and associativities to selectively hide unneeded parentheses natively mimicking proper mathematical convention. `(4+5+6)*(7+5/2/7)*9` will now securely omit unnecessary inner parens.

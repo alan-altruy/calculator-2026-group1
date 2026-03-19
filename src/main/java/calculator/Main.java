@@ -57,9 +57,18 @@ public class Main {
 
 		System.out.println();
 		System.out.println("--- ANTLR Parser Example ---");
-		e = ExpressionParser.parse("3 + 5 * ( 2 - 8 )");
+		System.out.println("1) Implicit Multiplication:");
+		e = ExpressionParser.parse("(4+5)(6)");
 		c.printExpressionDetails(e);
-		c.eval(e);
+		
+		System.out.println("2) Exponentiation (**):");
+		e = ExpressionParser.parse("2**3**2");
+		c.printExpressionDetails(e);
+		
+		System.out.println("3) Smart Parentheses:");
+		System.out.println("Parsing: ((4 + 5 + 6) * (7 + (5 / 2 / 7)) * 9)");
+		e = ExpressionParser.parse("((4 + 5 + 6) * (7 + (5 / 2 / 7)) * 9)");
+		c.printExpressionDetails(e);
 	}
 
 	catch(IllegalConstruction exception) {

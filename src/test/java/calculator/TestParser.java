@@ -44,7 +44,6 @@ public class TestParser {
         // +(4,5,6) = 15
         // /(5,2,7) = 5/2/7 -> 2/7 -> 0. Wait, 5/2 is 2. 2/7 is 0. So 7+0 = 7.
         // *(15, 7, 9) = 15 * 7 * 9 = 945.
-        // Let's assert if parse throws no exception first
         assertNotNull(e);
         assertEquals(945, calc.eval(e));
     }

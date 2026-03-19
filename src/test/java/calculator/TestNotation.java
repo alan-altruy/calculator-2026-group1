@@ -25,13 +25,13 @@ class TestNotation {
 		//prefix notation:
 		testNotation(symbol +" (" + value1 + ", " + value2 + ")", op, Notation.PREFIX);
 		//infix notation:
-		testNotation("( " + value1 + " " + symbol + " " + value2 + " )", op, Notation.INFIX);
+		testNotation(value1 + " " + symbol + " " + value2, op, Notation.INFIX);
 		//postfix notation:
 		testNotation("(" + value1 + ", " + value2 + ") " + symbol, op, Notation.POSTFIX);
 	}
 
 	@ParameterizedTest
-	@ValueSource(strings = {"*", "+", "/", "-"})
+	@ValueSource(strings = {"*", "+", "/", "-", "**"})
 	void testOutput(String symbol) {
 		int value1 = 8;
 		int value2 = 6;
@@ -46,6 +46,7 @@ class TestNotation {
 				case "-"	->	op = new Minus(params);
 				case "*"	->	op = new Times(params);
 				case "/"	->	op = new Divides(params);
+				case "**"	->	op = new Power(params);
 				default		->	fail();
 			}
 		} catch (IllegalConstruction e) {

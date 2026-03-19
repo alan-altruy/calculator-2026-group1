@@ -161,9 +161,33 @@ public abstract class Operation implements Expression
   public final String toString(Notation n) {
 	   Stream<String> s = args.stream().map(Object::toString);
 	   return switch (n) {
-		   case INFIX -> "( " +
-				   s.reduce((s1, s2) -> s1 + " " + symbol + " " + s2).get() +
-				   " )";
+		   case INFIX -> {
+			   StringBuilder sb = new StringBuilder();
+			   for (int i = 0; i < args.size(); i++) {
+				   Expression child = args.get(i);
+				   boolean needsParens = false;
+				   if (child instanceof Operation opChild) {
+					   if (opChild.notation == Notation.INFIX) {
+						   if (opChild.getPrecedence() < this.getPrecedence()) {
+							   needsParens = true;
+						   } else if (opChild.getPrecedence() == this.getPrecedence()) {
+							   // For left-associative operations (Minus, Divides), the right-hand child needs parens
+							   if (i > 0 && (symbol.equals("-") || symbol.equals("/"))) {
+								   needsParens = true;
+							   }
+							   // For right-associative operations (Power), the left-hand child needs parens
+							   else if (i == 0 && symbol.equals("**")) {
+								   needsParens = true;
+							   }
+						   }
+					   }
+				   }
+				   if (i > 0) sb.append(" ").append(symbol).append(" ");
+				   if (needsParens) sb.append("( ").append(child.toString()).append(" )");
+				   else sb.append(child.toString());
+			   }
+			   yield sb.toString();
+		   }
 		   case PREFIX -> symbol + " " +
 				   "(" +
 				   s.reduce((s1, s2) -> s1 + ", " + s2).get() +

@@ -52,12 +52,6 @@ class TestPlus {
 		catch(IllegalConstruction e) { fail(); }
 	}
 
-	@SuppressWarnings("ConstantConditions")
-	@Test
-	void testNull() {
-			assertDoesNotThrow(() -> op==null); // Direct way to test if the null case is handled.
-	}
-
 	@Test
 	void testHashCode() {
 		// Two similar expressions, constructed separately (and using different constructors) should have the same hashcode

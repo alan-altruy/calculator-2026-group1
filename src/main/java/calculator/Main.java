@@ -1,8 +1,5 @@
 package calculator;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * A very simple calculator in Java
@@ -21,43 +18,48 @@ public class Main {
 	 * @param args	Command-line parameters are not used in this version
 	 */
 	public static void main(String[] args) {
-
-  	Expression e;
-  	Calculator c = new Calculator();
-
-	try{
-
-		e = new MyNumber(8);
-		c.print(e);
-		c.eval(e);
-
-	    List<Expression> params = new ArrayList<>();
-	    Collections.addAll(params, new MyNumber(3), new MyNumber(4), new MyNumber(5));
-	    e = new Plus(params,Notation.PREFIX);
-		c.printExpressionDetails(e);
-		c.eval(e);
-	
-		List<Expression> params2 = new ArrayList<>();
-		Collections.addAll(params2, new MyNumber(5), new MyNumber(3));
-		e = new Minus(params2, Notation.INFIX);
-		c.print(e);
-		c.eval(e);
-
-		List<Expression> params3 = new ArrayList<>();
-		Collections.addAll(params3, new Plus(params), new Minus(params2));
-		e = new Times(params3);
-		c.printExpressionDetails(e);
-		c.eval(e);
-
-		List<Expression> params4 = new ArrayList<>();
-		Collections.addAll(params4, new Plus(params), new Minus(params2), new MyNumber(5));
-		e = new Divides(params4,Notation.POSTFIX);
-		c.print(e);
-		c.eval(e);
-	}
-
-	catch(IllegalConstruction exception) {
-		System.out.println("cannot create operations without parameters");
+		System.out.println("Calculator CLI");
+		System.out.println("Type 'help' for instructions, or 'quit'/'exit' to exit.");
+		
+		Calculator c = new Calculator();
+		java.util.Scanner scanner = new java.util.Scanner(System.in);
+		
+		while (true) {
+			System.out.print("> ");
+			if (!scanner.hasNextLine()) {
+				break;
+			}
+			
+			String input = scanner.nextLine().trim();
+			if (input.isEmpty()) continue;
+			if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) break;
+			
+			if (input.equalsIgnoreCase("help")) {
+				System.out.println("--- Calculator Help ---");
+				System.out.println("  Commands:");
+				System.out.println("    help  - Show this help message");
+				System.out.println("    quit  - Exit the program");
+				System.out.println("    exit  - Exit the program");
+				System.out.println("  Expressions:");
+				System.out.println("    Type any arithmetic expression.");
+				System.out.println("    Supported ops: +, -, *, /, ** (Power).");
+				System.out.println("    Implicit multiplication (e.g. '(4+5)(6)') is supported.");
+				continue;
+			}
+			
+			try {
+				Expression e = ExpressionParser.parse(input);
+				if (e != null) {
+					c.print(e);
+				}
+			} catch (Exception ex) {
+				System.out.println("Error: " + ex.getMessage());
+			}
+		}
+		
+		System.out.println("Goodbye!");
+		if (scanner != null) {
+			scanner.close();
 		}
  	}
 

@@ -22,6 +22,8 @@ class TestMyNumber {
 		assertEquals(new MyNumber(value), number);
 		// Two MyNumbers containing a distinct value should not be equal:
 		int otherValue = 7;
+		//assertFalse(number.equals(null));
+		assertNotEquals(number,null);
 		assertNotEquals(new MyNumber(otherValue),number);
 		assertEquals(number, number); // Identity check (for coverage, as this should always be true)
 		assertNotEquals(number, value); // number is of type MyNumber, while value is of type int, so not equal

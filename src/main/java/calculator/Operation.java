@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+
 /**
  * Operation is an abstract class that represents arithmetic operations,
  * which are a special kind of Expressions, just like numbers are.
@@ -115,7 +116,7 @@ public abstract class Operation implements Expression
 	return 1 + args.stream()
 			   .mapToInt(Expression::countDepth)
 			   .max()
-			   .getAsInt();  
+			   .orElse(0);
   }
 
 	/**
@@ -129,7 +130,7 @@ public abstract class Operation implements Expression
 	return 1 + args.stream()
 			   .mapToInt(Expression::countOps)
 			   .reduce(Integer::sum)
-			   .getAsInt();
+			   .orElse(0);
   }
 
   public final int countNbs() {
@@ -137,7 +138,7 @@ public abstract class Operation implements Expression
 	return args.stream()
 			   .mapToInt(Expression::countNbs)
 			   .reduce(Integer::sum)
-			   .getAsInt();  
+			   .orElse(0);
   }
 
   /**

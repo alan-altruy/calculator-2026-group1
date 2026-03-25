@@ -33,7 +33,7 @@ class TestPlus {
 	void testConstructor2() {
 		// A Times expression should not be the same as a Plus expression
 		try {
-			assertNotSame(op, new Times(new ArrayList<>()));
+			assertNotSame(new Times(new ArrayList<>()), op);
 		} catch (IllegalConstruction e) {
 			fail();
 		}
@@ -50,12 +50,6 @@ class TestPlus {
 			assertNotEquals(e, new Plus(new ArrayList<>(Arrays.asList(new MyNumber(5), new MyNumber(4))), Notation.INFIX));
 		}
 		catch(IllegalConstruction e) { fail(); }
-	}
-
-	@SuppressWarnings("ConstantConditions")
-	@Test
-	void testNull() {
-			assertDoesNotThrow(() -> op==null); // Direct way to to test if the null case is handled.
 	}
 
 	@Test

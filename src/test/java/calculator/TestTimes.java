@@ -32,7 +32,7 @@ class TestTimes {
 	void testConstructor2() {
 		// A Plus expression should not be the same as a Times expression
 		try {
-			assertNotSame(op, new Plus(new ArrayList<>()));
+			assertNotSame(new Plus(new ArrayList<>()), op);
 		} catch (IllegalConstruction e) {
 			fail();
 		}

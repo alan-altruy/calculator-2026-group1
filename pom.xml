@@ -18,7 +18,7 @@
         <maven.surefire.version>3.5.5</maven.surefire.version>
         <jacoco.version>0.8.14</jacoco.version>
         <javadoc.version>3.12.0</javadoc.version>
-        <antlr.version>4.13.1</antlr.version>
+        <antlr.version>4.13.2</antlr.version>
     </properties>
 
     <dependencyManagement>

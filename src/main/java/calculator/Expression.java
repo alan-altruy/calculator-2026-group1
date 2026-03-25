@@ -38,4 +38,11 @@ public interface Expression {
     * @return The number of values contained in an arithmetic expression
     */
    int countNbs();
+
+   /**
+    * Gets the precedence level of the expression. Returns higher integers for higher precedence.
+    *
+    * @return The precedence level
+    */
+   int getPrecedence();
 }

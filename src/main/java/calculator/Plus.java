@@ -49,4 +49,9 @@ public final class Plus extends Operation
   public int op(int l, int r) {
   	return (l+r);
   }
+
+  @Override
+  public int getPrecedence() {
+	  return 1;
+  }
 }

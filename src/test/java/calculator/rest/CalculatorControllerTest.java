@@ -51,6 +51,16 @@ public class CalculatorControllerTest {
     }
 
     @Test
+    void testValidNotationIsAccepted() throws Exception {
+        String body = "{\"ast\":{\"type\":\"operation\",\"op\":\"+\",\"notation\":\"prefix\",\"args\":[{\"type\":\"number\",\"value\":2},{\"type\":\"number\",\"value\":3}]}}";
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/v1/evaluate")
+                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                .content(body))
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.status().isOk())
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath("$.result").value(5));
+    }
+
+    @Test
     void testDivisionByZeroProducesServerError() throws Exception {
         String body = "{\"ast\":{\"type\":\"operation\",\"op\":\"/\",\"args\":[{\"type\":\"number\",\"value\":1},{\"type\":\"number\",\"value\":0}]}}";
         var res = mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/v1/evaluate")

@@ -58,9 +58,13 @@ public class Main {
 		}
 		
 		System.out.println("Goodbye!");
+		closeScanner(scanner);
+ 	}
+
+	static void closeScanner(java.util.Scanner scanner) {
 		if (scanner != null) {
 			scanner.close();
 		}
- 	}
+	}
 
 }

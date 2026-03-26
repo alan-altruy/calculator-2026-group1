@@ -60,7 +60,6 @@ jobs:
         uses: pmd/pmd-github-action@v2
         with:
           rulesets: 'category/java/errorprone.xml'
-          sourcePath: 'src'
           analyzeModifiedFilesOnly: false
           
       - name: Upload SARIF file

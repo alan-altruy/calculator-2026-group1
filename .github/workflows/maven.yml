@@ -76,7 +76,7 @@ jobs:
         COVERAGE=$(jq -r '.coverage' <<< "$REPORT")%
         BRANCHES=$(jq -r '.branches' <<< "$REPORT")%
         NEWLINE=$'\n'
-        BODY=" Test Coverage Summary ${NEWLINE}* __Coverage:__ ${COVERAGE}${NEWLINE}* __Branches:__ ${BRANCHES}"
+        BODY="## Test Coverage Summary ${NEWLINE}* Coverage: ${COVERAGE}${NEWLINE}* Branches: ${BRANCHES}"
         gh pr comment ${{github.event.pull_request.number}} -b "${BODY}"
       continue-on-error: true
       env:

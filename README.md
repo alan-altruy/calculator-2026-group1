@@ -1,9 +1,10 @@
 # Calculator 2026 Group 1
 
-[![Latest Release](https://img.shields.io/github/v/release/alan-altruy/calculator-2026-group1?label=Latest%20Release)](https://github.com/University-of-Mons/calculator-cucumber/releases/latest)
 ![Maven Build](https://github.com/alan-altruy/calculator-2026-group1/actions/workflows/build-and-test.yml/badge.svg)
 ![Coverage](https://raw.githubusercontent.com/alan-altruy/calculator-2026-group1/badges/jacoco.svg)
 ![Branches](https://raw.githubusercontent.com/alan-altruy/calculator-2026-group1/badges/branches.svg)
+![Scorecard](https://github.com/alan-altruy/calculator-2026-group1/actions/workflows/scorecard.yml/badge.svg)
+[![Latest Release](https://img.shields.io/github/v/release/alan-altruy/calculator-2026-group1?label=Latest%20Release)](https://github.com/University-of-Mons/calculator-cucumber/releases/latest)
 
 ## Calculating arithmetic expressions
 

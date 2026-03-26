@@ -45,6 +45,15 @@ jobs:
           generate-branches-badge: true
           generate-summary: true
 
+      - name: Deploy Badges to dedicated branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: badges
+          publish_dir: ./badges-tmp
+          commit_message: "chore: update coverage badges"
+
       - name: Run PMD
         id: pmd
         uses: pmd/pmd-github-action@v2
@@ -57,14 +66,6 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: pmd-report.sarif
-
-      - name: Commit badges in PR branch
-        if: ${{ github.event_name == 'pull_request' }}
-        uses: EndBug/add-and-commit@v9
-        with:
-          default_author: github_actions
-          message: 'Update coverage badges'
-          add: '*.svg *.json'
 
       - name: Comment Test Coverage & PMD Summary on PR
         if: ${{ github.event_name == 'pull_request' }}

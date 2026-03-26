@@ -70,19 +70,19 @@ jobs:
           PMD_PERCENT=$(awk "BEGIN {printf \"%.2f\", $PMD_TOTAL * 100 / ${{ env.MAX_PMD_VIOLATIONS }}}")
 
           COVERAGE_EMOJI="✅"
-          if (( $(echo "$COVERAGE < ${{ env.EXPECTED_COVERAGE }}" | bc -l) )); then
+          if (( $(echo "$COVERAGE < ${{ env.EXPECTED_COVERAGE }} * 100" | bc -l) )); then
             COVERAGE_EMOJI="⚠️"
           fi
-          if (( $(echo "$COVERAGE < ${{ env.MIN_COVERAGE }}" | bc -l) )); then
+          if (( $(echo "$COVERAGE < ${{ env.MIN_COVERAGE }} * 100" | bc -l) )); then
             COVERAGE_EMOJI="❌"
           fi
 
           # Branches emoji
           BRANCHES_EMOJI="✅"
-          if (( $(echo "$BRANCHES < ${{ env.EXPECTED_COVERAGE }}" | bc -l) )); then
+          if (( $(echo "$BRANCHES < ${{ env.EXPECTED_COVERAGE }} * 100" | bc -l) )); then
             BRANCHES_EMOJI="⚠️"
           fi
-          if (( $(echo "$BRANCHES < ${{ env.MIN_COVERAGE }}" | bc -l) )); then
+          if (( $(echo "$BRANCHES < ${{ env.MIN_COVERAGE }} * 100" | bc -l) )); then
             BRANCHES_EMOJI="❌"
           fi
 

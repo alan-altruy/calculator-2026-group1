@@ -4,6 +4,7 @@ package calculator;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,6 +40,15 @@ class TestOperation {
 	@Test
 	void testCountNbs() {
 		assertEquals(Integer.valueOf(6), o.countNbs());
+	}
+
+	@Test
+	void testCountOpsEmptyArgs() throws IllegalConstruction {
+		List<Expression> emptyList = new ArrayList<>();
+
+		Operation op = new Plus(emptyList, Notation.INFIX);
+
+		assertEquals(1, op.countOps());
 	}
 
 }

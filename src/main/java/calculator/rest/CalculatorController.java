@@ -1,6 +1,7 @@
 package calculator.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import calculator.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,9 @@ public class CalculatorController {
                 examples = @ExampleObject(value = "{\"ast\":{\"type\":\"operation\",\"op\":\"+\",\"args\":[{\"type\":\"number\",\"value\":1},{\"type\":\"operation\",\"op\":\"*\",\"args\":[{\"type\":\"number\",\"value\":2},{\"type\":\"number\",\"value\":3}]}]}}"))
         )
         @PostMapping(value = "/evaluate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-        public ResponseEntity<EvaluateResponse> evaluate(@RequestBody JsonNode body) throws IllegalConstruction {
+        public ResponseEntity<EvaluateResponse> evaluate(@RequestBody Object bodyObj) throws IllegalConstruction {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode body = mapper.valueToTree(bodyObj);
         JsonNode ast = body.get("ast");
         if (ast == null) {
             return ResponseEntity.badRequest().body(new EvaluateResponse("missing 'ast' field"));

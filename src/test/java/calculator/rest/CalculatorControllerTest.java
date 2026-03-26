@@ -2,16 +2,30 @@ package calculator.rest;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.junit.jupiter.api.BeforeEach;
+import calculator.IllegalConstruction;
+import com.fasterxml.jackson.databind.JsonNode;
+import java.lang.reflect.Method;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 
-@WebMvcTest(CalculatorController.class)
+@SpringBootTest
 @org.springframework.context.annotation.Import({RestExceptionHandler.class, CorsConfig.class})
 public class CalculatorControllerTest {
 
     @Autowired
+    private WebApplicationContext wac;
+
     private org.springframework.test.web.servlet.MockMvc mockMvc;
+
+    @BeforeEach
+    void setup() {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+    }
 
     @Test
     void responseHasJsonContentType() throws Exception {
@@ -147,4 +161,19 @@ public class CalculatorControllerTest {
                 .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.status().isOk())
                 .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath("$.result").value(7));
     }
+    
+            @Test
+            void toExpressionNullThrowsIllegalConstruction_viaReflection() throws Exception {
+                CalculatorController controller = new CalculatorController();
+                Method m = CalculatorController.class.getDeclaredMethod("toExpression", JsonNode.class);
+                m.setAccessible(true);
+                assertThrows(IllegalConstruction.class, () -> {
+                    try {
+                        m.invoke(controller, new Object[]{(JsonNode) null});
+                    } catch (java.lang.reflect.InvocationTargetException e) {
+                        throw e.getCause();
+                    }
+                });
+            }
+    
 }

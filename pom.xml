@@ -9,8 +9,9 @@
 
     <properties>
         <project.encoding>UTF-8</project.encoding>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.release>17</maven.compiler.release>
         <maven.compiler.version>3.15.0</maven.compiler.version>
 
         <junit.version>6.0.3</junit.version>
@@ -199,6 +200,10 @@
                 <configuration>
                     <excludes>
                         <exclude>calculator/Main.class</exclude>
+                        <exclude>calculator/CalculatorLexer*.class</exclude>
+                        <exclude>calculator/CalculatorParser*.class</exclude>
+                        <exclude>calculator/CalculatorVisitor.class</exclude>
+                        <exclude>calculator/CalculatorBaseVisitor.class</exclude>
                     </excludes>
                 </configuration>
             </plugin>

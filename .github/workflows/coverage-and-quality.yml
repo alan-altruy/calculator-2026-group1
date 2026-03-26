@@ -15,6 +15,9 @@ jobs:
   coverage-quality:
     name: Run Coverage & PMD Code Quality
     runs-on: ubuntu-latest
+    # Create max_pmd_violations variable to control build failure threshold
+    env:
+      MAX_PMD_VIOLATIONS: 10
 
     steps:
       - name: Checkout repository
@@ -51,16 +54,20 @@ jobs:
         with:
           name: coverage-badges
           path: '*.svg'
+      
+      - name: Fail build on PMD violations
+        if: steps.pmd.outputs.violations > env.MAX_PMD_VIOLATIONS
+        run: exit 1
 
       - name: Comment coverage & PMD summary on PR
         if: ${{ github.event_name == 'pull_request' }}
         run: |
           NEWLINE=$'\n'
-          COVERAGE="${{ steps.jacoco.outputs.coverage }}%"
-          BRANCHES="${{ steps.jacoco.outputs.branches }}%"
-          PMD_VIOLATIONS=$(cat pmd-report.sarif | jq '.runs[0].results | length')
-          BODY="## CI Coverage & PMD Summary${NEWLINE}* __Coverage:__ ${COVERAGE}${NEWLINE}* __Branch coverage:__ ${BRANCHES}${NEWLINE}* __PMD violations:__ ${PMD_VIOLATIONS}"
-          gh pr comment ${{ github.event.pull_request.number }} -b "${BODY}"
+          COVERAGE=$(awk "BEGIN {printf \"%.2f\", ${{ steps.jacoco.outputs.coverage }} * 100}")
+          BRANCHES=$(awk "BEGIN {printf \"%.2f\", ${{ steps.jacoco.outputs.branches }} * 100}")
+          PMD_TOTAL=$(cat pmd-report.sarif | jq '.runs[0].results | length')
+          PMD_PERCENT=$(awk "BEGIN {printf \"%.2f\", $PMD_TOTAL * 100 / ${{ env.MAX_PMD_VIOLATIONS }}}")
+          BODY="## Test Coverage & PMD Summary${NEWLINE}* __Coverage:__ ${COVERAGE}%${NEWLINE}* __Branch coverage:__ ${BRANCHES}%${NEWLINE}* __PMD violations:__ ${PMD_PERCENT}% (${PMD_TOTAL} violations)"
         continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

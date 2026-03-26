@@ -20,7 +20,7 @@ jobs:
       MAX_PMD_VIOLATIONS: 10
       EXPECTED_PMD_VIOLATIONS: 5  # 5 or fewer violations is ideal (green badge)
       EXPECTED_COVERAGE: 0.90  # 90% expected coverage for green badge
-      MIN_COVERAGE: 0.0  # 80% minimum coverage to avoid warning
+      MIN_COVERAGE: 0.50  # 50% minimum coverage to avoid warning
 
     steps:
       - name: Checkout repository
@@ -51,6 +51,11 @@ jobs:
           rulesets: 'category/java/errorprone.xml'
           sourcePath: 'src/main/java'
           analyzeModifiedFilesOnly: false
+          
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: pmd-report.sarif
 
       - name: Upload badges as artifact
         uses: actions/upload-artifact@v4

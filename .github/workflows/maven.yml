@@ -36,7 +36,7 @@ jobs:
         
     - id: mvn
       name: Build with Maven (including running all tests)
-      run: mvn -B package --file pom.xml
+      run: mvn -B verify --file pom.xml
       
     - id: testreport
       name: Publish Test Report

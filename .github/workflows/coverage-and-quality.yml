@@ -1,4 +1,4 @@
-name: Coverage & Code Quality
+name: Jacoco/PMD
 
 on:
   push:
@@ -58,7 +58,10 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
         run: |
           NEWLINE=$'\n'
-          BODY="## CI Coverage & PMD Summary${NEWLINE}* __Coverage:__ ${{ steps.jacoco.outputs.coverage }}${NEWLINE}* __Branch coverage:__ ${{ steps.jacoco.outputs.branches }}${NEWLINE}* __PMD violations:__ $(cat pmd-report.sarif | jq '.runs[0].results | length')"
+          COVERAGE="${{ steps.jacoco.outputs.coverage }}%"
+          BRANCHES="${{ steps.jacoco.outputs.branches }}%"
+          PMD_VIOLATIONS=$(cat pmd-report.sarif | jq '.runs[0].results | length')
+          BODY="## CI Coverage & PMD Summary${NEWLINE}* __Coverage:__ ${COVERAGE}${NEWLINE}* __Branch coverage:__ ${BRANCHES}${NEWLINE}* __PMD violations:__ ${PMD_VIOLATIONS}"
           gh pr comment ${{ github.event.pull_request.number }} -b "${BODY}"
         continue-on-error: true
         env:

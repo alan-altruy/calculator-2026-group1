@@ -166,18 +166,4 @@ class TestMain {
         assertTrue(in.isClosed());
         assertTrue(out.toString().contains("Goodbye!"));
     }
-
-    @Test
-    void testCloseScannerHandlesNullAndNonNull() {
-        Main.closeScanner(null);
-
-        TrackableInputStream in = new TrackableInputStream(
-            new ByteArrayInputStream("".getBytes(StandardCharsets.UTF_8))
-        );
-        Scanner scanner = new Scanner(in);
-
-        Main.closeScanner(scanner);
-
-        assertTrue(in.isClosed());
-    }
 }

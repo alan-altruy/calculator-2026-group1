@@ -13,10 +13,14 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/api/v1")
 public class CalculatorController {
+
+    private static final String TYPE_NUMBER = "number";
+    private static final String TYPE_OPERATION = "operation";
 
         @Operation(
             summary = "Evaluate an expression AST",
@@ -53,10 +57,10 @@ public class CalculatorController {
     private Expression toExpression(JsonNode node) throws IllegalConstruction {
         if (node == null) throw new IllegalConstruction();
         String type = node.has("type") ? node.get("type").asText() : null;
-        if ("number".equalsIgnoreCase(type)) {
+        if (TYPE_NUMBER.equalsIgnoreCase(type)) {
             int v = node.get("value").asInt();
             return new MyNumber(v);
-        } else if ("operation".equalsIgnoreCase(type)) {
+        } else if (TYPE_OPERATION.equalsIgnoreCase(type)) {
             String op = node.has("op") ? node.get("op").asText() : null;
             List<Expression> args = new ArrayList<>();
             JsonNode arr = node.get("args");
@@ -68,11 +72,11 @@ public class CalculatorController {
             Notation notation = Notation.INFIX;
             if (node.has("notation")) {
                 try {
-                    notation = Notation.valueOf(node.get("notation").asText().toUpperCase());
+                    notation = Notation.valueOf(node.get("notation").asText().toUpperCase(Locale.ROOT));
                 } catch (IllegalArgumentException ignored) {}
             }
             if (op == null) throw new IllegalConstruction();
-            switch (op.toLowerCase()) {
+            switch (op.toLowerCase(Locale.ROOT)) {
                 case "plus", "+" -> {
                     return new Plus(args, notation);
                 }

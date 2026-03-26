@@ -5,4 +5,6 @@ package calculator;
  */
 public class IllegalConstruction extends Exception {
 
+	private static final long serialVersionUID = 1L;
+
 }

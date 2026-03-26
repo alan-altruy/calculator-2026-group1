@@ -13,26 +13,27 @@ import java.util.Map;
 public class RestExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(RestExceptionHandler.class);
+    private static final String ERROR_KEY = "error";
 
     @ExceptionHandler(IllegalConstruction.class)
     public ResponseEntity<Map<String, String>> handleIllegalConstruction(IllegalConstruction ex) {
-        return ResponseEntity.badRequest().body(Map.of("error", "Illegal construction of expression"));
+        return ResponseEntity.badRequest().body(Map.of(ERROR_KEY, "Illegal construction of expression"));
     }
 
     @ExceptionHandler(org.springframework.web.HttpMediaTypeNotSupportedException.class)
     public ResponseEntity<Map<String, String>> handleUnsupportedMediaType(org.springframework.web.HttpMediaTypeNotSupportedException ex) {
         return ResponseEntity.status(org.springframework.http.HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-                .body(Map.of("error", "Unsupported Media Type"));
+                .body(Map.of(ERROR_KEY, "Unsupported Media Type"));
     }
 
     @ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
     public ResponseEntity<Map<String, String>> handleBadRequestMessage(org.springframework.http.converter.HttpMessageNotReadableException ex) {
-        return ResponseEntity.badRequest().body(Map.of("error", "Malformed JSON request"));
+        return ResponseEntity.badRequest().body(Map.of(ERROR_KEY, "Malformed JSON request"));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleOtherExceptions(Exception ex) {
         log.error("Unhandled exception in controller", ex);
-        return ResponseEntity.status(500).body(Map.of("error", "Internal server error"));
+        return ResponseEntity.status(500).body(Map.of(ERROR_KEY, "Internal server error"));
     }
 }

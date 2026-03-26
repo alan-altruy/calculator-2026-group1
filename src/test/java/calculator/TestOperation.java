@@ -7,6 +7,7 @@ import org.junit.jupiter.api.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 class TestOperation {
 
@@ -25,7 +26,12 @@ class TestOperation {
 	@Test
 	void testEquals() {
 		assertEquals(o,o2);
-		assertFalse(o.equals(null));
+		assertNotNull(o);
+	}
+
+	@Test
+	void testEqualsNullBranch() {
+		assertFalse(Objects.equals(o, null));
 	}
 
 	@Test

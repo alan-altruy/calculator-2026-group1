@@ -10,7 +10,6 @@ import java.io.FilterInputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +18,8 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 class TestMain {
+
+    private static final String GOODBYE = "Goodbye!";
 
     private static final class TrackableInputStream extends FilterInputStream {
         private boolean closed;
@@ -77,7 +78,7 @@ class TestMain {
         assertTrue(output.contains("Calculator CLI"));
         assertTrue(output.contains("Type 'help' for instructions, or 'quit'/'exit' to exit."));
         assertTrue(output.contains("> "));
-        assertTrue(output.contains("Goodbye!"));
+        assertTrue(output.contains(GOODBYE));
     }
 
     @Test
@@ -86,7 +87,7 @@ class TestMain {
 
         assertTrue(output.contains("Calculator CLI"));
         assertTrue(output.contains("> "));
-        assertTrue(output.contains("Goodbye!"));
+        assertTrue(output.contains(GOODBYE));
     }
 
     @Test
@@ -96,7 +97,7 @@ class TestMain {
         assertTrue(output.contains("--- Calculator Help ---"));
         assertTrue(output.contains("Supported ops: +, -, *, /, ** (Power)."));
         assertTrue(output.contains("Implicit multiplication"));
-        assertTrue(output.contains("Goodbye!"));
+        assertTrue(output.contains(GOODBYE));
     }
 
     @Test
@@ -105,7 +106,7 @@ class TestMain {
 
         assertTrue(output.contains("The result of evaluating expression 2 + 3"));
         assertTrue(output.contains("is: 5."));
-        assertTrue(output.contains("Goodbye!"));
+        assertTrue(output.contains(GOODBYE));
     }
 
     @Test
@@ -113,7 +114,7 @@ class TestMain {
         String output = runMainWithInput("exit\n");
 
         assertTrue(output.contains("Calculator CLI"));
-        assertTrue(output.contains("Goodbye!"));
+        assertTrue(output.contains(GOODBYE));
     }
 
     @Test
@@ -121,7 +122,7 @@ class TestMain {
         String output = runMainWithInput("999999999999999999999999999\nquit\n");
 
         assertTrue(output.contains("Error:"));
-        assertTrue(output.contains("Goodbye!"));
+        assertTrue(output.contains(GOODBYE));
     }
 
     @Test
@@ -130,7 +131,7 @@ class TestMain {
 
         assertTrue(output.contains("The result of evaluating expression 2 + 3"));
         assertTrue(output.contains("is: 5."));
-        assertTrue(output.contains("Goodbye!"));
+        assertTrue(output.contains(GOODBYE));
     }
 
     @Test
@@ -148,7 +149,7 @@ class TestMain {
 
         String output = out.toString();
         assertFalse(output.contains("The result of evaluating expression"));
-        assertTrue(output.contains("Goodbye!"));
+        assertTrue(output.contains(GOODBYE));
     }
 
     @Test

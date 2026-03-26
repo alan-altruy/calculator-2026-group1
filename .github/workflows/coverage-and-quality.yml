@@ -47,7 +47,7 @@ jobs:
           analyzeModifiedFilesOnly: false
 
       - name: Commit badges
-        if: github.ref == 'refs/heads/main'
+        if: ${{ github.event_name == 'pull_request' }}
         uses: EndBug/add-and-commit@v9.1.4
         with:
           default_author: github_actions

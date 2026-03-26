@@ -25,6 +25,7 @@ class TestOperation {
 	@Test
 	void testEquals() {
 		assertEquals(o,o2);
+		assertFalse(o.equals(null));
 	}
 
 	@Test
@@ -49,6 +50,62 @@ class TestOperation {
 		Operation op = new Plus(emptyList, Notation.INFIX);
 
 		assertEquals(1, op.countOps());
+	}
+
+	@Test
+	void testToStringInfixParenthesizesLowerPrecedenceChild() throws IllegalConstruction {
+		Operation child = new Plus(Arrays.asList(new MyNumber(1), new MyNumber(2)), Notation.INFIX);
+		Operation parent = new Times(Arrays.asList(child, new MyNumber(3)), Notation.INFIX);
+		assertEquals("( 1 + 2 ) * 3", parent.toString(Notation.INFIX));
+	}
+
+	@Test
+	void testToStringInfixNoParenthesesForHigherPrecedenceChild() throws IllegalConstruction {
+		Operation child = new Times(Arrays.asList(new MyNumber(2), new MyNumber(3)), Notation.INFIX);
+		Operation parent = new Plus(Arrays.asList(child, new MyNumber(4)), Notation.INFIX);
+		assertEquals("2 * 3 + 4", parent.toString(Notation.INFIX));
+	}
+
+	@Test
+	void testToStringInfixMinusRightChildSamePrecedenceNeedsParentheses() throws IllegalConstruction {
+		Operation rightChild = new Minus(Arrays.asList(new MyNumber(4), new MyNumber(2)), Notation.INFIX);
+		Operation parent = new Minus(Arrays.asList(new MyNumber(8), rightChild), Notation.INFIX);
+		assertEquals("8 - ( 4 - 2 )", parent.toString(Notation.INFIX));
+	}
+
+	@Test
+	void testToStringInfixMinusLeftChildSamePrecedenceNoParentheses() throws IllegalConstruction {
+		Operation leftChild = new Minus(Arrays.asList(new MyNumber(8), new MyNumber(4)), Notation.INFIX);
+		Operation parent = new Minus(Arrays.asList(leftChild, new MyNumber(2)), Notation.INFIX);
+		assertEquals("8 - 4 - 2", parent.toString(Notation.INFIX));
+	}
+
+	@Test
+	void testToStringInfixDividesRightChildSamePrecedenceNeedsParentheses() throws IllegalConstruction {
+		Operation rightChild = new Divides(Arrays.asList(new MyNumber(8), new MyNumber(2)), Notation.INFIX);
+		Operation parent = new Divides(Arrays.asList(new MyNumber(16), rightChild), Notation.INFIX);
+		assertEquals("16 / ( 8 / 2 )", parent.toString(Notation.INFIX));
+	}
+
+	@Test
+	void testToStringInfixPowerLeftChildSamePrecedenceNeedsParentheses() throws IllegalConstruction {
+		Operation leftChild = new Power(Arrays.asList(new MyNumber(2), new MyNumber(3)), Notation.INFIX);
+		Operation parent = new Power(Arrays.asList(leftChild, new MyNumber(2)), Notation.INFIX);
+		assertEquals("( 2 ** 3 ) ** 2", parent.toString(Notation.INFIX));
+	}
+
+	@Test
+	void testToStringInfixPowerRightChildSamePrecedenceNoParentheses() throws IllegalConstruction {
+		Operation rightChild = new Power(Arrays.asList(new MyNumber(3), new MyNumber(2)), Notation.INFIX);
+		Operation parent = new Power(Arrays.asList(new MyNumber(2), rightChild), Notation.INFIX);
+		assertEquals("2 ** 3 ** 2", parent.toString(Notation.INFIX));
+	}
+
+	@Test
+	void testToStringInfixChildWithNonInfixNotationNoParentheses() throws IllegalConstruction {
+		Operation child = new Plus(Arrays.asList(new MyNumber(1), new MyNumber(2)), Notation.PREFIX);
+		Operation parent = new Plus(Arrays.asList(child, new MyNumber(3)), Notation.INFIX);
+		assertEquals("+ (1, 2) + 3", parent.toString(Notation.INFIX));
 	}
 
 }

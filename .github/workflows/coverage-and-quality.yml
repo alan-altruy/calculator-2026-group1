@@ -69,7 +69,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Fail build on PMD violations
-        if: steps.pmd.outputs.violations > env.MAX_PMD_VIOLATIONS
         run: |
-          echo "⚠️ PMD violations detected: ${{ steps.pmd.outputs.violations }} (max allowed: $MAX_PMD_VIOLATIONS)"
-          exit 1
+          echo "Detected PMD violations: ${{ steps.pmd.outputs.violations }}"
+          if [ ${{ steps.pmd.outputs.violations }} -gt ${{ env.MAX_PMD_VIOLATIONS }} ]; then
+            echo "⚠️ PMD violations exceed max allowed (${{ env.MAX_PMD_VIOLATIONS }})"
+            exit 1
+          fi

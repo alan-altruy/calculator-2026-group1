@@ -67,4 +67,9 @@ class TestMinus {
 		assertThrows(IllegalConstruction.class, () -> op = new Minus(params));
 	}
 
+	@Test
+	void testGetPrecedence() {
+		assertEquals(1, op.getPrecedence());
+	}
+
 }

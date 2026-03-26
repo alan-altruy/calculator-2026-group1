@@ -71,4 +71,9 @@ class TestTimes {
 		assertThrows(IllegalConstruction.class, () -> op = new Times(params));
 	}
 
+	@Test
+	void testGetPrecedence() {
+		assertEquals(2, op.getPrecedence());
+	}
+
 }

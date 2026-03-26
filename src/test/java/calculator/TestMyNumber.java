@@ -20,6 +20,7 @@ class TestMyNumber {
 	void testEquals() {
 		// Two distinct MyNumber, constructed separately (using a different constructor) but containing the same value should be equal
 		assertEquals(new MyNumber(value), number);
+		assertFalse(number.equals(null));
 		// Two MyNumbers containing a distinct value should not be equal:
 		int otherValue = 7;
 		assertNotEquals(new MyNumber(otherValue),number);
@@ -34,6 +35,11 @@ class TestMyNumber {
 	@Test
 	void testToString() {
 		assertEquals(Integer.toString(value), number.toString());
+	}
+
+	@Test
+	void testGetPrecedence() {
+		assertEquals(5, number.getPrecedence());
 	}
 
 }

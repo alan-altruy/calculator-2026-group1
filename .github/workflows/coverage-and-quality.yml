@@ -64,6 +64,7 @@ jobs:
           PMD_TOTAL=$(cat pmd-report.sarif | jq '.runs[0].results | length')
           PMD_PERCENT=$(awk "BEGIN {printf \"%.2f\", $PMD_TOTAL * 100 / ${{ env.MAX_PMD_VIOLATIONS }}}")
           BODY="## Test Coverage & PMD Summary${NEWLINE}* __Coverage:__ ${COVERAGE}%${NEWLINE}* __Branch coverage:__ ${BRANCHES}%${NEWLINE}* __PMD violations:__ ${PMD_PERCENT}% (${PMD_TOTAL} violations)"
+          gh pr comment ${{ github.event.pull_request.number }} -b "${BODY}"
         continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

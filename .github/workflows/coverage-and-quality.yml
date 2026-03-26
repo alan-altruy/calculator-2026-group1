@@ -1,0 +1,58 @@
+name: Coverage & Code Quality
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: write
+  checks: write
+
+jobs:
+  coverage-quality:
+    name: Run Coverage & PMD Code Quality
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 25
+          cache: maven
+
+      - name: Build and run tests
+        run: mvn -B verify --file pom.xml
+
+      - name: Generate JaCoCo badges
+        id: jacoco
+        uses: cicirello/jacoco-badge-generator@v2.12.1
+        with:
+          generate-coverage-badge: true
+          generate-branches-badge: true
+          generate-summary: true
+
+      - name: Run PMD
+        id: pmd
+        uses: pmd/pmd-github-action@v2
+        with:
+          rulesets: 'category/java/errorprone.xml'
+          sourcePath: 'src/main/java'
+          analyzeModifiedFilesOnly: false
+
+      - name: Fail build on PMD violations
+        if: steps.pmd.outputs.violations != '0'
+        run: exit 1
+
+      - name: Commit badges
+        if: github.ref == 'refs/heads/main'
+        uses: EndBug/add-and-commit@v9.1.4
+        with:
+          default_author: github_actions
+          message: 'Update coverage badges'
+          add: '*.svg *.json'

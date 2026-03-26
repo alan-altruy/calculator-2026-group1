@@ -54,10 +54,6 @@ jobs:
         with:
           name: coverage-badges
           path: '*.svg'
-      
-      - name: Fail build on PMD violations
-        if: steps.pmd.outputs.violations > env.MAX_PMD_VIOLATIONS
-        run: exit 1
 
       - name: Comment coverage & PMD summary on PR
         if: ${{ github.event_name == 'pull_request' }}
@@ -71,3 +67,9 @@ jobs:
         continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Fail build on PMD violations
+        if: steps.pmd.outputs.violations > env.MAX_PMD_VIOLATIONS
+        run: |
+          echo "⚠️ PMD violations detected: ${{ steps.pmd.outputs.violations }} (max allowed: $MAX_PMD_VIOLATIONS)"
+          exit 1

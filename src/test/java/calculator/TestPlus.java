@@ -65,8 +65,7 @@ class TestPlus {
 
 	@Test
 	void testNullParamList() {
-		params = null;
-		assertThrows(IllegalConstruction.class, () -> op = new Plus(params));
+		assertThrows(IllegalConstruction.class, () -> new Plus(null));
 	}
 
 	@Test

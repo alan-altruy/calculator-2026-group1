@@ -3,6 +3,7 @@ package calculator;
 //Import Junit5 libraries for unit testing:
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
+import java.util.Objects;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,7 @@ class TestMyNumber {
 	void testEquals() {
 		// Two distinct MyNumber, constructed separately (using a different constructor) but containing the same value should be equal
 		assertEquals(new MyNumber(value), number);
-		assertFalse(number.equals(null));
+		assertNotNull(number);
 		// Two MyNumbers containing a distinct value should not be equal:
 		int otherValue = 7;
 		assertNotEquals(new MyNumber(otherValue),number);
@@ -30,6 +31,11 @@ class TestMyNumber {
 			assertNotEquals(new Times(new ArrayList<>()), number);
 		}
 		catch (IllegalConstruction e) {fail();}
+	}
+
+	@Test
+	void testEqualsNullBranch() {
+		assertFalse(Objects.equals(number, null));
 	}
 
 	@Test

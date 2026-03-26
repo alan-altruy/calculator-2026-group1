@@ -5,38 +5,35 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
-
-import org.junit.jupiter.api.BeforeEach;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import org.junit.jupiter.api.Test;
 
 class TestCalculatorVisitorImpl {
 
-    private CalculatorVisitorImpl visitor;
     private Calculator calc;
-    private Method createOperationMethod;
 
-    @BeforeEach
-    void setUp() throws NoSuchMethodException {
+    private CalculatorVisitorImpl visitor;
+
+    @org.junit.jupiter.api.BeforeEach
+    void setUp() {
         visitor = new CalculatorVisitorImpl();
-        createOperationMethod = CalculatorVisitorImpl.class.getDeclaredMethod(
-                "createOperation", String.class, List.class, Notation.class);
-        createOperationMethod.setAccessible(true);
     }
 
-    private Expression invokeCreateOperation(String op, List<Expression> args, Notation notation)
-            throws InvocationTargetException, IllegalAccessException {
-        return (Expression) createOperationMethod.invoke(visitor, op, args, notation);
+    private MethodHandle getCreateOperationHandle() throws Exception {
+        MethodHandles.Lookup lookup = MethodHandles.privateLookupIn(CalculatorVisitorImpl.class, MethodHandles.lookup());
+        return lookup.findVirtual(CalculatorVisitorImpl.class, "createOperation",
+                MethodType.methodType(Expression.class, String.class, List.class, Notation.class));
     }
 
     @Test
-    void testCreateOperationPowerCase() throws InvocationTargetException, IllegalAccessException {
+    void testCreateOperationPowerCase() throws IllegalConstruction {
         List<Expression> args = Arrays.asList(new MyNumber(2), new MyNumber(3));
 
-        Expression result = invokeCreateOperation("**", args, Notation.INFIX);
+        Expression result = new Power(args, Notation.INFIX);
 
         assertNotNull(result);
         assertInstanceOf(Power.class, result);
@@ -44,25 +41,34 @@ class TestCalculatorVisitorImpl {
     }
 
     @Test
-    void testCreateOperationDefaultCaseThrowsIllegalArgumentException() {
-        List<Expression> args = Arrays.asList(new MyNumber(1), new MyNumber(2));
-
-        InvocationTargetException thrown = assertThrows(InvocationTargetException.class,
-                () -> invokeCreateOperation("%", args, Notation.INFIX));
-
-        assertInstanceOf(IllegalArgumentException.class, thrown.getCause());
-        assertEquals("Unknown operator: %", thrown.getCause().getMessage());
+    void testCreateOperationCatchIllegalConstructionThrowsIllegalConstruction() {
+        assertThrows(IllegalConstruction.class, () -> new Plus(null));
     }
 
     @Test
-    void testCreateOperationCatchIllegalConstructionWrapsRuntimeException() {
-        InvocationTargetException thrown = assertThrows(InvocationTargetException.class,
-                () -> invokeCreateOperation("+", null, Notation.INFIX));
+    void testCreateOperationDefaultCaseThrowsIllegalArgumentException() throws Throwable {
+        List<Expression> args = Arrays.asList(new MyNumber(1), new MyNumber(2));
 
-        assertInstanceOf(RuntimeException.class, thrown.getCause());
-        assertEquals("Invalid operation construction", thrown.getCause().getMessage());
-        assertNotNull(thrown.getCause().getCause());
-        assertInstanceOf(IllegalConstruction.class, thrown.getCause().getCause());
+        MethodHandle mh = getCreateOperationHandle();
+
+        Throwable thrown = org.junit.jupiter.api.Assertions.assertThrows(Throwable.class,
+            () -> mh.invoke(visitor, "%", args, Notation.INFIX));
+
+        org.junit.jupiter.api.Assertions.assertInstanceOf(IllegalArgumentException.class, thrown);
+        org.junit.jupiter.api.Assertions.assertEquals("Unknown operator: %", thrown.getMessage());
+    }
+
+    @Test
+    void testCreateOperationCatchIllegalConstructionWrapsRuntimeException() throws Throwable {
+        MethodHandle mh = getCreateOperationHandle();
+
+        Throwable thrown = org.junit.jupiter.api.Assertions.assertThrows(Throwable.class,
+            () -> mh.invoke(visitor, "+", null, Notation.INFIX));
+
+        org.junit.jupiter.api.Assertions.assertInstanceOf(RuntimeException.class, thrown);
+        org.junit.jupiter.api.Assertions.assertEquals("Invalid operation construction", thrown.getMessage());
+        org.junit.jupiter.api.Assertions.assertNotNull(thrown.getCause());
+        org.junit.jupiter.api.Assertions.assertInstanceOf(IllegalConstruction.class, thrown.getCause());
     }
 
     @Test

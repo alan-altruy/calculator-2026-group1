@@ -1,0 +1,45 @@
+package calculator;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+class TestPower {
+
+    private List<Expression> params;
+    private Power op;
+
+    @BeforeEach
+    void setUp() {
+        params = Arrays.asList(new MyNumber(2), new MyNumber(3));
+        try {
+            op = new Power(params);
+        } catch (IllegalConstruction e) {
+            fail();
+        }
+    }
+
+    @Test
+    void testConstructorWithNotation() {
+        assertDoesNotThrow(() -> {
+            Power p = new Power(params, Notation.PREFIX);
+            assertEquals(Notation.PREFIX, p.notation);
+        });
+    }
+
+    @Test
+    void testOp() {
+        assertEquals(8, op.op(2, 3));
+    }
+
+    @Test
+    void testGetPrecedence() {
+        assertEquals(3, op.getPrecedence());
+    }
+}

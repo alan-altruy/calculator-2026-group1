@@ -58,11 +58,13 @@ jobs:
         with:
           sarif_file: pmd-report.sarif
 
-      - name: Upload badges as artifact
-        uses: actions/upload-artifact@v4
+      - name: Commit badges in PR branch
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: EndBug/add-and-commit@v9
         with:
-          name: coverage-badges
-          path: '*.svg'
+          default_author: github_actions
+          message: 'Update coverage badges'
+          add: '*.svg *.json'
 
       - name: Comment Test Coverage & PMD Summary on PR
         if: ${{ github.event_name == 'pull_request' }}

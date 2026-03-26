@@ -69,4 +69,9 @@ class TestPlus {
 		assertThrows(IllegalConstruction.class, () -> op = new Plus(params));
 	}
 
+	@Test
+	void testGetPrecedence() {
+		assertEquals(1, op.getPrecedence());
+	}
+
 }

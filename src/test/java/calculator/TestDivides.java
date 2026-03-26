@@ -70,4 +70,9 @@ class TestDivides {
 		assertThrows(IllegalConstruction.class, () -> op = new Divides(params));
 	}
 
+	@Test
+	void testGetPrecedence() {
+		assertEquals(2, op.getPrecedence());
+	}
+
 }

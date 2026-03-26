@@ -1,7 +1,7 @@
 # Calculator 2026 Group 1
 
 [![Latest Release](https://img.shields.io/github/v/release/alan-altruy/calculator-2026-group1?label=Latest%20Release)](https://github.com/University-of-Mons/calculator-cucumber/releases/latest)
-![Maven Build](https://github.com/alan-altruy/calculator-2026-group1/actions/workflows/maven.yml/badge.svg)
+![Maven Build](https://github.com/alan-altruy/calculator-2026-group1/actions/workflows/build-and-test.yml/badge.svg)
 ![Coverage](.github/badges/jacoco.svg)
 ![Branches](.github/badges/branches.svg)
 

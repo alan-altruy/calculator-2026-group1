@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 class TestMyNumber {
 
 	private final int value =8;

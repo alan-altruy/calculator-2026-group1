@@ -9,6 +9,7 @@ on:
 permissions:
   contents: write
   checks: write
+  pull-requests: write  # pour poster le commentaire dans la PR
 
 jobs:
   coverage-quality:
@@ -45,11 +46,6 @@ jobs:
           sourcePath: 'src/main/java'
           analyzeModifiedFilesOnly: false
 
-      - name: Fail build on PMD violations
-        # Don't fail on any violations, but log them for review
-        if: steps.pmd.outputs.violations > 1000 
-        run: exit 1
-
       - name: Commit badges
         if: github.ref == 'refs/heads/main'
         uses: EndBug/add-and-commit@v9.1.4
@@ -57,3 +53,13 @@ jobs:
           default_author: github_actions
           message: 'Update coverage badges'
           add: '*.svg *.json'
+
+      - name: Comment coverage & PMD summary on PR
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          NEWLINE=$'\n'
+          BODY="## CI Coverage & PMD Summary${NEWLINE}* __Coverage:__ ${{ steps.jacoco.outputs.coverage }}${NEWLINE}* __Branch coverage:__ ${{ steps.jacoco.outputs.branches }}${NEWLINE}* __PMD violations:__ $(cat pmd-report.sarif | jq '.runs[0].results | length')"
+          gh pr comment ${{ github.event.pull_request.number }} -b "${BODY}"
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

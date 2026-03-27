@@ -66,7 +66,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>4.0.4</version>
+            <version>4.0.5</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
@@ -79,14 +79,14 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jetty</artifactId>
-            <version>4.0.4</version>
+            <version>4.0.5</version>
         </dependency>
 
         <!-- Spring Boot Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>4.0.4</version>
+            <version>4.0.5</version>
             <scope>test</scope>
         </dependency>
 
@@ -172,7 +172,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>4.0.4</version>
+                <version>4.0.5</version>
                 <configuration>
                     <mainClass>calculator.rest.CalculatorRestApplication</mainClass>
                 </configuration>

@@ -9,17 +9,32 @@
 
     <properties>
         <project.encoding>UTF-8</project.encoding>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <project.build.sourceEncoding>${project.encoding}</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
+        
+        <java.version>25</java.version>
+        <javadoc.version>3.12.0</javadoc.version>
+        <junit.version>6.0.3</junit.version>
+        <jacoco.version>0.8.14</jacoco.version>
+
         <maven.compiler.release>17</maven.compiler.release>
         <maven.compiler.version>3.15.0</maven.compiler.version>
 
-        <junit.version>6.0.3</junit.version>
-        <cucumber.version>7.34.3</cucumber.version>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.version>3.15.0</maven.compiler.version>
+        <maven.compiler.proc>full</maven.compiler.proc>
         <maven.surefire.version>3.5.5</maven.surefire.version>
-        <jacoco.version>0.8.14</jacoco.version>
-        <javadoc.version>3.12.0</javadoc.version>
+        <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
+        
+        <slf4j.version>2.0.17</slf4j.version>
         <antlr.version>4.13.2</antlr.version>
+        <logback.version>1.4.5</logback.version>        
+        <cucumber.version>7.34.3</cucumber.version>
+        <exec.version>3.6.3</exec.version>
+
+        <spring-boot.version>4.0.5</spring-boot.version>
+        <spring-doc.version>3.0.2</spring-doc.version>
     </properties>
 
     <dependencyManagement>
@@ -28,6 +43,14 @@
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
                 <version>${junit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -42,7 +65,7 @@
             <version>${antlr.version}</version>
         </dependency>
 
-        <!-- JUnit 6 -->
+        <!-- JUnit -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -66,7 +89,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>4.0.5</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
@@ -79,14 +101,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jetty</artifactId>
-            <version>4.0.5</version>
         </dependency>
 
         <!-- Spring Boot Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>4.0.5</version>
             <scope>test</scope>
         </dependency>
 
@@ -94,14 +114,14 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>3.0.2</version>
+            <version>${spring-doc.version}</version>
         </dependency>
         
         <!-- Force SLF4J API 2.x to match Logback on classpath -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>2.0.17</version>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
@@ -162,7 +182,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>3.6.3</version>
+                <version>${exec.version}</version>
                 <configuration>
                     <mainClass>calculator.Main</mainClass>
                 </configuration>
@@ -172,7 +192,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>4.0.5</version>
+                <version>${spring-boot.version}</version>
                 <configuration>
                     <mainClass>calculator.rest.CalculatorRestApplication</mainClass>
                 </configuration>

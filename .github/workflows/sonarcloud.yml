@@ -59,3 +59,4 @@ jobs:
         run: mvn clean verify sonar:sonar \
           -Dsonar.projectKey=alan-altruy_calculator-2026-group1 \
           -Dsonar.organization=alan-altruy
+          -Dsonar.host.url=https://sonarcloud.io

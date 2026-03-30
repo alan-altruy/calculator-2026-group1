@@ -6,7 +6,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@WebMvcTest(CalculatorController.class)
+@WebMvcTest(CalculatorRestController.class)
 @org.springframework.context.annotation.Import(RestExceptionHandler.class)
 public class RestExceptionHandlerTest {
 

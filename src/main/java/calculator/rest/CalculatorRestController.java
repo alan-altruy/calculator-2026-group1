@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
-public class CalculatorController {
+public class CalculatorRestController {
 
         @Operation(
             summary = "Evaluate an expression AST",

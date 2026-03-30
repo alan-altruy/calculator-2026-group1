@@ -6,7 +6,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 
 
-@WebMvcTest(CalculatorController.class)
+@WebMvcTest(CalculatorRestController.class)
 @org.springframework.context.annotation.Import({RestExceptionHandler.class, CorsConfig.class})
 public class CalculatorControllerTest {
 

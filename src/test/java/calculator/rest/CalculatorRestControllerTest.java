@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @org.springframework.context.annotation.Import({RestExceptionHandler.class, CorsConfig.class})
-public class CalculatorControllerTest {
+public class CalculatorRestControllerTest {
 
     @Autowired
     private WebApplicationContext wac;
@@ -169,9 +169,9 @@ public class CalculatorControllerTest {
     
             @Test
             void toExpressionNullThrowsIllegalConstruction_viaMethodHandle() throws Throwable {
-                CalculatorController controller = new CalculatorController();
-                MethodHandles.Lookup lookup = MethodHandles.privateLookupIn(CalculatorController.class, MethodHandles.lookup());
-                MethodHandle mh = lookup.findVirtual(CalculatorController.class, "toExpression",
+                CalculatorRestController controller = new CalculatorRestController();
+                MethodHandles.Lookup lookup = MethodHandles.privateLookupIn(CalculatorRestController.class, MethodHandles.lookup());
+                MethodHandle mh = lookup.findVirtual(CalculatorRestController.class, "toExpression",
                         MethodType.methodType(calculator.Expression.class, com.fasterxml.jackson.databind.JsonNode.class));
 
                 assertThrows(IllegalConstruction.class, () -> mh.invoke(controller, (JsonNode) null));

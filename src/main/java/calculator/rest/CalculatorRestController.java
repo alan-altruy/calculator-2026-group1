@@ -17,7 +17,7 @@ import java.util.Locale;
 
 @RestController
 @RequestMapping("/api/v1")
-public class CalculatorController {
+public class CalculatorRestController {
 
     private static final String TYPE_NUMBER = "number";
     private static final String TYPE_OPERATION = "operation";

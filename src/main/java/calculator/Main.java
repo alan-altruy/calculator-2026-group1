@@ -22,45 +22,37 @@ public class Main {
 		System.out.println("Type 'help' for instructions, or 'quit'/'exit' to exit.");
 		
 		Calculator c = new Calculator();
-		java.util.Scanner scanner = new java.util.Scanner(System.in);
-		
-		while (true) {
-			System.out.print("> ");
-			if (!scanner.hasNextLine()) {
-				break;
-			}
-			
-			String input = scanner.nextLine().trim();
-			if (input.isEmpty()) continue;
-			if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) break;
-			
-			if (input.equalsIgnoreCase("help")) {
-				System.out.println("--- Calculator Help ---");
-				System.out.println("  Commands:");
-				System.out.println("    help  - Show this help message");
-				System.out.println("    quit  - Exit the program");
-				System.out.println("    exit  - Exit the program");
-				System.out.println("  Expressions:");
-				System.out.println("    Type any arithmetic expression.");
-				System.out.println("    Supported ops: +, -, *, /, ** (Power).");
-				System.out.println("    Implicit multiplication (e.g. '(4+5)(6)') is supported.");
-				continue;
-			}
-			
-			try {
-				Expression e = ExpressionParser.parse(input);
-				if (e != null) {
-					c.print(e);
+		try (java.util.Scanner scanner = new java.util.Scanner(System.in)) {
+			while (true) {
+				System.out.print("> ");
+				if (!scanner.hasNextLine()) {
+					break;
 				}
-			} catch (Exception ex) {
-				System.out.println("Error: " + ex.getMessage());
+				String input = scanner.nextLine().trim();
+				if (input.isEmpty()) continue;
+				if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) break;
+				if (input.equalsIgnoreCase("help")) {
+					System.out.println("--- Calculator Help ---");
+					System.out.println("  Commands:");
+					System.out.println("    help  - Show this help message");
+					System.out.println("    quit  - Exit the program");
+					System.out.println("    exit  - Exit the program");
+					System.out.println("  Expressions:");
+					System.out.println("    Type any arithmetic expression.");
+					System.out.println("    Supported ops: +, -, *, /, ** (Power).");
+					System.out.println("    Implicit multiplication (e.g. '(4+5)(6)') is supported.");
+					continue;
+				}
+				try {
+					Expression e = ExpressionParser.parse(input);
+					if (e != null) {
+						c.print(e);
+					}
+				} catch (IllegalArgumentException ex) {
+					System.out.println("Error: " + ex.getMessage());
+				}
 			}
 		}
-		
 		System.out.println("Goodbye!");
-		if (scanner != null) {
-			scanner.close();
-		}
  	}
-
 }

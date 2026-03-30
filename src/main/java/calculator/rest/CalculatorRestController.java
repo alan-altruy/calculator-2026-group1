@@ -22,6 +22,9 @@ public class CalculatorRestController {
     private static final String TYPE_NUMBER = "number";
     private static final String TYPE_OPERATION = "operation";
 
+    private static final String TYPE_NUMBER = "number";
+    private static final String TYPE_OPERATION = "operation";
+
         @Operation(
             summary = "Evaluate an expression AST",
             description = "Accepts an AST JSON and returns the evaluated integer result.\n\n" +

@@ -1,5 +1,4 @@
-name: CodeQL security analysis for Java
-
+name: CodeQL
 on:
   push:
     branches: [ main ]
@@ -13,7 +12,7 @@ permissions:
 
 jobs:
   build:
-    name: compiling and security scanning
+    name: Compiling and Security Scanning
     runs-on: ubuntu-latest  
     timeout-minutes: 360
     permissions:
@@ -23,7 +22,7 @@ jobs:
       
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v6      
+      uses: actions/checkout@v6.0.2      
     - name: Set up with Java 25
       uses: actions/setup-java@v5
       with:

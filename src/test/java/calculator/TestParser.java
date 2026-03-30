@@ -47,4 +47,9 @@ public class TestParser {
         assertNotNull(e);
         assertEquals(945, calc.eval(e));
     }
+
+    @Test
+    public void testExpressionParserConstructor() {
+        assertDoesNotThrow(ExpressionParser::new);
+    }
 }

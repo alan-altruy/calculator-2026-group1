@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 class TestPlus {
 
 	private final int value1 = 8;
@@ -65,8 +66,12 @@ class TestPlus {
 
 	@Test
 	void testNullParamList() {
-		params = null;
-		assertThrows(IllegalConstruction.class, () -> op = new Plus(params));
+		assertThrows(IllegalConstruction.class, () -> new Plus(null));
+	}
+
+	@Test
+	void testGetPrecedence() {
+		assertEquals(1, op.getPrecedence());
 	}
 
 }

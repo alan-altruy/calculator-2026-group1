@@ -4,3 +4,45 @@ body {
     background-attachment: fixed;
     background-size: cover;
 }
+
+
+/* From Uiverse.io by alexruix */
+.input-group {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 3em;
+    left: 2em;
+}
+
+.input {
+    min-height: 70px;
+    max-width: 750px;
+    padding: 0 1rem;
+    color: #fff;
+    font-size: 22px;
+    border: 1px solid #5e4dcd;
+    border-radius: 6px 0 0 6px;
+    background-color: transparent;
+}
+
+.button--submit {
+    min-height: 72px;
+    padding: .5em 1em;
+    border: none;
+    border-radius: 0 6px 6px 0;
+    background-color: #5e4dcd;
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+    transition: background-color .3s ease-in-out;
+}
+
+.button--submit:hover {
+    background-color: #5e5dcd;
+}
+
+.input:focus, .input:focus-visible {
+    border-color: #0a2374;
+    outline: none;
+}

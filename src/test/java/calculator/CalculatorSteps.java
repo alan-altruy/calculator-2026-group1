@@ -13,8 +13,6 @@ import java.util.Optional;
 
 public class CalculatorSteps {
 
-//	static final Logger log = getLogger(lookup().lookupClass());
-
 	private ArrayList<Expression> params = new ArrayList<>();
 	private Optional<Operation> op = Optional.empty();
 	private Calculator c;

@@ -35,9 +35,23 @@ public class CalculatorRestController {
 
         @Operation(
             summary = "Evaluate an expression AST",
-            description = "Accepts an AST JSON and returns the evaluated integer result.\n\n" +
-                "Example fetch call:\n\n```javascript\nfetch('http://localhost:8080/api/v1/evaluate', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({ ast: { type: 'operation', op: '+', args: [ { type: 'number', value: 1 }, { type: 'number', value: 6 } ] } })\n})\n  .then(r => r.json())\n  .then(j => console.log('result:', j.result));\n```\n\n" +
-                "From a Swing app you can either call `Calculator.eval()` locally or use Java `HttpClient` to POST the same AST to this endpoint.",
+                description = """
+                    Accepts an AST JSON and returns the evaluated integer result.
+
+                    Example fetch call:
+
+                    ´´´javascript
+                    fetch('http://localhost:8080/api/v1/evaluate', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ast: { type: 'operation', op: '+', args: [ { type: 'number', value: 1 }, { type: 'number', value: 6 } ] } })
+                    })
+                        .then(r => r.json())
+                        .then(j => console.log('result:', j.result));
+                    ´´´
+
+                    From a Swing app you can either call `Calculator.eval()` locally or use Java `HttpClient` to POST the same AST to this endpoint.
+                    """,
             responses = {
                 @ApiResponse(responseCode = "200", description = "evaluation successful",
                     content = @Content(mediaType = "application/json",

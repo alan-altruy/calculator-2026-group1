@@ -1,6 +1,7 @@
 package calculator;
 
 import visitor.Evaluator;
+import java.util.logging.Logger;
 
 /**
  * This class represents the core logic of a Calculator.
@@ -9,6 +10,8 @@ import visitor.Evaluator;
  * @author tommens
  */
 public class Calculator {
+
+    private static final Logger LOGGER = Logger.getLogger(Calculator.class.getName());
 
     /**
      * Default constructor of the class.
@@ -36,9 +39,9 @@ public class Calculator {
      * @see #printExpressionDetails(Expression) 
      */
     public void print(Expression e) {
-        System.out.println("The result of evaluating expression " + e);
-        System.out.println("is: " + eval(e) + ".");
-        System.out.println();
+        LOGGER.info("The result of evaluating expression " + e);
+        LOGGER.info("is: " + eval(e) + ".");
+        LOGGER.info("");
     }
 
     /**
@@ -48,10 +51,9 @@ public class Calculator {
      */
     public void printExpressionDetails(Expression e) {
         print(e);
-        System.out.print("It contains " + e.countDepth() + " levels of nested expressions, ");
-        System.out.print(e.countOps() + " operations");
-        System.out.println(" and " + e.countNbs() + " numbers.");
-        System.out.println();
+        LOGGER.info("It contains " + e.countDepth() + " levels of nested expressions, "
+                + e.countOps() + " operations and " + e.countNbs() + " numbers.");
+        LOGGER.info("");
     }
 
     /**

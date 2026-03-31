@@ -11,6 +11,8 @@ package calculator;
  */
 public class Main {
 
+	private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(Main.class.getName());
+
 	/**
 	 * This is the main method of the application.
 	 * It provides examples of how to use it to construct and evaluate arithmetic expressions.
@@ -18,13 +20,13 @@ public class Main {
 	 * @param args	Command-line parameters are not used in this version
 	 */
 	public static void main(String[] args) {
-		System.out.println("Calculator CLI");
-		System.out.println("Type 'help' for instructions, or 'quit'/'exit' to exit.");
-		
+		LOGGER.info("Calculator CLI");
+		LOGGER.info("Type 'help' for instructions, or 'quit'/'exit' to exit.");
+
 		Calculator c = new Calculator();
 		try (java.util.Scanner scanner = new java.util.Scanner(System.in)) {
 			while (true) {
-				System.out.print("> ");
+				LOGGER.info("> ");
 				if (!scanner.hasNextLine()) {
 					break;
 				}
@@ -32,15 +34,15 @@ public class Main {
 				if (input.isEmpty()) continue;
 				if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) break;
 				if (input.equalsIgnoreCase("help")) {
-					System.out.println("--- Calculator Help ---");
-					System.out.println("  Commands:");
-					System.out.println("    help  - Show this help message");
-					System.out.println("    quit  - Exit the program");
-					System.out.println("    exit  - Exit the program");
-					System.out.println("  Expressions:");
-					System.out.println("    Type any arithmetic expression.");
-					System.out.println("    Supported ops: +, -, *, /, ** (Power).");
-					System.out.println("    Implicit multiplication (e.g. '(4+5)(6)') is supported.");
+					LOGGER.info("--- Calculator Help ---");
+					LOGGER.info("  Commands:");
+					LOGGER.info("    help  - Show this help message");
+					LOGGER.info("    quit  - Exit the program");
+					LOGGER.info("    exit  - Exit the program");
+					LOGGER.info("  Expressions:");
+					LOGGER.info("    Type any arithmetic expression.");
+					LOGGER.info("    Supported ops: +, -, *, /, ** (Power).");
+					LOGGER.info("    Implicit multiplication (e.g. '(4+5)(6)') is supported.");
 					continue;
 				}
 				try {
@@ -49,10 +51,10 @@ public class Main {
 						c.print(e);
 					}
 				} catch (IllegalArgumentException ex) {
-					System.out.println("Error: " + ex.getMessage());
+					LOGGER.severe("Error: " + ex.getMessage());
 				}
 			}
 		}
-		System.out.println("Goodbye!");
+		LOGGER.info("Goodbye!");
  	}
 }

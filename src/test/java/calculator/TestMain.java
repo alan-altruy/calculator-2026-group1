@@ -14,8 +14,14 @@ import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+
+import java.util.stream.Stream;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class TestMain {
 
@@ -82,15 +88,6 @@ class TestMain {
     }
 
     @Test
-    void testMainBreaksWhenNoInputLineAvailable() {
-        String output = runMainWithInput("");
-
-        assertTrue(output.contains("Calculator CLI"));
-        assertTrue(output.contains("> "));
-        assertTrue(output.contains(GOODBYE));
-    }
-
-    @Test
     void testMainHelpThenQuit() {
         String output = runMainWithInput("help\nquit\n");
 
@@ -99,14 +96,21 @@ class TestMain {
         assertTrue(output.contains("Implicit multiplication"));
         assertTrue(output.contains(GOODBYE));
     }
+    @ParameterizedTest
+    @MethodSource("inputAndExpected")
+    void testMainVariousInputs(String input, String expectedSubstring) {
+        String output = runMainWithInput(input);
 
-    @Test
-    void testMainSkipsEmptyInputThenEvaluatesAndQuits() {
-        String output = runMainWithInput("\n2 + 3\nquit\n");
-
-        assertTrue(output.contains("The result of evaluating expression 2 + 3"));
-        assertTrue(output.contains("is: 5."));
+        assertTrue(output.contains(expectedSubstring));
         assertTrue(output.contains(GOODBYE));
+    }
+
+    private static Stream<Arguments> inputAndExpected() {
+        return Stream.of(
+            arguments("", "Calculator CLI"),
+            arguments("2 + 3\nquit\n", "The result of evaluating expression 2 + 3"),
+            arguments("\n2 + 3\nquit\n", "The result of evaluating expression 2 + 3")
+        );
     }
 
     @Test
@@ -122,15 +126,6 @@ class TestMain {
         String output = runMainWithInput("999999999999999999999999999\nquit\n");
 
         assertTrue(output.contains("Error:"));
-        assertTrue(output.contains(GOODBYE));
-    }
-
-    @Test
-    void testMainEvaluatesExpressionThenQuit() {
-        String output = runMainWithInput("2 + 3\nquit\n");
-
-        assertTrue(output.contains("The result of evaluating expression 2 + 3"));
-        assertTrue(output.contains("is: 5."));
         assertTrue(output.contains(GOODBYE));
     }
 

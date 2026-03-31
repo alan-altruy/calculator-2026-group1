@@ -36,7 +36,8 @@ class TestMyNumber {
 
 	@Test
 	void testEqualsNullBranch() {
-		assertFalse(Objects.equals(number, null));
+		Boolean condition = Objects.equals(number, null);
+		assertFalse(condition);
 	}
 
 	@Test

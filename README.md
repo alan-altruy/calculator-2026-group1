@@ -13,6 +13,12 @@
 ![Coverage](https://raw.githubusercontent.com/alan-altruy/calculator-2026-group1/badges/jacoco.svg)
 ![Branches](https://raw.githubusercontent.com/alan-altruy/calculator-2026-group1/badges/branches.svg)
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=alan-altruy_calculator-2026-group1)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=alan-altruy_calculator-2026-group1)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=alan-altruy_calculator-2026-group1)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=alan-altruy_calculator-2026-group1)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=alan-altruy_calculator-2026-group1)
+
 ## About
 
 This repository contains Java code for computing arithmetic expressions. It is deliberately incomplete as it serves to be the basis of all kinds of extensions, such as a more sophisticated Calculator application. The code was written to be used for educational purposes at the University of Mons, Belgium in the context of the software evolution course.

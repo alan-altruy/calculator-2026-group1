@@ -28,11 +28,11 @@ public class CorsConfigTest {
         String body = "{\"ast\":{\"type\":\"number\",\"value\":1}}";
         var res = mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/v1/evaluate")
                 .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
-                .header("Origin", "http://example.com")
+                .header("Origin", "http://localhost:8080")
                 .content(body))
                 .andReturn();
         int status = res.getResponse().getStatus();
         assertThat(status).isEqualTo(200);
-        assertThat(res.getResponse().getHeader("Access-Control-Allow-Origin")).isEqualTo("*");
+        assertThat(res.getResponse().getHeader("Access-Control-Allow-Origin")).isEqualTo("http://localhost:8080");
     }
 }

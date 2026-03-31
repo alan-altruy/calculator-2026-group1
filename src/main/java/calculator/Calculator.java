@@ -14,7 +14,12 @@ public class Calculator {
      * Default constructor of the class.
      * Does nothing since the class does not have any variables that need to be initialised.
      */
-    public Calculator() {}
+    public Calculator() {
+        /* Intentionally left empty: Calculator currently holds no instance state
+           that requires initialization. The explicit no-arg constructor documents
+           this intent and allows adding initialization later without changing
+           callers. */
+    }
 
     /*
      For the moment the calculator only contains a print method and an eval method

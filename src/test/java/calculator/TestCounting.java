@@ -37,7 +37,6 @@ class TestCounting {
     @ValueSource(strings = {"*", "+", "/", "-"})
     void testOperationCounting(String symbol) {
         List<Expression> params = Arrays.asList(new MyNumber(value1),new MyNumber(value2));
-        //Operation op = null;
         try {
             //construct another type of operation depending on the input value
             //of the parameterised test

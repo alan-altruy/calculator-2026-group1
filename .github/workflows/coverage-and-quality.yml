@@ -18,10 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     # Create max_pmd_violations variable to control build failure threshold
     env:
-      MAX_PMD_VIOLATIONS: 10
-      EXPECTED_PMD_VIOLATIONS: 5  # 5 or fewer violations is ideal (green badge)
-      EXPECTED_COVERAGE: 0.90  # 90% expected coverage for green badge
-      MIN_COVERAGE: 0.50  # 50% minimum coverage to avoid warning
+      MAX_PMD_VIOLATIONS: 5
+      EXPECTED_PMD_VIOLATIONS: 0  # 0 or fewer violations is ideal (green badge)
+      EXPECTED_COVERAGE: 0.99  # 99% expected coverage for green badge
+      MIN_COVERAGE: 0.95  # 95% minimum coverage to avoid warning
 
     steps:
       - name: Checkout repository

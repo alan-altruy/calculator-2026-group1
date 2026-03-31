@@ -15,11 +15,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * A REST controller for evaluating calculator expressions represented as ASTs in JSON format.
+ * The endpoint accepts a POST request with a JSON body containing an "ast" field that represents
+ * the expression to evaluate. The AST should follow a specific structure where each node has a "type"
+ */
 @RestController
 @RequestMapping("/api/v1")
 public class CalculatorRestController {
 
+    /**
+     * The type identifier for a number node in the AST.
+     */
     private static final String TYPE_NUMBER = "number";
+    /**
+     * The type identifier for an operation node in the AST.
+     */
     private static final String TYPE_OPERATION = "operation";
 
         @Operation(
@@ -54,6 +65,12 @@ public class CalculatorRestController {
         return ResponseEntity.ok(new EvaluateResponse(result));
     }
 
+    /**
+     * Converts a JsonNode representing an AST into an Expression object.
+     * @param node the JsonNode to convert
+     * @return the corresponding Expression object
+     * @throws IllegalConstruction if the AST is malformed or contains unknown types/operations
+     */
     private Expression toExpression(JsonNode node) throws IllegalConstruction {
         if (node == null) throw new IllegalConstruction();
         String type = node.has("type") ? node.get("type").asText() : null;

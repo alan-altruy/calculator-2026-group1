@@ -7,9 +7,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Formatter;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+import java.util.logging.StreamHandler;
 
 class TestEvaluator {
 
@@ -53,13 +57,24 @@ class TestEvaluator {
         List<Expression> params = Arrays.asList(new MyNumber(value1), new MyNumber(value2));
         try {
             Expression e = new Plus(params);
-            PrintStream originalOut = System.out;
             ByteArrayOutputStream output = new ByteArrayOutputStream();
-            try (PrintStream ps = new PrintStream(output)) {
-                System.setOut(ps);
+            Logger logger = Logger.getLogger(Calculator.class.getName());
+            Formatter fmt = new Formatter() {
+                @Override
+                public String format(LogRecord record) {
+                    return record.getMessage() + System.lineSeparator();
+                }
+            };
+            StreamHandler sh = new StreamHandler(output, fmt);
+            Level previousLevel = logger.getLevel();
+            logger.setLevel(Level.INFO);
+            logger.addHandler(sh);
+            try {
                 calc.print(e);
+                sh.flush();
             } finally {
-                System.setOut(originalOut);
+                logger.removeHandler(sh);
+                logger.setLevel(previousLevel);
             }
 
             String printed = output.toString();
@@ -76,13 +91,24 @@ class TestEvaluator {
         List<Expression> params = Arrays.asList(new MyNumber(value1), new MyNumber(value2));
         try {
             Expression e = new Plus(params);
-            PrintStream originalOut = System.out;
             ByteArrayOutputStream output = new ByteArrayOutputStream();
-            try (PrintStream ps = new PrintStream(output)) {
-                System.setOut(ps);
+            Logger logger = Logger.getLogger(Calculator.class.getName());
+            Formatter fmt = new Formatter() {
+                @Override
+                public String format(LogRecord record) {
+                    return record.getMessage() + System.lineSeparator();
+                }
+            };
+            StreamHandler sh = new StreamHandler(output, fmt);
+            Level previousLevel = logger.getLevel();
+            logger.setLevel(Level.INFO);
+            logger.addHandler(sh);
+            try {
                 calc.printExpressionDetails(e);
+                sh.flush();
             } finally {
-                System.setOut(originalOut);
+                logger.removeHandler(sh);
+                logger.setLevel(previousLevel);
             }
 
             String printed = output.toString();

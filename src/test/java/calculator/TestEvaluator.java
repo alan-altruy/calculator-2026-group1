@@ -48,15 +48,14 @@ class TestEvaluator {
     }
 
     @Test
-    @SuppressWarnings("PMD.CloseResource")
     void testPrint() {
         List<Expression> params = Arrays.asList(new MyNumber(value1), new MyNumber(value2));
         try {
             Expression e = new Plus(params);
             PrintStream originalOut = System.out;
             ByteArrayOutputStream output = new ByteArrayOutputStream();
-            try {
-                System.setOut(new PrintStream(output));
+            try (PrintStream ps = new PrintStream(output)) {
+                System.setOut(ps);
                 calc.print(e);
             } finally {
                 System.setOut(originalOut);
@@ -71,15 +70,14 @@ class TestEvaluator {
     }
 
     @Test
-    @SuppressWarnings("PMD.CloseResource")
     void testPrintExpressionDetails() {
         List<Expression> params = Arrays.asList(new MyNumber(value1), new MyNumber(value2));
         try {
             Expression e = new Plus(params);
             PrintStream originalOut = System.out;
             ByteArrayOutputStream output = new ByteArrayOutputStream();
-            try {
-                System.setOut(new PrintStream(output));
+            try (PrintStream ps = new PrintStream(output)) {
+                System.setOut(ps);
                 calc.printExpressionDetails(e);
             } finally {
                 System.setOut(originalOut);

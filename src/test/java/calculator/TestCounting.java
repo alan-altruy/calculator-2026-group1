@@ -47,7 +47,7 @@ class TestCounting {
                 case "/"	->	e = new Divides(params);
                 default		->	fail();
             }
-        } catch (IllegalConstruction e) {
+        } catch (IllegalConstruction illegalConstruction) {
             fail();
         }
         //test whether a binary operation has depth 1

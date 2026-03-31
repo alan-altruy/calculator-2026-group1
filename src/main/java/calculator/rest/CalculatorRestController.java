@@ -79,37 +79,41 @@ public class CalculatorRestController {
             return new MyNumber(v);
         } else if (TYPE_OPERATION.equalsIgnoreCase(type)) {
             String op = node.has("op") ? node.get("op").asText() : null;
-            List<Expression> args = new ArrayList<>();
-            JsonNode arr = node.get("args");
-            if (arr != null && arr.isArray()) {
-                for (JsonNode n : arr) {
-                    args.add(toExpression(n));
-                }
-            }
-            Notation notation = Notation.INFIX;
-            if (node.has("notation")) {
-                try {
-                    notation = Notation.valueOf(node.get("notation").asText().toUpperCase(Locale.ROOT));
-                } catch (IllegalArgumentException ignored) {}
-            }
+            List<Expression> args = parseArgs(node.get("args"));
+            Notation notation = parseNotation(node);
             if (op == null) throw new IllegalConstruction();
-            switch (op.toLowerCase(Locale.ROOT)) {
-                case "plus", "+" -> {
-                    return new Plus(args, notation);
-                }
-                case "minus", "-" -> {
-                    return new Minus(args, notation);
-                }
-                case "times", "*" -> {
-                    return new Times(args, notation);
-                }
-                case "divides", "/" -> {
-                    return new Divides(args, notation);
-                }
-                default -> throw new IllegalConstruction();
-            }
+            return createOperation(op, args, notation);
         } else {
             throw new IllegalConstruction();
         }
+    }
+
+    private List<Expression> parseArgs(JsonNode arr) throws IllegalConstruction {
+        List<Expression> args = new ArrayList<>();
+        if (arr == null || !arr.isArray()) return args;
+        for (JsonNode n : arr) {
+            args.add(toExpression(n));
+        }
+        return args;
+    }
+
+    private Notation parseNotation(JsonNode node) {
+        if (node == null || !node.has("notation")) return Notation.INFIX;
+        try {
+            return Notation.valueOf(node.get("notation").asText().toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException ignored) {
+            return Notation.INFIX;
+        }
+    }
+
+    private Expression createOperation(String op, List<Expression> args, Notation notation) throws IllegalConstruction {
+        String k = op.toLowerCase(Locale.ROOT);
+        return switch (k) {
+            case "plus", "+" -> new Plus(args, notation);
+            case "minus", "-" -> new Minus(args, notation);
+            case "times", "*" -> new Times(args, notation);
+            case "divides", "/" -> new Divides(args, notation);
+            default -> throw new IllegalConstruction();
+        };
     }
 }

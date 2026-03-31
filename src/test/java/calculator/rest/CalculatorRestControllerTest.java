@@ -12,6 +12,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 
@@ -167,14 +168,44 @@ public class CalculatorRestControllerTest {
                 .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath(RESULT).value(7));
     }
     
-            @Test
-            void toExpressionNullThrowsIllegalConstruction_viaMethodHandle() throws Throwable {
-                CalculatorRestController controller = new CalculatorRestController();
-                MethodHandles.Lookup lookup = MethodHandles.privateLookupIn(CalculatorRestController.class, MethodHandles.lookup());
-                MethodHandle mh = lookup.findVirtual(CalculatorRestController.class, "toExpression",
-                        MethodType.methodType(calculator.Expression.class, com.fasterxml.jackson.databind.JsonNode.class));
+    @Test
+    void toExpressionNullThrowsIllegalConstruction_viaMethodHandle() throws Throwable {
+        CalculatorRestController controller = new CalculatorRestController();
+        MethodHandles.Lookup lookup = MethodHandles.privateLookupIn(CalculatorRestController.class, MethodHandles.lookup());
+        MethodHandle mh = lookup.findVirtual(CalculatorRestController.class, "toExpression",
+                MethodType.methodType(calculator.Expression.class, com.fasterxml.jackson.databind.JsonNode.class));
 
-                assertThrows(IllegalConstruction.class, () -> mh.invoke(controller, (JsonNode) null));
-            }
-    
+        assertThrows(IllegalConstruction.class, () -> mh.invoke(controller, (JsonNode) null));
+    }
+
+    @Test
+    void parseNotationNullAndMissingReturnInfix_viaMethodHandle() throws Throwable {
+        CalculatorRestController controller = new CalculatorRestController();
+        MethodHandles.Lookup lookup = MethodHandles.privateLookupIn(CalculatorRestController.class, MethodHandles.lookup());
+        MethodHandle mh = lookup.findVirtual(CalculatorRestController.class, "parseNotation",
+                MethodType.methodType(calculator.Notation.class, com.fasterxml.jackson.databind.JsonNode.class));
+
+        // null node -> default to INFIX
+        Object resNull = mh.invoke(controller, (com.fasterxml.jackson.databind.JsonNode) null);
+        assertEquals(calculator.Notation.INFIX, resNull);
+
+        // node without 'notation' field -> default to INFIX
+        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+        com.fasterxml.jackson.databind.JsonNode noNotation = mapper.readTree("{\"type\":\"operation\"}");
+        Object resNoField = mh.invoke(controller, noNotation);
+        assertEquals(calculator.Notation.INFIX, resNoField);
+    }
+
+    @Test
+    void parseNotationInvalidValueReturnsInfix_viaMethodHandle() throws Throwable {
+        CalculatorRestController controller = new CalculatorRestController();
+        MethodHandles.Lookup lookup = MethodHandles.privateLookupIn(CalculatorRestController.class, MethodHandles.lookup());
+        MethodHandle mh = lookup.findVirtual(CalculatorRestController.class, "parseNotation",
+                MethodType.methodType(calculator.Notation.class, com.fasterxml.jackson.databind.JsonNode.class));
+
+        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+        com.fasterxml.jackson.databind.JsonNode invalid = mapper.readTree("{\"notation\":\"weird\"}");
+        Object resInvalid = mh.invoke(controller, invalid);
+        assertEquals(calculator.Notation.INFIX, resInvalid);
+    }
 }

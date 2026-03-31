@@ -5,6 +5,7 @@ import visitor.Visitor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 
 /**
@@ -159,8 +160,7 @@ public abstract class Operation implements Expression
    * @param n	The notation to be used for representing the operation (prefix, infix or postfix)
    * @return	The String that is the result of the conversion.
    */
-  public final String toString(Notation n) {
-	   Stream<String> s = args.stream().map(Object::toString);
+	public final String toString(Notation n) {
 	   return switch (n) {
 		   case INFIX -> {
 			   StringBuilder sb = new StringBuilder();
@@ -190,13 +190,13 @@ public abstract class Operation implements Expression
 			   yield sb.toString();
 		   }
 		   case PREFIX -> symbol + " " +
-				   "(" +
-				   s.reduce((s1, s2) -> s1 + ", " + s2).get() +
-				   ")";
+			   "(" +
+			   args.stream().map(Object::toString).collect(Collectors.joining(", ")) +
+			   ")";
 		   case POSTFIX -> "(" +
-				   s.reduce((s1, s2) -> s1 + ", " + s2).get() +
-				   ")" +
-				   " " + symbol;
+			   args.stream().map(Object::toString).collect(Collectors.joining(", ")) +
+			   ")" +
+			   " " + symbol;
 	   };
   }
 

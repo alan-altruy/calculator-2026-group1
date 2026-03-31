@@ -1,6 +1,11 @@
 package calculator.rest;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.Arguments;
+import java.util.stream.Stream;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -90,10 +95,9 @@ public class CalculatorRestControllerTest {
         int status = res.getResponse().getStatus();
         org.assertj.core.api.Assertions.assertThat(status / 100).isEqualTo(5);
     }
-
-    @Test
-    void testUnknownOpReturnsServerError() throws Exception {
-        String body = "{\"ast\":{\"type\":\"operation\",\"op\":\"foo\",\"args\":[{\"type\":\"number\",\"value\":1},{\"type\":\"number\",\"value\":2}]}}";
+    @ParameterizedTest
+    @MethodSource("badRequestBodies")
+    void testBadOperationRequestsProduce4xxOr5xx(String body) throws Exception {
         var res = mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post(API_URL)
                 .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
                 .content(body))
@@ -102,28 +106,15 @@ public class CalculatorRestControllerTest {
         org.assertj.core.api.Assertions.assertThat(status / 100 == 4 || status / 100 == 5).isTrue();
     }
 
-    @Test
-    void testMissingOpReturnsServerError() throws Exception {
-        String body = "{\"ast\":{\"type\":\"operation\",\"args\":[{\"type\":\"number\",\"value\":1}]}}";
-        var res = mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post(API_URL)
-                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
-                .content(body))
-                .andReturn();
-        int status = res.getResponse().getStatus();
-        org.assertj.core.api.Assertions.assertThat(status / 100 == 4 || status / 100 == 5).isTrue();
+    private static Stream<Arguments> badRequestBodies() {
+        return Stream.of(
+            arguments("{\"ast\":{\"type\":\"operation\",\"op\":\"foo\",\"args\":[{\"type\":\"number\",\"value\":1},{\"type\":\"number\",\"value\":2}]}}"),
+            arguments("{\"ast\":{\"type\":\"operation\",\"args\":[{\"type\":\"number\",\"value\":1}]}}"),
+            arguments("{\"ast\":{\"type\":\"operation\",\"op\":\"+\",\"args\":[null,{\"type\":\"number\",\"value\":1}]}}"),
+            arguments("{\"ast\":{\"type\":\"operation\",\"op\":\"+\"}}")
+        );
     }
-
-    @Test
-    void testArgsContainingNullProducesServerError() throws Exception {
-        String body = "{\"ast\":{\"type\":\"operation\",\"op\":\"+\",\"args\":[null,{\"type\":\"number\",\"value\":1}]}}";
-        var res = mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post(API_URL)
-                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
-                .content(body))
-                .andReturn();
-        int status = res.getResponse().getStatus();
-        org.assertj.core.api.Assertions.assertThat(status / 100 == 4 || status / 100 == 5).isTrue();
-    }
-
+    
     @Test
     void testArgsNotArrayProducesServerError() throws Exception {
         // args provided but not an array
@@ -134,18 +125,6 @@ public class CalculatorRestControllerTest {
                 .andReturn();
         int status = res.getResponse().getStatus();
         org.assertj.core.api.Assertions.assertThat(status / 100).isEqualTo(5);
-    }
-
-    @Test
-    void testMissingArgsProducesServerError() throws Exception {
-        // operation with no 'args' field
-        String body = "{\"ast\":{\"type\":\"operation\",\"op\":\"+\"}}";
-        var res = mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post(API_URL)
-                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
-                .content(body))
-                .andReturn();
-        int status = res.getResponse().getStatus();
-        org.assertj.core.api.Assertions.assertThat(status / 100 == 4 || status / 100 == 5).isTrue();
     }
 
     @Test

@@ -95,7 +95,7 @@ button:active {
 
 .special {
     display: grid;
-    grid-template-columns: repeat(4, 100px);
+    grid-template-columns: repeat(5, 100px);
     gap: 10px;
     justify-content: center;
     margin-top: 50px;
@@ -103,3 +103,15 @@ button:active {
     top: 44em;
     left: 3em;
 }
+
+.otherop {
+    display: grid;
+    grid-template-columns: repeat(2, 100px);
+    gap: 10px;
+    justify-content: center;
+    margin-top: 50px;
+    position: absolute;
+    top: 29em;
+    left: 35em;
+}
+

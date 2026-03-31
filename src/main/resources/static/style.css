@@ -16,7 +16,7 @@ body {
 }
 
 .input {
-    min-height: 70px;
+    min-height: 60px;
     max-width: 750px;
     padding: 0 1rem;
     color: #fff;
@@ -27,7 +27,7 @@ body {
 }
 
 .button--submit {
-    min-height: 72px;
+    min-height: 62px;
     padding: .5em 1em;
     border: none;
     border-radius: 0 6px 6px 0;
@@ -45,4 +45,52 @@ body {
 .input:focus, .input:focus-visible {
     border-color: #0a2374;
     outline: none;
+}
+
+
+/* From Uiverse.io by adamgiebl */
+button {
+    background: #b59be3;
+    font-family: inherit;
+    padding: 0.6em 1.3em;
+    font-weight: 900;
+    font-size: 20px;
+    border: 3px solid #130232;
+    border-radius: 0.4em;
+    box-shadow: 0.1em 0.1em;
+    cursor: pointer;
+}
+
+button:hover {
+    transform: translate(-0.05em, -0.05em);
+    box-shadow: 0.15em 0.15em;
+}
+
+button:active {
+    transform: translate(0.05em, 0.05em);
+    box-shadow: 0.05em 0.05em;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    gap: 10px;
+    justify-content: center;
+    margin-top: 50px;
+    position: absolute;
+    top: 10em;
+    left: 2em;
+}
+
+/* From Uiverse.io by adamgiebl */
+.grid button {
+    background: #b59be3;
+    font-family: inherit;
+    padding: 0.6em 1.3em;
+    font-weight: 900;
+    font-size: 20px;
+    border: 3px solid #130232;
+    border-radius: 0.4em;
+    box-shadow: 0.1em 0.1em;
+    cursor: pointer;
 }

@@ -162,33 +162,7 @@ public abstract class Operation implements Expression
    */
 	public final String toString(Notation n) {
 	   return switch (n) {
-		   case INFIX -> {
-			   StringBuilder sb = new StringBuilder();
-			   for (int i = 0; i < args.size(); i++) {
-				   Expression child = args.get(i);
-				   boolean needsParens = false;
-				   if (child instanceof Operation opChild) {
-					   if (opChild.notation == Notation.INFIX) {
-						   if (opChild.getPrecedence() < this.getPrecedence()) {
-							   needsParens = true;
-						   } else if (opChild.getPrecedence() == this.getPrecedence()) {
-							   // For left-associative operations (Minus, Divides), the right-hand child needs parens
-							   if (i > 0 && (symbol.equals("-") || symbol.equals("/"))) {
-								   needsParens = true;
-							   }
-							   // For right-associative operations (Power), the left-hand child needs parens
-							   else if (i == 0 && symbol.equals("**")) {
-								   needsParens = true;
-							   }
-						   }
-					   }
-				   }
-				   if (i > 0) sb.append(" ").append(symbol).append(" ");
-				   if (needsParens) sb.append("( ").append(child.toString()).append(" )");
-				   else sb.append(child.toString());
-			   }
-			   yield sb.toString();
-		   }
+		   case INFIX -> toInfixString();
 		   case PREFIX -> symbol + " " +
 			   "(" +
 			   args.stream().map(Object::toString).collect(Collectors.joining(", ")) +
@@ -199,6 +173,33 @@ public abstract class Operation implements Expression
 			   " " + symbol;
 	   };
   }
+
+	/** Helper: build the INFIX representation. Extracted to reduce cognitive complexity. */
+	private String toInfixString() {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < args.size(); i++) {
+			Expression child = args.get(i);
+			boolean needsParens = childNeedsParens(child, i);
+			if (i > 0) sb.append(" ").append(symbol).append(" ");
+			if (needsParens) sb.append("( ").append(child.toString()).append(" )");
+			else sb.append(child.toString());
+		}
+		return sb.toString();
+	}
+
+	/** Helper: decide whether the child expression needs parentheses in INFIX notation. */
+	private boolean childNeedsParens(Expression child, int index) {
+		if (!(child instanceof Operation opChild)) return false;
+		if (opChild.notation != Notation.INFIX) return false;
+		int childPrec = opChild.getPrecedence();
+		int thisPrec = this.getPrecedence();
+		if (childPrec < thisPrec) return true;
+		if (childPrec == thisPrec) {
+			if (index > 0 && (symbol.equals("-") || symbol.equals("/"))) return true;
+			if (index == 0 && symbol.equals("**")) return true;
+		}
+		return false;
+	}
 
 	/**
 	 * Two operation objects are equal if their list of arguments is equal and they correspond to the same operation.

@@ -84,12 +84,12 @@ button:active {
 
 .opbase {
     display: grid;
-    grid-template-columns: repeat(5, 100px);
+    grid-template-columns: repeat(4, 100px);
     gap: 10px;
     justify-content: center;
     margin-top: 50px;
     position: absolute;
-    top: 31em;
+    top: 29em;
     left: 3em;
 }
 
@@ -100,6 +100,6 @@ button:active {
     justify-content: center;
     margin-top: 50px;
     position: absolute;
-    top: 42em;
+    top: 44em;
     left: 3em;
 }

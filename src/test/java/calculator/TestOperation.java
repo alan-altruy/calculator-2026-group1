@@ -32,7 +32,8 @@ class TestOperation {
 
 	@Test
 	void testEqualsNullBranch() {
-		assertFalse(Objects.equals(o, null));
+		Boolean condition = Objects.equals(o, null);
+		assertFalse(condition);
 	}
 
 	@Test

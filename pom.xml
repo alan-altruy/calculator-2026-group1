@@ -35,6 +35,8 @@
 
         <spring-boot.version>4.0.5</spring-boot.version>
         <spring-doc.version>3.0.2</spring-doc.version>
+
+        <sonar.organization>alan-altruy</sonar.organization>
     </properties>
 
     <dependencyManagement>

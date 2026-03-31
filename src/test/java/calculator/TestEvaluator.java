@@ -48,6 +48,7 @@ class TestEvaluator {
     }
 
     @Test
+    @SuppressWarnings("PMD.CloseResource") // We intentionally do not close the PrintStream since it wraps System.out
     void testPrint() {
         List<Expression> params = Arrays.asList(new MyNumber(value1), new MyNumber(value2));
         try {
@@ -70,6 +71,7 @@ class TestEvaluator {
     }
 
     @Test
+    @SuppressWarnings("PMD.CloseResource") // We intentionally do not close the PrintStream since it wraps System.out
     void testPrintExpressionDetails() {
         List<Expression> params = Arrays.asList(new MyNumber(value1), new MyNumber(value2));
         try {

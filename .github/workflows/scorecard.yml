@@ -15,7 +15,10 @@ on:
     branches: [ "main" ]
 
 # Declare default permissions as read only.
-permissions: read-all
+permissions:
+  contents: read
+  # Uncomment the permissions below if installing in a private repository.
+  # actions: read
 
 jobs:
   analysis:

@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @org.springframework.context.annotation.Import(RestExceptionHandler.class)
-public class RestExceptionHandlerTest {
+class RestExceptionHandlerTest {
 
     @Autowired
     private WebApplicationContext wac;

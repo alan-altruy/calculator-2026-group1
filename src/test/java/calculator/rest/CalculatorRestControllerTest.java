@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @org.springframework.context.annotation.Import({RestExceptionHandler.class, CorsConfig.class})
-public class CalculatorRestControllerTest {
+class CalculatorRestControllerTest {
 
     @Autowired
     private WebApplicationContext wac;

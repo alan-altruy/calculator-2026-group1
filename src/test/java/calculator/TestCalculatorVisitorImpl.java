@@ -72,7 +72,7 @@ class TestCalculatorVisitorImpl {
     }
 
     @Test
-    public void testParseImplicitMultiplication() {
+    void testParseImplicitMultiplication() {
         calc = new Calculator();
         Expression e = ExpressionParser.parse("2(3+4)");
         assertInstanceOf(Times.class, e);
@@ -80,7 +80,7 @@ class TestCalculatorVisitorImpl {
     }
 
     @Test
-    public void testParsePower() {
+    void testParsePower() {
         calc = new Calculator();
         Expression e = ExpressionParser.parse("2 ** 3 ** 2");
         assertInstanceOf(Power.class, e);

@@ -50,6 +50,21 @@ public class TestParser {
 
     @Test
     public void testExpressionParserConstructor() {
-        assertDoesNotThrow(ExpressionParser::new);
+        // ExpressionParser now has a private constructor that prevents instantiation.
+        // Verify that attempting to instantiate via reflection fails with the expected cause.
+        Throwable thrown = assertThrows(Exception.class, () -> {
+            java.lang.reflect.Constructor<ExpressionParser> ctor = ExpressionParser.class.getDeclaredConstructor();
+            ctor.setAccessible(true);
+            ctor.newInstance();
+        });
+
+        // newInstance() wraps the actual exception in InvocationTargetException
+        if (thrown instanceof java.lang.reflect.InvocationTargetException) {
+            Throwable cause = ((java.lang.reflect.InvocationTargetException) thrown).getCause();
+            assertTrue(cause instanceof UnsupportedOperationException);
+        } else {
+            // in some JVMs other reflection exceptions may be thrown; ensure the cause is the unsupported op
+            assertTrue(thrown.getCause() instanceof UnsupportedOperationException || thrown instanceof UnsupportedOperationException);
+        }
     }
 }

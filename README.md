@@ -9,21 +9,19 @@
 <td vlign="center">
 
 <img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=alert_status">
-<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=sqale_rating">
-<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=security_rating">
-
-<br>
-
-<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=reliability_rating">
-<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=sqale_index">
-<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=vulnerabilities">
-
-<br>
-
-<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=code_smells">
-<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=bugs">
 <img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=coverage">
 <img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=ncloc">
+<br>
+<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=sqale_rating">
+<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=security_rating">
+<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=reliability_rating">
+<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=duplicated_lines_density">
+<br>
+
+<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=sqale_index">
+<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=vulnerabilities">
+<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=code_smells">
+<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=bugs">
 
 </td>
 </tr>
@@ -39,7 +37,6 @@
 <img src="https://img.shields.io/github/issues-pr/alan-altruy/calculator-2026-group1" alt="Open PRs">
 <img src="https://img.shields.io/github/license/alan-altruy/calculator-2026-group1" alt="License">
 <img src="https://img.shields.io/github/v/release/alan-altruy/calculator-2026-group1?label=Latest%20Release" alt="Latest Release">
-
 <br>
 
 <!-- Ligne 2 -->
@@ -49,15 +46,6 @@
 <img src="https://github.com/alan-altruy/calculator-2026-group1/actions/workflows/scorecard.yml/badge.svg" alt="Scorecard">
 <img src="https://raw.githubusercontent.com/alan-altruy/calculator-2026-group1/badges/jacoco.svg" alt="Coverage">
 <img src="https://raw.githubusercontent.com/alan-altruy/calculator-2026-group1/badges/branches.svg" alt="Branches">
-
-<br>
-
-<!-- Ligne 3 -->
-<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=alert_status" alt="Quality Gate Status">
-<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=sqale_rating" alt="Maintainability Rating">
-<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=security_rating" alt="Security Rating">
-<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=reliability_rating" alt="Reliability Rating">
-<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=sqale_index" alt="Technical Debt">
 
 </td>
 </tr>

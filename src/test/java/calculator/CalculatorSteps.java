@@ -9,19 +9,20 @@ import io.cucumber.java.en.When;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CalculatorSteps {
 
-//	static final Logger log = getLogger(lookup().lookupClass());
-
-	private ArrayList<Expression> params;
-	private Operation op;
+	private ArrayList<Expression> params = new ArrayList<>();
+	private Optional<Operation> op = Optional.empty();
 	private Calculator c;
 
+	private static final String OPERATION_NOT_INITIALISED = "Operation not initialised";
+
 	@Before
-    public void resetMemoryBeforeEachScenario() {
-		params = null;
-		op = null;
+	public void resetMemoryBeforeEachScenario() {
+		params.clear();
+		op = Optional.empty();
 	}
 
 	@Given("I initialise a calculator")
@@ -35,10 +36,14 @@ public class CalculatorSteps {
 		params = new ArrayList<>(); // create an empty set of parameters to be filled in
 		try {
 			switch (s) {
-				case "+"	->	op = new Plus(params);
-				case "-"	->	op = new Minus(params);
-				case "*"	->	op = new Times(params);
-				case "/"	->	op = new Divides(params);
+				case "+"    ->
+					op = Optional.of(new Plus(params));
+				case "-"    ->
+					op = Optional.of(new Minus(params));
+				case "*"    ->
+					op = Optional.of(new Times(params));
+				case "/"    ->
+					op = Optional.of(new Divides(params));
 				default		->	fail();
 			}
 		} catch (IllegalConstruction e) {
@@ -56,8 +61,8 @@ public class CalculatorSteps {
 		// Since we only use one line of input, we use get(0) to take the first line of the list,
 		// which is a list of strings, that we will manually convert to integers:
 		numbers.get(0).forEach(n -> params.add(new MyNumber(Integer.parseInt(n))));
-	    params.forEach(n -> System.out.println("value ="+ n));
-		op = null;
+		params.forEach(n -> System.out.println("value ="+ n));
+		op = Optional.empty();
 	}
 
 	// The string in the Given annotation shows how to use regular expressions...
@@ -68,17 +73,18 @@ public class CalculatorSteps {
 	public void givenTheSum(int n1, int n2) {
 		try {
 			params = new ArrayList<>();
-		    params.add(new MyNumber(n1));
-		    params.add(new MyNumber(n2));
-		    op = new Plus(params);}
+			params.add(new MyNumber(n1));
+			params.add(new MyNumber(n2));
+			op = Optional.of(new Plus(params));} 
 		catch(IllegalConstruction e) { fail(); }
 	}
 
 	@Then("^its (.*) notation is (.*)$")
 	public void thenItsNotationIs(String notation, String s) {
 		if (notation.equals("PREFIX")||notation.equals("POSTFIX")||notation.equals("INFIX")) {
-			op.notation = Notation.valueOf(notation);
-			assertEquals(s, op.toString());
+			Operation current = op.orElseThrow(() -> new AssertionError(OPERATION_NOT_INITIALISED));
+			current.setNotation(Notation.valueOf(notation));
+			assertEquals(s, current.toString());
 		}
 		else fail(notation + " is not a correct notation! ");
 	}
@@ -88,20 +94,20 @@ public class CalculatorSteps {
 		//add extra parameter to the operation
 		params = new ArrayList<>();
 		params.add(new MyNumber(val));
-		op.addMoreParams(params);
+			op.orElseThrow(() -> new AssertionError(OPERATION_NOT_INITIALISED)).addMoreParams(params);
 	}
 
 	@Then("^the (.*) is (\\d+)$")
 	public void thenTheOperationIs(String s, int val) {
 		try {
 			switch (s) {
-				case "sum"			->	op = new Plus(params);
-				case "product"		->	op = new Times(params);
-				case "quotient"		->	op = new Divides(params);
-				case "difference"	->	op = new Minus(params);
+				case "sum" 			->	op = Optional.of(new Plus(params));
+				case "product" 		->	op = Optional.of(new Times(params));
+				case "quotient" 		->	op = Optional.of(new Divides(params));
+				case "difference" 	->	op = Optional.of(new Minus(params));
 				default -> fail();
 			}
-			assertEquals(val, c.eval(op));
+			assertEquals(val, c.eval(op.orElseThrow(() -> new AssertionError(OPERATION_NOT_INITIALISED))));
 		} catch (IllegalConstruction e) {
 			fail();
 		}
@@ -109,7 +115,7 @@ public class CalculatorSteps {
 
 	@Then("the operation evaluates to {int}")
 	public void thenTheOperationEvaluatesTo(int val) {
-		assertEquals(val, c.eval(op));
+		assertEquals(val, c.eval(op.orElseThrow(() -> new AssertionError(OPERATION_NOT_INITIALISED))));
 	}
 
 }

@@ -1,0 +1,133 @@
+name: Jacoco/PMD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: write
+  security-events: write
+  checks: write
+  pull-requests: write  # pour poster le commentaire dans la PR
+
+jobs:
+  coverage-quality:
+    name: Run Coverage & PMD Code Quality
+    runs-on: ubuntu-latest
+    # Create max_pmd_violations variable to control build failure threshold
+    env:
+      MAX_PMD_VIOLATIONS: 5 # 5 or fewer violations is the limit for yellow badge, more than 5 is red badge
+      EXPECTED_PMD_VIOLATIONS: 0  # 0 or fewer violations is ideal (green badge)
+      EXPECTED_COVERAGE: 0.99  # 99% expected coverage for green badge
+      MIN_COVERAGE: 0.95  # 95% minimum coverage to avoid warning
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Java 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 25
+          cache: maven
+
+      - name: Build and run tests
+        run: mvn -B verify --file pom.xml
+
+      - name: Generate JaCoCo badges
+        id: jacoco
+        uses: cicirello/jacoco-badge-generator@72266185b7ee48a6fd74eaf0238395cc8b14fef8
+        with:
+          generate-coverage-badge: true
+          generate-branches-badge: true
+          generate-summary: true
+          badges-directory: badges-tmp
+
+      - name: Deploy Badges to dedicated branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: badges
+          publish_dir: ./badges-tmp
+          commit_message: "chore: update coverage badges"
+
+      - name: Run PMD
+        id: pmd
+        uses: pmd/pmd-github-action@d9c1f3c5940cbf5923f1354e83fa858b4496ebaa
+        with:
+          rulesets: 'category/java/errorprone.xml'
+          analyzeModifiedFilesOnly: false
+          
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: pmd-report.sarif
+
+      - name: Comment Test Coverage & PMD Summary on PR
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          NEWLINE=$'\n'
+
+          # Calcul des pourcentages
+          COVERAGE=$(awk "BEGIN {printf \"%.2f\", ${{ steps.jacoco.outputs.coverage }} * 100}")
+          BRANCHES=$(awk "BEGIN {printf \"%.2f\", ${{ steps.jacoco.outputs.branches }} * 100}")
+          PMD_TOTAL=$(jq '.runs[0].results | length' pmd-report.sarif)
+          PMD_PERCENT=$(awk "BEGIN {printf \"%.2f\", $PMD_TOTAL * 100 / ${{ env.MAX_PMD_VIOLATIONS }}}")
+
+          COVERAGE_EMOJI="✅"
+          if (( $(echo "$COVERAGE < ${{ env.EXPECTED_COVERAGE }} * 100" | bc -l) )); then
+            COVERAGE_EMOJI="⚠️"
+          fi
+          if (( $(echo "$COVERAGE < ${{ env.MIN_COVERAGE }} * 100" | bc -l) )); then
+            COVERAGE_EMOJI="❌"
+          fi
+
+          # Branches emoji
+          BRANCHES_EMOJI="✅"
+          if (( $(echo "$BRANCHES < ${{ env.EXPECTED_COVERAGE }} * 100" | bc -l) )); then
+            BRANCHES_EMOJI="⚠️"
+          fi
+          if (( $(echo "$BRANCHES < ${{ env.MIN_COVERAGE }} * 100" | bc -l) )); then
+            BRANCHES_EMOJI="❌"
+          fi
+
+          # PMD emoji
+          PMD_EMOJI="✅"
+          if (( $(echo "$PMD_TOTAL > ${{ env.EXPECTED_PMD_VIOLATIONS }}" | bc -l) )); then
+            PMD_EMOJI="⚠️"
+          fi
+          if (( $(echo "$PMD_TOTAL > ${{ env.MAX_PMD_VIOLATIONS }}" | bc -l) )); then
+            PMD_EMOJI="❌"
+          fi
+
+          BODY="## Test Coverage & PMD Summary${NEWLINE}"
+          BODY+="* __Test Coverage:__ ${COVERAGE}% ${COVERAGE_EMOJI}${NEWLINE}"
+          BODY+="* __Branch Coverage:__ ${BRANCHES}% ${BRANCHES_EMOJI}${NEWLINE}"
+          BODY+="* __PMD violations:__ ${PMD_PERCENT}% (${PMD_TOTAL} violations) ${PMD_EMOJI}${NEWLINE}"
+
+          if (( PMD_TOTAL > 0 )); then
+            BODY+="* See [Security → Code scanning alerts](https://github.com/${{ github.repository }}/security/code-scanning) for details."
+          fi
+
+          gh pr comment ${{ github.event.pull_request.number }} -b "${BODY}"
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Fail build on PMD violations or low coverage
+        run: |
+          echo "Detected PMD violations: ${{ steps.pmd.outputs.violations }}"
+          if [ ${{ steps.pmd.outputs.violations }} -gt ${{ env.MAX_PMD_VIOLATIONS }} ]; then
+            echo "⚠️ PMD violations exceed max allowed (${{ env.MAX_PMD_VIOLATIONS }})"
+            exit 1
+          fi
+
+          
+          if (( $(echo "${{ steps.jacoco.outputs.coverage }} < ${{ env.MIN_COVERAGE }} or ${{ steps.jacoco.outputs.branches }} < ${{ env.MIN_COVERAGE }}" | bc -l) )); then
+            echo "⚠️ Code coverage (${COVERAGE}%) is below minimum threshold (${{ env.MIN_COVERAGE }}%)"
+            exit 1
+          fi

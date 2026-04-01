@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 class TestDivides {
 
 	private final int value1 = 8;
@@ -20,7 +21,7 @@ class TestDivides {
 		  params = Arrays.asList(new MyNumber(value1), new MyNumber(value2));
 		  try {
 		  	op = new Divides(params);
-			op.notation = Notation.INFIX; // reset the notation to infix (which is the default) before each test
+			op.setNotation(Notation.INFIX); // reset the notation to infix (which is the default) before each test
 		  }
 		  catch(IllegalConstruction e) { fail(); }
 	}
@@ -36,7 +37,7 @@ class TestDivides {
 	void testConstructor2() {
 		// A Times expression should not be the same as a Divides expression
 		try {
-			assertNotSame(op, new Times(new ArrayList<>()));
+			assertNotSame(new Times(new ArrayList<>()), op);
 		} catch (IllegalConstruction e) {
 			fail();
 		}
@@ -53,12 +54,6 @@ class TestDivides {
 		catch(IllegalConstruction e) { fail(); }
 	}
 
-	@SuppressWarnings("ConstantConditions")
-	@Test
-	void testNull() {
-		assertDoesNotThrow(() -> op==null); // Direct way to to test if the null case is handled.
-	}
-
 	@Test
 	void testHashCode() {
 		// Two similar expressions, constructed separately (and using different constructors) should have the same hashcode
@@ -72,8 +67,12 @@ class TestDivides {
 
 	@Test
 	void testNullParamList() {
-		params = null;
-		assertThrows(IllegalConstruction.class, () -> op = new Divides(params));
+		assertThrows(IllegalConstruction.class, () -> new Divides(null));
+	}
+
+	@Test
+	void testGetPrecedence() {
+		assertEquals(2, op.getPrecedence());
 	}
 
 }

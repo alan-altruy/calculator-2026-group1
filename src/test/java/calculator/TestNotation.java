@@ -15,7 +15,7 @@ class TestNotation {
      */
 	void testNotation(String s,Operation o,Notation n) {
 		assertEquals(s, o.toString(n));
-		o.notation = n;
+		o.setNotation(n);
 		assertEquals(s, o.toString());
 	}
 
@@ -36,7 +36,6 @@ class TestNotation {
 		int value1 = 8;
 		int value2 = 6;
 		Operation op = null;
-		//List<Expression> params = new ArrayList<>(Arrays.asList(new MyNumber(value1),new MyNumber(value2)));
 		List<Expression> params = Arrays.asList(new MyNumber(value1),new MyNumber(value2));
 		try {
 			//construct another type of operation depending on the input value

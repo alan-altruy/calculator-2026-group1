@@ -14,7 +14,13 @@ public class Evaluator extends Visitor {
     /**
      * Default constructor of the class. Does not initialise anything.
      */
-    public Evaluator() {}
+    public Evaluator() {
+        /* Intentionally left empty: Evaluator stores transient evaluation state
+           in `computedValue` during a single visitation. There is no instance
+           initialization required at construction time. Keeping an explicit
+           no-arg constructor documents this and allows adding initialization
+           later without impacting callers. */
+    }
 
     /** The result of the evaluation will be stored in this private variable */
     private int computedValue;
@@ -40,7 +46,7 @@ public class Evaluator extends Visitor {
     public void visit(Operation o) {
         ArrayList<Integer> evaluatedArgs = new ArrayList<>();
         //first loop to recursively evaluate each subexpression
-        for(Expression a:o.args) {
+        for(Expression a: o.getArgs()) {
             a.accept(this);
             evaluatedArgs.add(computedValue);
         }

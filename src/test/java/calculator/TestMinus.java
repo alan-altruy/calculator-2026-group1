@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 class TestMinus {
 
 	private final int value1 = 8;
@@ -33,7 +34,7 @@ class TestMinus {
 	void testConstructor2() {
 		// A Times expression should not be the same as a Minus expression
 		try {
-			assertNotSame(op, new Times(new ArrayList<>()));
+			assertNotSame(new Times(new ArrayList<>()), op);
 		} catch (IllegalConstruction e) {
 			fail();
 		}
@@ -50,12 +51,6 @@ class TestMinus {
 		catch(IllegalConstruction e) { fail(); }
 	}
 
-	@SuppressWarnings("ConstantConditions")
-	@Test
-	void testNull() {
-		assertDoesNotThrow(() -> op==null); // Direct way to to test if the null case is handled.
-	}
-
 	@Test
 	void testHashCode() {
 		// Two similar expressions, constructed separately (and using different constructors) should have the same hashcode
@@ -69,8 +64,12 @@ class TestMinus {
 
 	@Test
 	void testNullParamList() {
-		params = null;
-		assertThrows(IllegalConstruction.class, () -> op = new Minus(params));
+		assertThrows(IllegalConstruction.class, () -> new Minus(null));
+	}
+
+	@Test
+	void testGetPrecedence() {
+		assertEquals(1, op.getPrecedence());
 	}
 
 }

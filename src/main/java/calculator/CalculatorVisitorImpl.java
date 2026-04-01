@@ -93,7 +93,7 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
                     throw new IllegalArgumentException("Unknown operator: " + op);
             }
         } catch (IllegalConstruction e) {
-            throw new RuntimeException("Invalid operation construction", e);
+            throw new IllegalConstruction("Invalid operation construction", e);
         }
     }
 }

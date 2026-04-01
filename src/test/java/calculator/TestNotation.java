@@ -15,7 +15,7 @@ class TestNotation {
      */
 	void testNotation(String s,Operation o,Notation n) {
 		assertEquals(s, o.toString(n));
-		o.notation = n;
+		o.setNotation(n);
 		assertEquals(s, o.toString());
 	}
 

@@ -61,8 +61,8 @@ class TestEvaluator {
             Logger logger = Logger.getLogger(Calculator.class.getName());
             Formatter fmt = new Formatter() {
                 @Override
-                public String format(LogRecord record) {
-                    return record.getMessage() + System.lineSeparator();
+                public String format(LogRecord logRecord) {
+                    return logRecord.getMessage() + System.lineSeparator();
                 }
             };
             StreamHandler sh = new StreamHandler(output, fmt);
@@ -95,8 +95,8 @@ class TestEvaluator {
             Logger logger = Logger.getLogger(Calculator.class.getName());
             Formatter fmt = new Formatter() {
                 @Override
-                public String format(LogRecord record) {
-                    return record.getMessage() + System.lineSeparator();
+                public String format(LogRecord logRecord) {
+                    return logRecord.getMessage() + System.lineSeparator();
                 }
             };
             StreamHandler sh = new StreamHandler(output, fmt);

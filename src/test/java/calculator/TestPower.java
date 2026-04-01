@@ -29,7 +29,7 @@ class TestPower {
     void testConstructorWithNotation() {
         assertDoesNotThrow(() -> {
             Power p = new Power(params, Notation.PREFIX);
-            assertEquals(Notation.PREFIX, p.notation);
+            assertEquals(Notation.PREFIX, p.getNotation());
         });
     }
 

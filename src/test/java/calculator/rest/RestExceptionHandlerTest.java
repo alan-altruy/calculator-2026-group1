@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @org.springframework.context.annotation.Import(RestExceptionHandler.class)
-public class RestExceptionHandlerTest {
+class RestExceptionHandlerTest {
 
     @Autowired
     private WebApplicationContext wac;
@@ -43,10 +43,6 @@ public class RestExceptionHandlerTest {
         assertThat(res.getResponse().getContentAsString()).contains("Malformed JSON request");
     }
 
-    @Test
-    void handlerReturnsExpectedErrorBody() throws Exception {
-        // kept for readability; replaced by parameterized test below
-    }
     @ParameterizedTest
     @MethodSource("badRequestCases")
     void testExceptionHandlerResponses(String body, int expectedStatus, String expectedContentFragment) throws Exception {

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = calculator.CalculatorApplication.class)
-public class CalculatorApplicationTest {
+class CalculatorApplicationTest {
 
     @Test
     void contextLoads() {

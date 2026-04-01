@@ -21,7 +21,7 @@ class TestDivides {
 		  params = Arrays.asList(new MyNumber(value1), new MyNumber(value2));
 		  try {
 		  	op = new Divides(params);
-			op.notation = Notation.INFIX; // reset the notation to infix (which is the default) before each test
+			op.setNotation(Notation.INFIX); // reset the notation to infix (which is the default) before each test
 		  }
 		  catch(IllegalConstruction e) { fail(); }
 	}

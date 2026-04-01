@@ -39,9 +39,10 @@ public class Calculator {
      * @see #printExpressionDetails(Expression) 
      */
     public void print(Expression e) {
-        LOGGER.info("The result of evaluating expression " + e);
-        LOGGER.info("is: " + eval(e) + ".");
-        LOGGER.info("");
+        java.util.Objects.requireNonNull(e, "expression must not be null");
+        LOGGER.log(java.util.logging.Level.INFO, () -> String.format("The result of evaluating expression %s", e));
+        LOGGER.log(java.util.logging.Level.INFO, () -> String.format("is: %d.", eval(e)));
+        LOGGER.log(java.util.logging.Level.INFO, () -> "");
     }
 
     /**
@@ -51,9 +52,10 @@ public class Calculator {
      */
     public void printExpressionDetails(Expression e) {
         print(e);
-        LOGGER.info("It contains " + e.countDepth() + " levels of nested expressions, "
-                + e.countOps() + " operations and " + e.countNbs() + " numbers.");
-        LOGGER.info("");
+        LOGGER.log(java.util.logging.Level.INFO, () -> String.format(
+            "It contains %d levels of nested expressions, %d operations and %d numbers.",
+            e.countDepth(), e.countOps(), e.countNbs()));
+        LOGGER.log(java.util.logging.Level.INFO, () -> "");
     }
 
     /**

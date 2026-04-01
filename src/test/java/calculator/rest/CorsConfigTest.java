@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @org.springframework.context.annotation.Import(CorsConfig.class)
-public class CorsConfigTest {
+class CorsConfigTest {
 
     @Autowired
     private WebApplicationContext wac;

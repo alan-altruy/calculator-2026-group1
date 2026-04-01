@@ -162,4 +162,11 @@ class TestMain {
         assertTrue(in.isClosed());
         assertTrue(out.toString().contains("Goodbye!"));
     }
+
+    @Test
+    void testHandleInputNullOrEmptyReturnsFalse() {
+        Calculator calc = new Calculator();
+        assertFalse(Main.handleInput(null, calc));
+        assertFalse(Main.handleInput("", calc));
+    }
 }

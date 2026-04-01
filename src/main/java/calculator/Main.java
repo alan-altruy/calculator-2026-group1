@@ -25,18 +25,13 @@ public class Main {
 
 		Calculator c = new Calculator();
 		try (java.util.Scanner scanner = new java.util.Scanner(System.in)) {
-			while (true) {
+			boolean exit = false;
+			while (!exit && scanner.hasNextLine()) {
 				LOGGER.info("> ");
-
-				if (!scanner.hasNextLine()) {
-					break;
-				}
 
 				String input = scanner.nextLine().trim();
 
-				if (handleInput(input, c)) {
-					break;
-				}
+				exit = handleInput(input, c);
 			}
 		}
 		LOGGER.info("Goodbye!");

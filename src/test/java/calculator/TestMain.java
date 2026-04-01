@@ -164,7 +164,7 @@ class TestMain {
     }
 
     @Test
-    void testHandleInputNullOrEmptyReturnsFalse() throws Exception {
+    void testHandleInputNullOrEmptyReturnsFalse() {
         Calculator calc = new Calculator();
         assertFalse(Main.handleInput(null, calc));
         assertFalse(Main.handleInput("", calc));

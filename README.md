@@ -1,23 +1,67 @@
 # Calculating arithmetic expressions
+<table>
+<tr>
+<td valign="center">
 
-![Java](https://img.shields.io/badge/java-25-blue)
-![Open Issues](https://img.shields.io/github/issues/alan-altruy/calculator-2026-group1)
-![Open PRs](https://img.shields.io/github/issues-pr/alan-altruy/calculator-2026-group1)
-![License](https://img.shields.io/github/license/alan-altruy/calculator-2026-group1)
-[![Latest Release](https://img.shields.io/github/v/release/alan-altruy/calculator-2026-group1?label=Latest%20Release)](https://github.com/University-of-Mons/calculator-cucumber/releases/latest)
+<img src="https://sonarcloud.io/images/project_badges/sonarcloud-highlight.svg" height="75">
 
-![Maven Build](https://github.com/alan-altruy/calculator-2026-group1/actions/workflows/build-and-test.yml/badge.svg)
-![PMD](https://github.com/alan-altruy/calculator-2026-group1/actions/workflows/coverage-and-quality.yml/badge.svg)
-![CodeQL](https://github.com/alan-altruy/calculator-2026-group1/actions/workflows/codeql.yml/badge.svg)
-![Scorecard](https://github.com/alan-altruy/calculator-2026-group1/actions/workflows/scorecard.yml/badge.svg)
-![Coverage](https://raw.githubusercontent.com/alan-altruy/calculator-2026-group1/badges/jacoco.svg)
-![Branches](https://raw.githubusercontent.com/alan-altruy/calculator-2026-group1/badges/branches.svg)
+</td>
+<td vlign="center">
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=alan-altruy_calculator-2026-group1)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=alan-altruy_calculator-2026-group1)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=alan-altruy_calculator-2026-group1)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=alan-altruy_calculator-2026-group1)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=alan-altruy_calculator-2026-group1)
+<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=alert_status">
+<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=sqale_rating">
+<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=security_rating">
+
+<br>
+
+<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=reliability_rating">
+<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=sqale_index">
+<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=vulnerabilities">
+
+<br>
+
+<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=code_smells">
+<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=bugs">
+<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=coverage">
+<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=ncloc">
+
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td valign="top">
+
+<!-- Ligne 1 -->
+<img src="https://img.shields.io/badge/java-25-blue" alt="Java">
+<img src="https://img.shields.io/github/issues/alan-altruy/calculator-2026-group1" alt="Open Issues">
+<img src="https://img.shields.io/github/issues-pr/alan-altruy/calculator-2026-group1" alt="Open PRs">
+<img src="https://img.shields.io/github/license/alan-altruy/calculator-2026-group1" alt="License">
+<img src="https://img.shields.io/github/v/release/alan-altruy/calculator-2026-group1?label=Latest%20Release" alt="Latest Release">
+
+<br>
+
+<!-- Ligne 2 -->
+<img src="https://github.com/alan-altruy/calculator-2026-group1/actions/workflows/build-and-test.yml/badge.svg" alt="Maven Build">
+<img src="https://github.com/alan-altruy/calculator-2026-group1/actions/workflows/coverage-and-quality.yml/badge.svg" alt="PMD">
+<img src="https://github.com/alan-altruy/calculator-2026-group1/actions/workflows/codeql.yml/badge.svg" alt="CodeQL">
+<img src="https://github.com/alan-altruy/calculator-2026-group1/actions/workflows/scorecard.yml/badge.svg" alt="Scorecard">
+<img src="https://raw.githubusercontent.com/alan-altruy/calculator-2026-group1/badges/jacoco.svg" alt="Coverage">
+<img src="https://raw.githubusercontent.com/alan-altruy/calculator-2026-group1/badges/branches.svg" alt="Branches">
+
+<br>
+
+<!-- Ligne 3 -->
+<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=alert_status" alt="Quality Gate Status">
+<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=sqale_rating" alt="Maintainability Rating">
+<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=security_rating" alt="Security Rating">
+<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=reliability_rating" alt="Reliability Rating">
+<img src="https://sonarcloud.io/api/project_badges/measure?project=alan-altruy_calculator-2026-group1&metric=sqale_index" alt="Technical Debt">
+
+</td>
+</tr>
+</table>
 
 ## About
 

@@ -57,6 +57,6 @@ class TestParser {
         assertTrue(java.lang.reflect.Modifier.isPrivate(ctor.getModifiers()));
 
         // attempting to invoke without making it accessible should throw IllegalAccessException
-        assertThrows(IllegalAccessException.class, () -> ctor.newInstance());
+        assertThrows(IllegalAccessException.class, ctor::newInstance);
     }
 }

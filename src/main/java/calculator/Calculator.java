@@ -1,5 +1,6 @@
 package calculator;
 
+import visitor.Counter;
 import visitor.Evaluator;
 
 /**
@@ -38,14 +39,17 @@ public class Calculator {
 
     /**
      * Prints verbose details of an arithmetic expression provided as input parameter.
+     * Uses the Counter visitor to obtain counting information.
      * @param e the arithmetic Expression to be printed
      * @see #print(Expression)
      */
     public void printExpressionDetails(Expression e) {
         print(e);
-        System.out.print("It contains " + e.countDepth() + " levels of nested expressions, ");
-        System.out.print(e.countOps() + " operations");
-        System.out.println(" and " + e.countNbs() + " numbers.");
+        Counter counter = new Counter();
+        e.accept(counter);
+        System.out.print("It contains " + counter.getCountDepth() + " levels of nested expressions, ");
+        System.out.print(counter.getCountOps() + " operations");
+        System.out.println(" and " + counter.getCountNbs() + " numbers.");
         System.out.println();
     }
 

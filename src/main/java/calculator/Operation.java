@@ -1,10 +1,10 @@
 package calculator;
 
+import visitor.Printer;
 import visitor.Visitor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * Operation is an abstract class that represents arithmetic operations,
@@ -76,6 +76,15 @@ public abstract class Operation implements Expression
   }
 
 	/**
+	 * getter method to return the symbol of an arithmetic operation.
+	 *
+	 * @return	The symbol of the arithmetic operation.
+	 */
+	public String getSymbol() {
+		return symbol;
+	}
+
+	/**
 	 * Abstract method representing the actual binary arithmetic operation to compute
 	 * @param l	 first argument of the binary operation
 	 * @param r	second argument of the binary operation
@@ -104,42 +113,6 @@ public abstract class Operation implements Expression
   	v.visit(this);
   }
 
-	/**
-	 * Count the depth of an arithmetic expression recursively,
-	 * using Java 8 functional programming capabilities (streams, maps, etc...)
-	 *
- 	 * @return	The depth of the arithmetic expression being traversed
-	 */
-	public final int countDepth() {
-	    // use of Java 8 functional programming capabilities
-	return 1 + args.stream()
-			   .mapToInt(Expression::countDepth)
-			   .max()
-			   .getAsInt();  
-  }
-
-	/**
-	 * Count the number of operations contained in an arithmetic expression recursively,
-	 * using Java 8 functional programming capabilities (streams, maps, etc...)
-	 *
-	 * @return	The number of operations contained in an arithmetic expression being traversed
-	 */
-	public final int countOps() {
-	    // use of Java 8 functional programming capabilities
-	return 1 + args.stream()
-			   .mapToInt(Expression::countOps)
-			   .reduce(Integer::sum)
-			   .getAsInt();
-  }
-
-  public final int countNbs() {
-	    // use of Java 8 functional programming capabilities
-	return args.stream()
-			   .mapToInt(Expression::countNbs)
-			   .reduce(Integer::sum)
-			   .getAsInt();  
-  }
-
   /**
    * Convert the arithmetic operation into a String to allow it to be printed,
    * using the default notation (prefix, infix or postfix) that is specified in some variable.
@@ -154,49 +127,15 @@ public abstract class Operation implements Expression
   /**
    * Convert the arithmetic operation into a String to allow it to be printed,
    * using the notation n (prefix, infix or postfix) that is specified as a parameter.
+   * Delegates to the Printer visitor.
    *
    * @param n	The notation to be used for representing the operation (prefix, infix or postfix)
    * @return	The String that is the result of the conversion.
    */
   public final String toString(Notation n) {
-	   Stream<String> s = args.stream().map(Object::toString);
-	   return switch (n) {
-		   case INFIX -> {
-			   StringBuilder sb = new StringBuilder();
-			   for (int i = 0; i < args.size(); i++) {
-				   Expression child = args.get(i);
-				   boolean needsParens = false;
-				   if (child instanceof Operation opChild) {
-					   if (opChild.notation == Notation.INFIX) {
-						   if (opChild.getPrecedence() < this.getPrecedence()) {
-							   needsParens = true;
-						   } else if (opChild.getPrecedence() == this.getPrecedence()) {
-							   // For left-associative operations (Minus, Divides), the right-hand child needs parens
-							   if (i > 0 && (symbol.equals("-") || symbol.equals("/"))) {
-								   needsParens = true;
-							   }
-							   // For right-associative operations (Power), the left-hand child needs parens
-							   else if (i == 0 && symbol.equals("**")) {
-								   needsParens = true;
-							   }
-						   }
-					   }
-				   }
-				   if (i > 0) sb.append(" ").append(symbol).append(" ");
-				   if (needsParens) sb.append("( ").append(child.toString()).append(" )");
-				   else sb.append(child.toString());
-			   }
-			   yield sb.toString();
-		   }
-		   case PREFIX -> symbol + " " +
-				   "(" +
-				   s.reduce((s1, s2) -> s1 + ", " + s2).get() +
-				   ")";
-		   case POSTFIX -> "(" +
-				   s.reduce((s1, s2) -> s1 + ", " + s2).get() +
-				   ")" +
-				   " " + symbol;
-	   };
+	   Printer printer = new Printer(n);
+	   printer.visit(this);
+	   return printer.getResult();
   }
 
 	/**

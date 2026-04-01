@@ -11,8 +11,8 @@ public class ExpressionParser {
      * This class is responsible for parsing string representations of expressions into Expression objects that can be evaluated by the Calculator.
      * The constructor does not require any parameters and does not perform any initialization, as the parsing is done in the static parse method.
      */
-    public ExpressionParser() {
-        // No initialization needed for this parser
+    private ExpressionParser() {
+        throw new UnsupportedOperationException("ExpressionParser is a utility class and must not be instantiated");
     }
 
     /**

@@ -1,10 +1,19 @@
-package calculator;
+package calculator.visitor;
 
 //Import Junit5 libraries for unit testing:
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import calculator.Calculator;
+import calculator.Divides;
+import calculator.Expression;
+import calculator.IllegalConstruction;
+import calculator.Minus;
+import calculator.MyNumber;
+import calculator.Plus;
+import calculator.Times;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;

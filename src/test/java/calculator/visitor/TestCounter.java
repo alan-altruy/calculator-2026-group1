@@ -1,10 +1,19 @@
-package calculator;
+package calculator.visitor;
 
 //Import Junit5 libraries for unit testing:
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import calculator.Divides;
+import calculator.Expression;
+import calculator.IllegalConstruction;
+import calculator.Minus;
+import calculator.MyNumber;
+import calculator.Plus;
+import calculator.Times;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
@@ -13,7 +22,7 @@ import java.util.List;
 import visitor.Counter;
 
 
-class TestCounting {
+class TestCounter {
 
     private int value1, value2;
     private Expression e;

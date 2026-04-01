@@ -58,7 +58,7 @@ public class Calculator {
         e.accept(counter);
         LOGGER.log(java.util.logging.Level.INFO, () -> String.format(
             "It contains %d levels of nested expressions, %d operations and %d numbers.",
-            counter.countDepth(), counter.countOps(), counter.countNbs()));
+            counter.getCountDepth(), counter.getCountOps(), counter.getCountNbs()));
         LOGGER.log(java.util.logging.Level.INFO, () -> "");
     }
 

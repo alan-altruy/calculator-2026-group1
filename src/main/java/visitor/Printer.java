@@ -82,7 +82,7 @@ public class Printer extends Visitor {
                     Expression child = o.getArgs().get(i);
                     boolean needsParens = false;
                     if (child instanceof Operation opChild) {
-                        if (opChild.notation == Notation.INFIX) {
+                        if (opChild.getNotation() == Notation.INFIX) {
                             if (opChild.getPrecedence() < o.getPrecedence()) {
                                 needsParens = true;
                             } else if (opChild.getPrecedence() == o.getPrecedence()) {

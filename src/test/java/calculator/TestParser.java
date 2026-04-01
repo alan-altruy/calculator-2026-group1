@@ -3,6 +3,7 @@ package calculator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import java.lang.reflect.Method;
 
 class TestParser {
 
@@ -39,6 +40,13 @@ class TestParser {
     }
 
     @Test
+    void testParseParenthesesPrefixedMultiplication() {
+        calc = new Calculator();
+        Expression e = ExpressionParser.parse("(4,5,6)");
+        // should be parsed as "*(4,5,6)" by ExpressionParser and evaluate to 4 * 5 * 6 = 120
+        assertEquals(120, calc.eval(e));
+    }
+    @Test
     void testParseComplexPrefix() {
         Expression e = ExpressionParser.parse("*(+(4,5,6),+(7,/(5,2,7)),9)");
         // +(4,5,6) = 15
@@ -58,5 +66,47 @@ class TestParser {
 
         // attempting to invoke without making it accessible should throw IllegalAccessException
         assertThrows(IllegalAccessException.class, ctor::newInstance);
+    }
+
+    @Test
+    void testFinalParsePathIsReachable() throws Exception {
+        // Attempt to find an input that makes the private tryParse return null
+        // (so ExpressionParser will take the final parse path) while
+        // ExpressionParser.parse(input) still returns an Expression.
+        Method tryParse = ExpressionParser.class.getDeclaredMethod("tryParse", String.class);
+        tryParse.setAccessible(true);
+
+        String[] candidates = new String[] {
+            "2 +",
+            "4 5 6",
+            "2 * (3 +)",
+            "2 + )",
+            "(4 5 6)",
+            "(4,5,)",
+            "(,4,5)"
+        };
+
+        String found = null;
+        for (String input : candidates) {
+            Object r1 = tryParse.invoke(null, input);
+            Object r2 = null;
+            if (input.startsWith("(")) {
+                r2 = tryParse.invoke(null, "*" + input);
+            }
+
+            if (r1 == null && (input.startsWith("(") ? r2 == null : true)) {
+                try {
+                    Expression e = ExpressionParser.parse(input);
+                    if (e != null) {
+                        found = input;
+                        break;
+                    }
+                } catch (Exception ex) {
+                    // parse threw, not usable — continue
+                }
+            }
+        }
+
+        assertNotNull(found, "No candidate input triggered the final parse path");
     }
 }

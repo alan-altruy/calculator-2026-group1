@@ -22,31 +22,29 @@ public abstract class Operation implements Expression
 	 */
 	private final List<Expression> args;
 
-  /**
-   * The character used to represent the arithmetic operation (e.g. "+", "*")
-   */
-  protected String symbol;
+	/**
+	 * The character used to represent the arithmetic operation (e.g. "+", "*")
+	 */
+	protected String symbol;
 
-  /**
-   * The neutral element of the operation (e.g. 1 for *, 0 for +)
-   */
-  protected int neutral;
+	/**
+	 * The neutral element of the operation (e.g. 1 for *, 0 for +)
+	 */
+	protected int neutral;
 
-  /**
-   * The notation used to render operations as strings.
-   * By default, the infix notation will be used.
-   */
-  public Notation notation = Notation.INFIX;
+	/**
+	 * The notation used to render operations as strings.
+	 * By default, the infix notation will be used.
+	 */
+  	private Notation notation = Notation.INFIX;
 
-  /** It is not allowed to construct an operation with a null list of expressions.
-   * Note that it is allowed to have an EMPTY list of arguments.
-   *
-   * @param elist	The list of expressions passed as argument to the arithmetic operation
-   * @throws IllegalConstruction	Exception thrown if a null list of expressions is passed as argument
-   */
-  protected /*constructor*/ Operation(List<Expression> elist)
-		  throws IllegalConstruction
-	{
+	/** It is not allowed to construct an operation with a null list of expressions.
+	 * Note that it is allowed to have an EMPTY list of arguments.
+	 *
+	 * @param elist	The list of expressions passed as argument to the arithmetic operation
+	 * @throws IllegalConstruction	Exception thrown if a null list of expressions is passed as argument
+	 */
+  	protected /*constructor*/ Operation(List<Expression> elist) throws IllegalConstruction  {
 		this(elist, null);
     }
 
@@ -78,21 +76,35 @@ public abstract class Operation implements Expression
 	}
 
 	/**
+	 * getter method to return the notation used to represent the arithmetic operation.
+	 * @return The notation used to represent the arithmetic operation.
+	 */
+	public Notation getNotation() { return notation; }
+
+	/**
+	 * setter method to set the notation used to represent the arithmetic operation.
+	 * If the parameter is null, the default notation (infix) will be used.
+	 *
+	 * @param n	The notation to be used to represent the arithmetic operation.
+	 */
+	public void setNotation(Notation n) { this.notation = (n == null) ? Notation.INFIX : n; }
+
+	/**
 	 * Abstract method representing the actual binary arithmetic operation to compute
 	 * @param l	 first argument of the binary operation
 	 * @param r	second argument of the binary operation
 	 * @return	result of computing the binary operation
 	 */
-   public abstract int op(int l, int r);
-    // the operation itself is specified in the subclasses
+   	public abstract int op(int l, int r);
+		// the operation itself is specified in the subclasses
 
-	/** Add more parameters to the existing list of parameters
-	 *
-	 * @param params	The list of parameters to be added
-	 */
-	public void addMoreParams(List<Expression> params) {
-  	args.addAll(params);
-  }
+		/** Add more parameters to the existing list of parameters
+		 *
+		 * @param params	The list of parameters to be added
+		 */
+		public void addMoreParams(List<Expression> params) {
+		args.addAll(params);
+  	}
 
 	/**
 	 * Accept method to implement the visitor design pattern to traverse arithmetic expressions.
@@ -101,10 +113,10 @@ public abstract class Operation implements Expression
 	 *
 	 * @param v	The visitor object
 	 */
-  public void accept(Visitor v) {
-  	for(Expression a:args) { a.accept(v); }
-  	v.visit(this);
-  }
+  	public void accept(Visitor v) {
+		for(Expression a:args) { a.accept(v); }
+		v.visit(this);
+	}
 
 	/**
 	 * Count the depth of an arithmetic expression recursively,
@@ -114,11 +126,11 @@ public abstract class Operation implements Expression
 	 */
 	public final int countDepth() {
 	    // use of Java 8 functional programming capabilities
-	return 1 + args.stream()
-			   .mapToInt(Expression::countDepth)
-			   .max()
-			   .orElse(0);
-  }
+		return 1 + args.stream()
+				.mapToInt(Expression::countDepth)
+				.max()
+				.orElse(0);
+	}
 
 	/**
 	 * Count the number of operations contained in an arithmetic expression recursively,
@@ -128,40 +140,40 @@ public abstract class Operation implements Expression
 	 */
 	public final int countOps() {
 	    // use of Java 8 functional programming capabilities
-	return 1 + args.stream()
-			   .mapToInt(Expression::countOps)
-			   .reduce(Integer::sum)
-			   .orElse(0);
-  }
+		return 1 + args.stream()
+				.mapToInt(Expression::countOps)
+				.reduce(Integer::sum)
+				.orElse(0);
+	}
 
   public final int countNbs() {
 	    // use of Java 8 functional programming capabilities
-	return args.stream()
-			   .mapToInt(Expression::countNbs)
-			   .reduce(Integer::sum)
-			   .orElse(0);
-  }
+		return args.stream()
+				.mapToInt(Expression::countNbs)
+				.reduce(Integer::sum)
+				.orElse(0);
+	}
 
-  /**
-   * Convert the arithmetic operation into a String to allow it to be printed,
-   * using the default notation (prefix, infix or postfix) that is specified in some variable.
-   *
-   * @return	The String that is the result of the conversion.
-   */
-  @Override
-  public final String toString() {
-  	return toString(notation);
-  }
+	/**
+	 * Convert the arithmetic operation into a String to allow it to be printed,
+	 * using the default notation (prefix, infix or postfix) that is specified in some variable.
+	 *
+	 * @return	The String that is the result of the conversion.
+	 */
+	@Override
+	public final String toString() {
+		return toString(notation);
+	}
 
-  /**
-   * Convert the arithmetic operation into a String to allow it to be printed,
-   * using the notation n (prefix, infix or postfix) that is specified as a parameter.
-   *
-   * @param n	The notation to be used for representing the operation (prefix, infix or postfix)
-   * @return	The String that is the result of the conversion.
-   */
+	/**
+	 * Convert the arithmetic operation into a String to allow it to be printed,
+	 * using the notation n (prefix, infix or postfix) that is specified as a parameter.
+	 *
+	 * @param n	The notation to be used for representing the operation (prefix, infix or postfix)
+	 * @return	The String that is the result of the conversion.
+	 */
 	public final String toString(Notation n) {
-	   return switch (n) {
+	   	return switch (n) {
 		   case INFIX -> toInfixString();
 		   case PREFIX -> symbol + " " +
 			   "(" +
@@ -171,8 +183,8 @@ public abstract class Operation implements Expression
 			   args.stream().map(Object::toString).collect(Collectors.joining(", ")) +
 			   ")" +
 			   " " + symbol;
-	   };
-  }
+	   	};
+  	}
 
 	/** Helper: build the INFIX representation. Extracted to reduce cognitive complexity. */
 	private String toInfixString() {
@@ -190,7 +202,7 @@ public abstract class Operation implements Expression
 	/** Helper: decide whether the child expression needs parentheses in INFIX notation. */
 	private boolean childNeedsParens(Expression child, int index) {
 		if (!(child instanceof Operation opChild)) return false;
-		if (opChild.notation != Notation.INFIX) return false;
+		if (opChild.getNotation() != Notation.INFIX) return false;
 		int childPrec = opChild.getPrecedence();
 		int thisPrec = this.getPrecedence();
 		if (childPrec < thisPrec) return true;

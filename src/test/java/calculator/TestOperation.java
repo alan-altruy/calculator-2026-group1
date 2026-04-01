@@ -116,4 +116,15 @@ class TestOperation {
 		assertEquals("+ (1, 2) + 3", parent.toString(Notation.INFIX));
 	}
 
+	@Test
+	void testSetNotation() throws IllegalConstruction {
+		Operation op = new Plus(Arrays.asList(new MyNumber(1), new MyNumber(2)), Notation.INFIX);
+		// default was set in constructor; change to PREFIX and verify
+		op.setNotation(Notation.PREFIX);
+		assertEquals(Notation.PREFIX, op.getNotation());
+		// setting null should reset to INFIX per implementation
+		op.setNotation(null);
+		assertEquals(Notation.INFIX, op.getNotation());
+	}
+
 }

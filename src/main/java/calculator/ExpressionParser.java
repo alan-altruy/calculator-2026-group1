@@ -12,7 +12,7 @@ public class ExpressionParser {
      * The constructor does not require any parameters and does not perform any initialization, as the parsing is done in the static parse method.
      */
     private ExpressionParser() {
-        throw new UnsupportedOperationException("ExpressionParser is a utility class and must not be instantiated");
+        // No initialization needed for this parser
     }
 
     /**

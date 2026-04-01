@@ -3,6 +3,7 @@ package calculator;
 import visitor.Visitor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,7 +20,7 @@ public abstract class Operation implements Expression
 	/**
 	 * The list of expressions passed as an argument to the arithmetic operation
 	 */
-	public List<Expression> args;
+	private final List<Expression> args;
 
   /**
    * The character used to represent the arithmetic operation (e.g. "+", "*")
@@ -73,8 +74,8 @@ public abstract class Operation implements Expression
 	 * @return	The number of arguments of the arithmetic operation.
 	 */
 	public List<Expression> getArgs() {
-  	return args;
-  }
+		return Collections.unmodifiableList(args);
+	}
 
 	/**
 	 * Abstract method representing the actual binary arithmetic operation to compute

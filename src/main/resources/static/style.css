@@ -5,6 +5,9 @@ body {
     background-size: cover;
 }
 
+#app {
+    position: relative;
+}
 
 /* From Uiverse.io by alexruix */
 .input-group {
@@ -17,7 +20,7 @@ body {
 
 .input {
     min-height: 60px;
-    max-width: 750px;
+    max-width: 1250px;
     padding: 0 1rem;
     color: #fff;
     font-size: 22px;
@@ -71,6 +74,12 @@ button:active {
     box-shadow: 0.05em 0.05em;
 }
 
+.eraser {
+    position: absolute;
+    top: 3em;
+    left: 35em
+}
+
 .number {
     display: grid;
     grid-template-columns: repeat(3, 100px);
@@ -84,7 +93,7 @@ button:active {
 
 .opbase {
     display: grid;
-    grid-template-columns: repeat(4, 100px);
+    grid-template-columns: repeat(3, 100px);
     gap: 10px;
     justify-content: center;
     margin-top: 50px;

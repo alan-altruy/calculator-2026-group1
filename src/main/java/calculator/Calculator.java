@@ -1,6 +1,8 @@
 package calculator;
 
+import visitor.Counter;
 import visitor.Evaluator;
+import java.util.logging.Logger;
 
 /**
  * This class represents the core logic of a Calculator.
@@ -10,11 +12,18 @@ import visitor.Evaluator;
  */
 public class Calculator {
 
+    private static final Logger LOGGER = Logger.getLogger(Calculator.class.getName());
+
     /**
      * Default constructor of the class.
      * Does nothing since the class does not have any variables that need to be initialised.
      */
-    public Calculator() {}
+    public Calculator() {
+        /* Intentionally left empty: Calculator currently holds no instance state
+           that requires initialization. The explicit no-arg constructor documents
+           this intent and allows adding initialization later without changing
+           callers. */
+    }
 
     /*
      For the moment the calculator only contains a print method and an eval method
@@ -31,22 +40,26 @@ public class Calculator {
      * @see #printExpressionDetails(Expression) 
      */
     public void print(Expression e) {
-        System.out.println("The result of evaluating expression " + e);
-        System.out.println("is: " + eval(e) + ".");
-        System.out.println();
+        java.util.Objects.requireNonNull(e, "expression must not be null");
+        LOGGER.log(java.util.logging.Level.INFO, () -> String.format("The result of evaluating expression %s", e));
+        LOGGER.log(java.util.logging.Level.INFO, () -> String.format("is: %d.", eval(e)));
+        LOGGER.log(java.util.logging.Level.INFO, () -> "");
     }
 
     /**
      * Prints verbose details of an arithmetic expression provided as input parameter.
+     * Uses the Counter visitor to obtain counting information.
      * @param e the arithmetic Expression to be printed
      * @see #print(Expression)
      */
     public void printExpressionDetails(Expression e) {
         print(e);
-        System.out.print("It contains " + e.countDepth() + " levels of nested expressions, ");
-        System.out.print(e.countOps() + " operations");
-        System.out.println(" and " + e.countNbs() + " numbers.");
-        System.out.println();
+        Counter counter = new Counter();
+        e.accept(counter);
+        LOGGER.log(java.util.logging.Level.INFO, () -> String.format(
+            "It contains %d levels of nested expressions, %d operations and %d numbers.",
+            counter.getCountDepth(), counter.getCountOps(), counter.getCountNbs()));
+        LOGGER.log(java.util.logging.Level.INFO, () -> "");
     }
 
     /**

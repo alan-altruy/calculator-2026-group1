@@ -4,5 +4,5 @@
 *.ipr
 *.DS_Store
 .idea/*
-target/
+target/ 
 .vscode/*

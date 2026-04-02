@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 class TestTimes {
 
 	private final int value1 = 8;
@@ -32,7 +33,7 @@ class TestTimes {
 	void testConstructor2() {
 		// A Plus expression should not be the same as a Times expression
 		try {
-			assertNotSame(op, new Plus(new ArrayList<>()));
+			assertNotSame(new Plus(new ArrayList<>()), op);
 		} catch (IllegalConstruction e) {
 			fail();
 		}
@@ -67,8 +68,12 @@ class TestTimes {
 
 	@Test
 	void testNullParamList() {
-		params = null;
-		assertThrows(IllegalConstruction.class, () -> op = new Times(params));
+		assertThrows(IllegalConstruction.class, () -> new Times(null));
+	}
+
+	@Test
+	void testGetPrecedence() {
+		assertEquals(2, op.getPrecedence());
 	}
 
 }

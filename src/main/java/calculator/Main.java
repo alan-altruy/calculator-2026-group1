@@ -1,8 +1,5 @@
 package calculator;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * A very simple calculator in Java
@@ -14,6 +11,8 @@ import java.util.List;
  */
 public class Main {
 
+	private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(Main.class.getName());
+
 	/**
 	 * This is the main method of the application.
 	 * It provides examples of how to use it to construct and evaluate arithmetic expressions.
@@ -21,44 +20,52 @@ public class Main {
 	 * @param args	Command-line parameters are not used in this version
 	 */
 	public static void main(String[] args) {
+		LOGGER.info("Calculator CLI");
+		LOGGER.info("Type 'help' for instructions, or 'quit'/'exit' to exit.");
 
-  	Expression e;
-  	Calculator c = new Calculator();
+		Calculator c = new Calculator();
+		try (java.util.Scanner scanner = new java.util.Scanner(System.in)) {
+			boolean exit = false;
+			while (!exit && scanner.hasNextLine()) {
+				LOGGER.info("> ");
 
-	try{
+				String input = scanner.nextLine().trim();
 
-		e = new MyNumber(8);
-		c.print(e);
-		c.eval(e);
-
-	    List<Expression> params = new ArrayList<>();
-	    Collections.addAll(params, new MyNumber(3), new MyNumber(4), new MyNumber(5));
-	    e = new Plus(params,Notation.PREFIX);
-		c.printExpressionDetails(e);
-		c.eval(e);
-	
-		List<Expression> params2 = new ArrayList<>();
-		Collections.addAll(params2, new MyNumber(5), new MyNumber(3));
-		e = new Minus(params2, Notation.INFIX);
-		c.print(e);
-		c.eval(e);
-
-		List<Expression> params3 = new ArrayList<>();
-		Collections.addAll(params3, new Plus(params), new Minus(params2));
-		e = new Times(params3);
-		c.printExpressionDetails(e);
-		c.eval(e);
-
-		List<Expression> params4 = new ArrayList<>();
-		Collections.addAll(params4, new Plus(params), new Minus(params2), new MyNumber(5));
-		e = new Divides(params4,Notation.POSTFIX);
-		c.print(e);
-		c.eval(e);
-	}
-
-	catch(IllegalConstruction exception) {
-		System.out.println("cannot create operations without parameters");
+				exit = handleInput(input, c);
+			}
 		}
+		LOGGER.info("Goodbye!");
  	}
 
+	static boolean handleInput(String input, Calculator c) {
+		if (input == null || input.isEmpty()) return false;
+
+		if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) {
+			return true;
+		}
+
+		if (input.equalsIgnoreCase("help")) {
+			LOGGER.info("--- Calculator Help ---");
+			LOGGER.info("  Commands:");
+			LOGGER.info("    help  - Show this help message");
+			LOGGER.info("    quit  - Exit the program");
+			LOGGER.info("    exit  - Exit the program");
+			LOGGER.info("  Expressions:");
+			LOGGER.info("    Type any arithmetic expression.");
+			LOGGER.info("    Supported ops: +, -, *, /, ** (Power).");
+			LOGGER.info("    Implicit multiplication (e.g. '(4+5)(6)') is supported.");
+			return false;
+		}
+
+		try {
+			Expression e = ExpressionParser.parse(input);
+			if (e != null) {
+				c.print(e);
+			}
+		} catch (IllegalArgumentException ex) {
+			LOGGER.severe("Error: " + ex.getMessage());
+		}
+
+		return false;
+	}
 }

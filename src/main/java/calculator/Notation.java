@@ -17,5 +17,12 @@ public enum Notation {
   /**
    * Postfix notation, e.g. "(1,2)+" or "1 2 +"
    */
-  POSTFIX
+  POSTFIX,
+
+  /**
+   * Default notation, which can be set to any of the above notations.
+   * This is useful for testing purposes, to check that the default notation 
+   * is correctly set and used by the toString() method of operations.
+   */
+  DEFAULT
   }

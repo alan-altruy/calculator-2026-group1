@@ -15,7 +15,7 @@ class TestNotation {
      */
 	void testNotation(String s,Operation o,Notation n) {
 		assertEquals(s, o.toString(n));
-		o.notation = n;
+		o.setNotation(n);
 		assertEquals(s, o.toString());
 	}
 
@@ -25,33 +25,33 @@ class TestNotation {
 		//prefix notation:
 		testNotation(symbol +" (" + value1 + ", " + value2 + ")", op, Notation.PREFIX);
 		//infix notation:
-		testNotation("( " + value1 + " " + symbol + " " + value2 + " )", op, Notation.INFIX);
+		testNotation(value1 + " " + symbol + " " + value2, op, Notation.INFIX);
 		//postfix notation:
 		testNotation("(" + value1 + ", " + value2 + ") " + symbol, op, Notation.POSTFIX);
 	}
 
 	@ParameterizedTest
-	@ValueSource(strings = {"*", "+", "/", "-"})
+	@ValueSource(strings = {"*", "+", "/", "-", "**"})
 	void testOutput(String symbol) {
 		int value1 = 8;
 		int value2 = 6;
-		Operation op = null;
-		//List<Expression> params = new ArrayList<>(Arrays.asList(new MyNumber(value1),new MyNumber(value2)));
 		List<Expression> params = Arrays.asList(new MyNumber(value1),new MyNumber(value2));
+		Operation op = null;
 		try {
 			//construct another type of operation depending on the input value
 			//of the parameterised test
 			switch (symbol) {
-				case "+"	->	op = new Plus(params);
-				case "-"	->	op = new Minus(params);
-				case "*"	->	op = new Times(params);
-				case "/"	->	op = new Divides(params);
+				case "+" 	->	op = new Plus(params);
+				case "-" 	->	op = new Minus(params);
+				case "*" 	->	op = new Times(params);
+				case "/" 	->	op = new Divides(params);
+				case "**" 	->	op = new Power(params);
 				default		->	fail();
 			}
+			testNotations(symbol, value1, value2, op);
 		} catch (IllegalConstruction e) {
 			fail();
 		}
-		testNotations(symbol, value1, value2, op);
 	}
 
 }

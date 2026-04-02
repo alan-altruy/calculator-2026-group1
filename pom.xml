@@ -6,26 +6,37 @@
     <artifactId>calculator-cucumber</artifactId>
     <version>0.5.0</version>
     <name>Calculator with JUnit6 and Cucumber tests</name>
-    <packaging>jar</packaging>
-
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.3</version>
-        <relativePath/>
-    </parent>
 
     <properties>
         <project.encoding>UTF-8</project.encoding>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>${project.encoding}</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
+        
+        <java.version>25</java.version>
+        <javadoc.version>3.12.0</javadoc.version>
+        <junit.version>6.0.3</junit.version>
+        <jacoco.version>0.8.14</jacoco.version>
+
+        <maven.compiler.release>17</maven.compiler.release>
         <maven.compiler.version>3.15.0</maven.compiler.version>
 
-        <junit.version>6.0.3</junit.version>
-        <cucumber.version>7.34.3</cucumber.version>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.version>3.15.0</maven.compiler.version>
+        <maven.compiler.proc>full</maven.compiler.proc>
         <maven.surefire.version>3.5.5</maven.surefire.version>
-        <jacoco.version>0.8.14</jacoco.version>
-        <javadoc.version>3.12.0</javadoc.version>
+        <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
+        
+        <slf4j.version>2.0.17</slf4j.version>
+        <antlr.version>4.13.2</antlr.version>
+        <logback.version>1.4.5</logback.version>        
+        <cucumber.version>7.34.3</cucumber.version>
+        <exec.version>3.6.3</exec.version>
+
+        <spring-boot.version>4.0.5</spring-boot.version>
+        <spring-doc.version>3.0.2</spring-doc.version>
+
+        <sonar.organization>alan-altruy</sonar.organization>
     </properties>
 
     <dependencyManagement>
@@ -37,17 +48,26 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
-        <!-- Spring Boot Web -->
+        <!-- ANTLR 4 Runtime -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>${antlr.version}</version>
         </dependency>
 
-        <!-- JUnit 6 -->
+        <!-- JUnit -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -66,6 +86,45 @@
             <version>${cucumber.version}</version>
             <scope>test</scope>
         </dependency>
+        
+        <!-- Spring Boot Web (for REST API) - exclude embedded Tomcat to use Jetty instead -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Use Jetty instead of Tomcat to avoid JNI native load warnings -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jetty</artifactId>
+        </dependency>
+
+        <!-- Spring Boot Test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- springdoc OpenAPI UI (optional) -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${spring-doc.version}</version>
+        </dependency>
+        
+        <!-- Force SLF4J API 2.x to match Logback on classpath -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit-platform-engine</artifactId>
@@ -76,10 +135,23 @@
 
     <build>
         <plugins>
-            <!-- Spring Boot Maven Plugin -->
+            <!-- ANTLR 4 Plugin -->
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr4-maven-plugin</artifactId>
+                <version>${antlr.version}</version>
+                <executions>
+                    <execution>
+                        <id>antlr</id>
+                        <goals>
+                            <goal>antlr4</goal>
+                        </goals>
+                        <configuration>
+                            <visitor>true</visitor>
+                            <listener>false</listener>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- Compiler -->
@@ -112,9 +184,19 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>3.6.3</version>
+                <version>${exec.version}</version>
                 <configuration>
                     <mainClass>calculator.Main</mainClass>
+                </configuration>
+            </plugin>
+
+            <!-- Spring Boot Maven plugin to enable mvn spring-boot:run -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <configuration>
+                    <mainClass>calculator.CalculatorApplication</mainClass>
                 </configuration>
             </plugin>
 
@@ -139,7 +221,10 @@
                 </executions>
                 <configuration>
                     <excludes>
-                        <exclude>calculator/Main.class</exclude>
+                        <exclude>calculator/CalculatorLexer*.class</exclude>
+                        <exclude>calculator/CalculatorParser*.class</exclude>
+                        <exclude>calculator/CalculatorVisitor.class</exclude>
+                        <exclude>calculator/CalculatorBaseVisitor.class</exclude>
                     </excludes>
                 </configuration>
             </plugin>

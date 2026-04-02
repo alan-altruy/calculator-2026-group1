@@ -3,9 +3,11 @@ package calculator;
 //Import Junit5 libraries for unit testing:
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
+import java.util.Objects;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 class TestMyNumber {
 
 	private final int value =8;
@@ -20,6 +22,7 @@ class TestMyNumber {
 	void testEquals() {
 		// Two distinct MyNumber, constructed separately (using a different constructor) but containing the same value should be equal
 		assertEquals(new MyNumber(value), number);
+		assertNotNull(number);
 		// Two MyNumbers containing a distinct value should not be equal:
 		int otherValue = 7;
 		assertNotEquals(new MyNumber(otherValue),number);
@@ -32,8 +35,19 @@ class TestMyNumber {
 	}
 
 	@Test
+	void testEqualsNullBranch() {
+		Boolean condition = Objects.equals(number, null);
+		assertFalse(condition);
+	}
+
+	@Test
 	void testToString() {
 		assertEquals(Integer.toString(value), number.toString());
+	}
+
+	@Test
+	void testGetPrecedence() {
+		assertEquals(5, number.getPrecedence());
 	}
 
 }

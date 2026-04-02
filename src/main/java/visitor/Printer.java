@@ -18,7 +18,7 @@ public class Printer extends Visitor {
     /**
      * The notation to use for rendering operations.
      */
-    private final Notation notation;
+    private Notation notation;
 
     /**
      * The result of the last visit, i.e. the String representation of the last visited expression.
@@ -31,7 +31,12 @@ public class Printer extends Visitor {
      * @param notation The notation (PREFIX, INFIX, or POSTFIX)
      */
     public Printer(Notation notation) {
-        this.notation = notation;
+        if (notation != Notation.PREFIX && notation != Notation.INFIX && notation != Notation.POSTFIX) {
+            this.notation = Notation.DEFAULT; // Default to DEFAULT if an invalid notation is provided
+        }
+        else {
+            this.notation = notation;
+        }
     }
 
     /**
@@ -75,40 +80,53 @@ public class Printer extends Visitor {
             childStrings.add(result);
         }
 
-        result = switch (notation) {
-            case INFIX -> {
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < o.getArgs().size(); i++) {
-                    Expression child = o.getArgs().get(i);
-                    boolean needsParens = false;
-                    if (child instanceof Operation opChild) {
-                        if (opChild.getNotation() == Notation.INFIX) {
-                            if (opChild.getPrecedence() < o.getPrecedence()) {
-                                needsParens = true;
-                            } else if (opChild.getPrecedence() == o.getPrecedence()) {
-                                // For left-associative operations (Minus, Divides), the right-hand child needs parens
-                                if (i > 0 && (o.getSymbol().equals("-") || o.getSymbol().equals("/"))) {
-                                    needsParens = true;
-                                }
-                                // For right-associative operations (Power), the left-hand child needs parens
-                                else if (i == 0 && o.getSymbol().equals("**")) {
-                                    needsParens = true;
-                                }
-                            }
-                        }
-                    }
-                    if (i > 0) sb.append(" ").append(o.getSymbol()).append(" ");
-                    if (needsParens) sb.append("( ").append(childStrings.get(i)).append(" )");
-                    else sb.append(childStrings.get(i));
-                }
-                yield sb.toString();
+        switch (notation) {
+            case INFIX -> result = formatInfix(o, childStrings);
+            case PREFIX -> result = formatPrefix(o, childStrings);
+            case POSTFIX -> result = formatPostfix(o, childStrings);
+            default -> throw new IllegalStateException("Unexpected notation");
+        }
+    }
+
+    private String formatInfix(Operation o, List<String> childStrings) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < o.getArgs().size(); i++) {
+            Expression child = o.getArgs().get(i);
+            boolean needsParens = childNeedsParens(o, child, i);
+
+            if (i > 0) sb.append(" ").append(o.getSymbol()).append(" ");
+            if (needsParens) sb.append("( ").append(childStrings.get(i)).append(" )");
+            else sb.append(childStrings.get(i));
+        }
+        return sb.toString();
+    }
+
+    private String formatPrefix(Operation o, List<String> childStrings) {
+        return o.getSymbol() + " (" + childStrings.stream().reduce((s1, s2) -> s1 + ", " + s2).get() + ")";
+    }
+
+    private String formatPostfix(Operation o, List<String> childStrings) {
+        return "(" + childStrings.stream().reduce((s1, s2) -> s1 + ", " + s2).get() + ") " + o.getSymbol();
+    }
+
+    private boolean childNeedsParens(Operation parent, Expression child, int index) {
+        if (!(child instanceof Operation opChild)) return false;
+        if (opChild.getNotation() != Notation.INFIX) return false;
+
+        int childPrec = opChild.getPrecedence();
+        int parentPrec = parent.getPrecedence();
+
+        if (childPrec < parentPrec) return true;
+        if (childPrec == parentPrec) {
+            // For left-associative operations (Minus, Divides), the right-hand child needs parens
+            if (index > 0 && (parent.getSymbol().equals("-") || parent.getSymbol().equals("/"))) {
+                return true;
             }
-            case PREFIX -> o.getSymbol() + " (" +
-                    childStrings.stream().reduce((s1, s2) -> s1 + ", " + s2).get() +
-                    ")";
-            case POSTFIX -> "(" +
-                    childStrings.stream().reduce((s1, s2) -> s1 + ", " + s2).get() +
-                    ") " + o.getSymbol();
-        };
+            // For right-associative operations (Power), the left-hand child needs parens
+            if (index == 0 && parent.getSymbol().equals("**")) {
+                return true;
+            }
+        }
+        return false;
     }
 }

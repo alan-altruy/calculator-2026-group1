@@ -32,7 +32,6 @@ class TestCounter {
     void setUp() {
         value1 = 8;
         value2 = 6;
-        e = null;
         counter = new Counter();
     }
 

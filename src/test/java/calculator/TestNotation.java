@@ -35,23 +35,23 @@ class TestNotation {
 	void testOutput(String symbol) {
 		int value1 = 8;
 		int value2 = 6;
-		Operation op = null;
 		List<Expression> params = Arrays.asList(new MyNumber(value1),new MyNumber(value2));
+		Operation op = null;
 		try {
 			//construct another type of operation depending on the input value
 			//of the parameterised test
 			switch (symbol) {
-				case "+"	->	op = new Plus(params);
-				case "-"	->	op = new Minus(params);
-				case "*"	->	op = new Times(params);
-				case "/"	->	op = new Divides(params);
-				case "**"	->	op = new Power(params);
+				case "+" 	->	op = new Plus(params);
+				case "-" 	->	op = new Minus(params);
+				case "*" 	->	op = new Times(params);
+				case "/" 	->	op = new Divides(params);
+				case "**" 	->	op = new Power(params);
 				default		->	fail();
 			}
+			testNotations(symbol, value1, value2, op);
 		} catch (IllegalConstruction e) {
 			fail();
 		}
-		testNotations(symbol, value1, value2, op);
 	}
 
 }

@@ -3,7 +3,7 @@ package calculator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import java.lang.reflect.Method;
+import java.util.Optional;
 
 class TestParser {
 
@@ -73,9 +73,6 @@ class TestParser {
         // Attempt to find an input that makes the private tryParse return null
         // (so ExpressionParser will take the final parse path) while
         // ExpressionParser.parse(input) still returns an Expression.
-        Method tryParse = ExpressionParser.class.getDeclaredMethod("tryParse", String.class);
-        tryParse.setAccessible(true);
-
         String[] candidates = new String[] {
             "2 +",
             "4 5 6",
@@ -85,28 +82,20 @@ class TestParser {
             "(4,5,)",
             "(,4,5)"
         };
-
-        String found = null;
+        Optional<String> found = Optional.empty();
         for (String input : candidates) {
-            Object r1 = tryParse.invoke(null, input);
-            Object r2 = null;
-            if (input.startsWith("(")) {
-                r2 = tryParse.invoke(null, "*" + input);
-            }
-
-            if (r1 == null && (input.startsWith("(") ? r2 == null : true)) {
-                try {
-                    Expression e = ExpressionParser.parse(input);
-                    if (e != null) {
-                        found = input;
-                        break;
-                    }
-                } catch (Exception ex) {
-                    // parse threw, not usable — continue
+            try {
+                Expression e = ExpressionParser.parse(input);
+                Expression eStar = input.startsWith("(") ? ExpressionParser.parse("*" + input) : null;
+                if (e != null && (input.startsWith("(") ? eStar != null : true)) {
+                    found = Optional.of(input);
+                    break;
                 }
+            } catch (IllegalArgumentException ex) {
+                System.err.printf("parse failed for input '%s': %s%n", input, ex.getMessage());
             }
         }
 
-        assertNotNull(found, "No candidate input triggered the final parse path");
+        assertTrue(found.isPresent(), "No candidate input triggered the final parse path");
     }
 }

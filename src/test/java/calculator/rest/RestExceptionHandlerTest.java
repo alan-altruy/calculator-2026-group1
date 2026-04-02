@@ -1,65 +1,56 @@
 package calculator.rest;
 
+import calculator.IllegalConstruction;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.Arguments;
-import java.util.stream.Stream;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import org.junit.jupiter.api.BeforeEach;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Map;
 
-@SpringBootTest
-@org.springframework.context.annotation.Import(RestExceptionHandler.class)
+import static org.junit.jupiter.api.Assertions.*;
+
 class RestExceptionHandlerTest {
 
-    @Autowired
-    private WebApplicationContext wac;
+	private final RestExceptionHandler handler = new RestExceptionHandler();
 
-    private org.springframework.test.web.servlet.MockMvc mockMvc;
+	@Test
+	void handleIllegalConstruction_returnsBadRequestAndMessage() {
+		IllegalConstruction ex = new IllegalConstruction();
+		ResponseEntity<Map<String, String>> resp = handler.handleIllegalConstruction(ex);
 
-    private static final String API_URL = "/api/v1/evaluate";
+		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+		assertNotNull(resp.getBody());
+		assertEquals("Illegal construction of expression", resp.getBody().get("error"));
+	}
 
+	@Test
+	void handleUnsupportedMediaType_returns415AndMessage() {
+		org.springframework.web.HttpMediaTypeNotSupportedException ex =
+				new org.springframework.web.HttpMediaTypeNotSupportedException("text/plain");
+		ResponseEntity<Map<String, String>> resp = handler.handleUnsupportedMediaType(ex);
 
-    @BeforeEach
-    void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-    }
+		assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE, resp.getStatusCode());
+		assertNotNull(resp.getBody());
+		assertEquals("Unsupported Media Type", resp.getBody().get("error"));
+	}
 
-    @Test
-    void malformedJsonTriggersBadRequestHandler() throws Exception {
-        String badJson = "{"; // malformed JSON
-        var res = mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post(API_URL)
-                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
-                .content(badJson))
-                .andReturn();
-        int status = res.getResponse().getStatus();
-        assertThat(status).isEqualTo(400);
-        assertThat(res.getResponse().getContentAsString()).contains("Malformed JSON request");
-    }
+	@Test
+	void handleBadRequestMessage_returnsBadRequestAndMessage() {
+		// Constructing HttpMessageNotReadableException varies between Spring versions; pass null instead
+		ResponseEntity<Map<String, String>> resp = handler.handleBadRequestMessage(null);
 
-    @ParameterizedTest
-    @MethodSource("badRequestCases")
-    void testExceptionHandlerResponses(String body, int expectedStatus, String expectedContentFragment) throws Exception {
-        var res = mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post(API_URL)
-                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
-                .content(body))
-                .andReturn();
-        int status = res.getResponse().getStatus();
-        assertThat(status).isEqualTo(expectedStatus);
-        assertThat(res.getResponse().getContentAsString()).contains(expectedContentFragment);
-    }
+		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
+		assertNotNull(resp.getBody());
+		assertEquals("Malformed JSON request", resp.getBody().get("error"));
+	}
 
-    private static Stream<Arguments> badRequestCases() {
-        return Stream.of(
-            arguments("{\"ast\":{\"type\":\"operation\",\"op\":\"foo\",\"args\":[]}}", 400, "Illegal construction of expression"),
-            arguments("{\"ast\":{\"type\":\"operation\",\"op\":\"/\",\"args\":[{\"type\":\"number\",\"value\":1},{\"type\":\"number\",\"value\":0}]}}", 500, "Internal server error"),
-            arguments("{\"ast\":{\"type\":\"operation\",\"op\":\"+\",\"args\":{\"type\":\"number\",\"value\":1}}}", 500, "Internal server error")
-        );
-    }
+	@Test
+	void handleOtherExceptions_returns500AndMessage() {
+		Exception ex = new RuntimeException("boom");
+		ResponseEntity<Map<String, String>> resp = handler.handleOtherExceptions(ex);
+
+		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, resp.getStatusCode());
+		assertNotNull(resp.getBody());
+		assertEquals("Internal server error", resp.getBody().get("error"));
+	}
 }

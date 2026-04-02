@@ -29,7 +29,15 @@ public class Counter extends Visitor {
     /**
      * Default constructor of the class. Does not initialise anything.
      */
-    public Counter() {}
+    public Counter() {
+        /*
+         * Intentionally left blank: all counter fields are primitives
+         * and default to 0. Initialization is performed when visiting
+         * expressions (`visit(MyNumber)` and `visit(Operation)`), so
+         * no setup is required here. Keeping an explicit no-op
+         * constructor documents the intended behavior.
+         */
+    }
 
     /**
      * Getter method to obtain the depth of the last visited expression.

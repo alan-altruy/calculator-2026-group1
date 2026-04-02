@@ -1,7 +1,6 @@
 package calculator.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import calculator.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -64,18 +63,13 @@ public class CalculatorRestController {
         )
         @io.swagger.v3.oas.annotations.parameters.RequestBody(
             content = @Content(mediaType = "application/json",
-                examples = @ExampleObject(value = "{\"ast\":{\"type\":\"operation\",\"op\":\"+\",\"args\":[{\"type\":\"number\",\"value\":1},{\"type\":\"operation\",\"op\":\"*\",\"args\":[{\"type\":\"number\",\"value\":2},{\"type\":\"number\",\"value\":3}]}]}}"))
-        )
-        @PostMapping(value = "/evaluate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-        public ResponseEntity<EvaluateResponse> compute(@RequestBody String input) {
-            try {
-                Expression e = ExpressionParser.parse(input);
-                Calculator c = new Calculator();
-                int result = c.eval(e);
-                return ResponseEntity.ok(new EvaluateResponse(result));
-            } catch (Exception ex) {
-                return ResponseEntity.badRequest().body(new EvaluateResponse("Error: " + ex.getMessage()));
-            }
+                examples = @ExampleObject(value = "{\"ast\":{\"type\":\"operation\",\"op\":\"+\",\"args\":[{\"type\":\"number\",\"value\":1},{\"type\":\"operation\",\"op\":\"*\",\"args\":[{\"type\":\"number\",\"value\":2},{\"type\":\"number\",\"value\":3}]}]}}"))        )
+    @PostMapping(value = "/evaluate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<EvaluateResponse> compute(@RequestBody String input) {
+        Expression e = ExpressionParser.parse(input);
+        Calculator c = new Calculator();
+        int result = c.eval(e);
+        return ResponseEntity.ok(new EvaluateResponse(result));
     }
 
     /**

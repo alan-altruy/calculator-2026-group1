@@ -13,8 +13,8 @@
 <div id="app">
 <!-- From Uiverse.io by alexruix -->
 <div class="input-group">
-    <input type="text" class="input" ref="InputField"  v-model="display" placeholder="Write your computation">
-    <input class="button--submit" value="Compute" type="button" @click="evaluate()">
+    <input type="text" class="input" ref="InputField"  v-model="display" @keyup.enter="evaluate()" placeholder="Write your computation">
+    <input class="button--submit" value="Compute" type="button"  @click="evaluate()">
 </div>
 
 <div class="res">

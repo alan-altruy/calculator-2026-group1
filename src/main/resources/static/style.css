@@ -45,6 +45,25 @@ body {
     background-color: #5e5dcd;
 }
 
+.res {
+    position: absolute;
+    top: 4em;
+    left: 2em;
+    color: #fff;
+    font-size: 30px;
+    font-weight: bolder;
+    margin-top: 6px;
+}
+
+.res p {
+    margin: 0;
+    padding: 10px;
+    background-color: #100361CC;
+    border-radius: 6px;
+    border: 1px solid #f0cfff;
+    font-family: URW Chancery L, cursive;
+}
+
 .input:focus, .input:focus-visible {
     border-color: #0a2374;
     outline: none;
@@ -123,4 +142,3 @@ button:active {
     top: 29em;
     left: 35em;
 }
-

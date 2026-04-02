@@ -17,8 +17,13 @@
     <input class="button--submit" value="Compute" type="button" @click="evaluate()">
 </div>
 
+<div class="res">
+    <p>Result : {{ output }}</p>
+</div>
+
 <div class="eraser">
     <button @click="remove()">←</button>
+    <button @click="add(' ')">space</button>
 </div>
 
 <div class="number">
@@ -75,7 +80,8 @@
     const app = Vue.createApp({
         data() {
             return {
-                display: ''
+                display: '',
+                output: null
             }
         },
         methods: {
@@ -90,10 +96,10 @@
                     });
 
                     const data = await response.json();
-                    this.display = data.result;
+                    this.output = data.result;
 
                 } catch (error) {
-                    this.display = "Error";
+                    this.output = "Error";
                 }
             },
 
@@ -133,11 +139,10 @@
             },
             clear() {
                 this.display = '';
+                this.output = null;
             }
         }
     });
 
     app.mount('#app');
 </script>
-
-

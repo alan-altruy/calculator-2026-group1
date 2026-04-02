@@ -58,6 +58,7 @@ public class CalculatorRestController {
                         examples = @ExampleObject(value = "{\"result\":7}"))),
                 @ApiResponse(responseCode = "400", description = "Bad Request"),
                 @ApiResponse(responseCode = "415", description = "Unsupported Media Type"),
+                @ApiResponse(responseCode = "418", description = "I'm a teapot..."),
                 @ApiResponse(responseCode = "500", description = "Internal Server Error")
             }
         )

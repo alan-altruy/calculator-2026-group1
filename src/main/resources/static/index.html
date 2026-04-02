@@ -14,7 +14,7 @@
 <!-- From Uiverse.io by alexruix -->
 <div class="input-group">
     <input type="text" class="input" ref="InputField"  v-model="display" placeholder="Write your computation">
-    <input class="button--submit" value="Compute" type="submit">
+    <input class="button--submit" value="Compute" type="button" @click="evaluate()">
 </div>
 
 <div class="eraser">
@@ -79,6 +79,24 @@
             }
         },
         methods: {
+            async evaluate() {
+                try {
+                    const response = await fetch('/api/v1/evaluate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(this.display)
+                    });
+
+                    const data = await response.json();
+                    this.display = data.result;
+
+                } catch (error) {
+                    this.display = "Error";
+                }
+            },
+
             add(value) {
                 const input = this.$refs.InputField;
                 const start = input.selectionStart;

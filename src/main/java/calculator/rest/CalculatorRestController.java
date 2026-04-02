@@ -67,17 +67,15 @@ public class CalculatorRestController {
                 examples = @ExampleObject(value = "{\"ast\":{\"type\":\"operation\",\"op\":\"+\",\"args\":[{\"type\":\"number\",\"value\":1},{\"type\":\"operation\",\"op\":\"*\",\"args\":[{\"type\":\"number\",\"value\":2},{\"type\":\"number\",\"value\":3}]}]}}"))
         )
         @PostMapping(value = "/evaluate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-        public ResponseEntity<EvaluateResponse> evaluate(@RequestBody Object bodyObj) throws IllegalConstruction {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode body = mapper.valueToTree(bodyObj);
-        JsonNode ast = body.get("ast");
-        if (ast == null) {
-            return ResponseEntity.badRequest().body(new EvaluateResponse("missing 'ast' field"));
-        }
-        Expression expr = toExpression(ast);
-        Calculator calc = new Calculator();
-        int result = calc.eval(expr);
-        return ResponseEntity.ok(new EvaluateResponse(result));
+        public ResponseEntity<EvaluateResponse> compute(@RequestBody String input) {
+            try {
+                Expression e = ExpressionParser.parse(input);
+                Calculator c = new Calculator();
+                int result = c.eval(e);
+                return ResponseEntity.ok(new EvaluateResponse(result));
+            } catch (Exception ex) {
+                return ResponseEntity.badRequest().body(new EvaluateResponse("Error: " + ex.getMessage()));
+            }
     }
 
     /**

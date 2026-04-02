@@ -13,6 +13,8 @@ class RestExceptionHandlerTest {
 
 	private final RestExceptionHandler handler = new RestExceptionHandler();
 
+	private static final String ERROR_KEY = "error";
+
 	@Test
 	void handleIllegalConstruction_returnsBadRequestAndMessage() {
 		IllegalConstruction ex = new IllegalConstruction();
@@ -20,7 +22,7 @@ class RestExceptionHandlerTest {
 
 		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
 		assertNotNull(resp.getBody());
-		assertEquals("Illegal construction of expression", resp.getBody().get("error"));
+		assertEquals("Illegal construction of expression", resp.getBody().get(ERROR_KEY));
 	}
 
 	@Test
@@ -31,7 +33,7 @@ class RestExceptionHandlerTest {
 
 		assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE, resp.getStatusCode());
 		assertNotNull(resp.getBody());
-		assertEquals("Unsupported Media Type", resp.getBody().get("error"));
+		assertEquals("Unsupported Media Type", resp.getBody().get(ERROR_KEY));
 	}
 
 	@Test
@@ -41,7 +43,7 @@ class RestExceptionHandlerTest {
 
 		assertEquals(HttpStatus.BAD_REQUEST, resp.getStatusCode());
 		assertNotNull(resp.getBody());
-		assertEquals("Malformed JSON request", resp.getBody().get("error"));
+		assertEquals("Malformed JSON request", resp.getBody().get(ERROR_KEY));
 	}
 
 	@Test
@@ -51,6 +53,6 @@ class RestExceptionHandlerTest {
 
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, resp.getStatusCode());
 		assertNotNull(resp.getBody());
-		assertEquals("Internal server error", resp.getBody().get("error"));
+		assertEquals("Internal server error", resp.getBody().get(ERROR_KEY));
 	}
 }

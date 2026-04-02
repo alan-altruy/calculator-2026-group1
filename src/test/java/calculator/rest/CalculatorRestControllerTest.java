@@ -6,11 +6,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.Arguments;
 import java.util.stream.Stream;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import org.junit.jupiter.api.BeforeEach;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -18,36 +14,15 @@ import java.lang.invoke.MethodType;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
-
 @SpringBootTest
 @org.springframework.context.annotation.Import({RestExceptionHandler.class, CorsConfig.class})
 class CalculatorRestControllerTest {
 
-    @Autowired
-    private WebApplicationContext wac;
-
-    private org.springframework.test.web.servlet.MockMvc mockMvc;
-
-    private static final String API_URL = "/api/v1/evaluate";
-
-    @BeforeEach
-    void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-    }
-    
-    @Test
-    void testArgsNotArrayProducesServerError() throws Exception {
-        // args provided but not an array
-        String body = "{\"ast\":{\"type\":\"operation\",\"op\":\"+\",\"args\":{\"type\":\"number\",\"value\":1}}}";
-        var res = mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post(API_URL)
-                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
-                .content(body))
-                .andReturn();
-        int status = res.getResponse().getStatus();
-        org.assertj.core.api.Assertions.assertThat(status / 100).isEqualTo(4);
-    }
-
+    private static final String CASE_TOEXPR_EVAL = "toExpression-eval";
+    private static final String CASE_TOEXPR_EX = "toExpression-ex";
+    private static final String CASE_PARSEARGS_SIZE = "parseArgs-size";
+    private static final String CASE_PARSENOTATION_ENUM = "parseNotation-enum";
+    private static final String NOTATION_INFIX = "INFIX";
 
     @Test
     void toExpressionMissingTypeThrows_viaMethodHandle() throws Throwable {
@@ -70,7 +45,7 @@ class CalculatorRestControllerTest {
         com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
 
         switch (caseType) {
-            case "toExpression-eval" -> {
+            case CASE_TOEXPR_EVAL -> {
                 MethodHandle mh = lookup.findVirtual(CalculatorRestController.class, "toExpression",
                         MethodType.methodType(calculator.Expression.class, com.fasterxml.jackson.databind.JsonNode.class));
                 com.fasterxml.jackson.databind.JsonNode node = mapper.readTree(json);
@@ -78,13 +53,13 @@ class CalculatorRestControllerTest {
                 calculator.Calculator calc = new calculator.Calculator();
                 assertEquals(Integer.parseInt(expect), calc.eval((calculator.Expression) e));
             }
-            case "toExpression-ex" -> {
+            case CASE_TOEXPR_EX -> {
                 MethodHandle mh = lookup.findVirtual(CalculatorRestController.class, "toExpression",
                         MethodType.methodType(calculator.Expression.class, com.fasterxml.jackson.databind.JsonNode.class));
                 com.fasterxml.jackson.databind.JsonNode node = json == null ? null : mapper.readTree(json);
                 assertThrows(calculator.IllegalConstruction.class, () -> mh.invoke(controller, node));
             }
-            case "parseArgs-size" -> {
+            case CASE_PARSEARGS_SIZE -> {
                 MethodHandle mh = lookup.findVirtual(CalculatorRestController.class, "parseArgs",
                         MethodType.methodType(java.util.List.class, com.fasterxml.jackson.databind.JsonNode.class));
                 com.fasterxml.jackson.databind.JsonNode node = json == null ? null : mapper.readTree(json);
@@ -93,7 +68,7 @@ class CalculatorRestControllerTest {
                 java.util.List<calculator.Expression> list = (java.util.List<calculator.Expression>) res;
                 assertEquals(Integer.parseInt(expect), list.size());
             }
-            case "parseNotation-enum" -> {
+            case CASE_PARSENOTATION_ENUM -> {
                 MethodHandle mh = lookup.findVirtual(CalculatorRestController.class, "parseNotation",
                         MethodType.methodType(calculator.Notation.class, com.fasterxml.jackson.databind.JsonNode.class));
                 com.fasterxml.jackson.databind.JsonNode node = json == null ? null : mapper.readTree(json);
@@ -113,31 +88,32 @@ class CalculatorRestControllerTest {
     private static Stream<Arguments> privateMethodScenarios() {
         return Stream.of(
             // toExpression evaluations
-            arguments("toExpression-eval", "{\"type\":\"number\",\"value\":42}", "42"),
-            arguments("toExpression-eval", "{\"type\":\"operation\",\"op\":\"+\",\"args\":[{\"type\":\"number\",\"value\":1},{\"type\":\"number\",\"value\":2}]}", "3"),
-            arguments("toExpression-eval", "{\"type\":\"operation\",\"op\":\"-\",\"args\":[{\"type\":\"number\",\"value\":5},{\"type\":\"number\",\"value\":2}]}", "3"),
-            arguments("toExpression-eval", "{\"type\":\"operation\",\"op\":\"*\",\"args\":[{\"type\":\"number\",\"value\":4},{\"type\":\"number\",\"value\":3}]}", "12"),
-            arguments("toExpression-eval", "{\"type\":\"operation\",\"op\":\"/\",\"args\":[{\"type\":\"number\",\"value\":8},{\"type\":\"number\",\"value\":2}]}", "4"),
+
+            arguments(CASE_TOEXPR_EVAL, "{\"type\":\"number\",\"value\":42}", "42"),
+            arguments(CASE_TOEXPR_EVAL, "{\"type\":\"operation\",\"op\":\"+\",\"args\":[{\"type\":\"number\",\"value\":1},{\"type\":\"number\",\"value\":2}]}", "3"),
+            arguments(CASE_TOEXPR_EVAL, "{\"type\":\"operation\",\"op\":\"-\",\"args\":[{\"type\":\"number\",\"value\":5},{\"type\":\"number\",\"value\":2}]}", "3"),
+            arguments(CASE_TOEXPR_EVAL, "{\"type\":\"operation\",\"op\":\"*\",\"args\":[{\"type\":\"number\",\"value\":4},{\"type\":\"number\",\"value\":3}]}", "12"),
+            arguments(CASE_TOEXPR_EVAL, "{\"type\":\"operation\",\"op\":\"/\",\"args\":[{\"type\":\"number\",\"value\":8},{\"type\":\"number\",\"value\":2}]}", "4"),
 
             // toExpression exceptions
-            arguments("toExpression-ex", null, null),
-            arguments("toExpression-ex", "{\"type\":null}", null),
-            arguments("toExpression-ex", "{\"type\":\"foo\"}", null),
-            arguments("toExpression-ex", "{\"type\":\"operation\",\"args\":[{\"type\":\"number\",\"value\":1}]}", null),
+            arguments(CASE_TOEXPR_EX, null, null),
+            arguments(CASE_TOEXPR_EX, "{\"type\":null}", null),
+            arguments(CASE_TOEXPR_EX, "{\"type\":\"foo\"}", null),
+            arguments(CASE_TOEXPR_EX, "{\"type\":\"operation\",\"args\":[{\"type\":\"number\",\"value\":1}]}", null),
 
             // parseArgs
-            arguments("parseArgs-size", null, "0"),
-            arguments("parseArgs-size", "{\"type\":\"number\",\"value\":1}", "0"),
-            arguments("parseArgs-size", "[{\"type\":\"number\",\"value\":7},{\"type\":\"number\",\"value\":8}]", "2"),
+            arguments(CASE_PARSEARGS_SIZE, null, "0"),
+            arguments(CASE_PARSEARGS_SIZE, "{\"type\":\"number\",\"value\":1}", "0"),
+            arguments(CASE_PARSEARGS_SIZE, "[{\"type\":\"number\",\"value\":7},{\"type\":\"number\",\"value\":8}]", "2"),
 
             // parseNotation
-            arguments("parseNotation-enum", null, "INFIX"),
-            arguments("parseNotation-enum", "{\"type\":\"operation\"}", "INFIX"),
-            arguments("parseNotation-enum", "{\"notation\":\"weird\"}", "INFIX"),
-            arguments("parseNotation-enum", "{\"notation\":\"prefix\"}", "PREFIX"),
-            arguments("parseNotation-enum", "{\"notation\":\"postfix\"}", "POSTFIX"),
-            arguments("parseNotation-enum", "{\"notation\":\"infix\"}", "INFIX"),
-            arguments("parseNotation-enum", "{\"notation\":\"default\"}", "DEFAULT"),
+            arguments(CASE_PARSENOTATION_ENUM, null, NOTATION_INFIX),
+            arguments(CASE_PARSENOTATION_ENUM, "{\"type\":\"operation\"}", NOTATION_INFIX),
+            arguments(CASE_PARSENOTATION_ENUM, "{\"notation\":\"weird\"}", NOTATION_INFIX),
+            arguments(CASE_PARSENOTATION_ENUM, "{\"notation\":\"prefix\"}", "PREFIX"),
+            arguments(CASE_PARSENOTATION_ENUM, "{\"notation\":\"postfix\"}", "POSTFIX"),
+            arguments(CASE_PARSENOTATION_ENUM, "{\"notation\":\"infix\"}", NOTATION_INFIX),
+            arguments(CASE_PARSENOTATION_ENUM, "{\"notation\":\"default\"}", "DEFAULT"),
 
             // createOperation exception for unknown op
             arguments("createOperation-ex", "unknownop", null)

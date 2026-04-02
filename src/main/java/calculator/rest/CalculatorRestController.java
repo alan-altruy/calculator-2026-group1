@@ -1,7 +1,6 @@
 package calculator.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import calculator.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -58,24 +57,18 @@ public class CalculatorRestController {
                         examples = @ExampleObject(value = "{\"result\":7}"))),
                 @ApiResponse(responseCode = "400", description = "Bad Request"),
                 @ApiResponse(responseCode = "415", description = "Unsupported Media Type"),
+                @ApiResponse(responseCode = "418", description = "I'm a teapot..."),
                 @ApiResponse(responseCode = "500", description = "Internal Server Error")
             }
         )
         @io.swagger.v3.oas.annotations.parameters.RequestBody(
             content = @Content(mediaType = "application/json",
-                examples = @ExampleObject(value = "{\"ast\":{\"type\":\"operation\",\"op\":\"+\",\"args\":[{\"type\":\"number\",\"value\":1},{\"type\":\"operation\",\"op\":\"*\",\"args\":[{\"type\":\"number\",\"value\":2},{\"type\":\"number\",\"value\":3}]}]}}"))
-        )
-        @PostMapping(value = "/evaluate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-        public ResponseEntity<EvaluateResponse> evaluate(@RequestBody Object bodyObj) throws IllegalConstruction {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode body = mapper.valueToTree(bodyObj);
-        JsonNode ast = body.get("ast");
-        if (ast == null) {
-            return ResponseEntity.badRequest().body(new EvaluateResponse("missing 'ast' field"));
-        }
-        Expression expr = toExpression(ast);
-        Calculator calc = new Calculator();
-        int result = calc.eval(expr);
+                examples = @ExampleObject(value = "{\"ast\":{\"type\":\"operation\",\"op\":\"+\",\"args\":[{\"type\":\"number\",\"value\":1},{\"type\":\"operation\",\"op\":\"*\",\"args\":[{\"type\":\"number\",\"value\":2},{\"type\":\"number\",\"value\":3}]}]}}"))        )
+    @PostMapping(value = "/evaluate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<EvaluateResponse> compute(@RequestBody String input) {
+        Expression e = ExpressionParser.parse(input);
+        Calculator c = new Calculator();
+        int result = c.eval(e);
         return ResponseEntity.ok(new EvaluateResponse(result));
     }
 

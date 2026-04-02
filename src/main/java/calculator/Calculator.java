@@ -1,5 +1,6 @@
 package calculator;
 
+import visitor.Counter;
 import visitor.Evaluator;
 import java.util.logging.Logger;
 
@@ -47,14 +48,17 @@ public class Calculator {
 
     /**
      * Prints verbose details of an arithmetic expression provided as input parameter.
+     * Uses the Counter visitor to obtain counting information.
      * @param e the arithmetic Expression to be printed
      * @see #print(Expression)
      */
     public void printExpressionDetails(Expression e) {
         print(e);
+        Counter counter = new Counter();
+        e.accept(counter);
         LOGGER.log(java.util.logging.Level.INFO, () -> String.format(
             "It contains %d levels of nested expressions, %d operations and %d numbers.",
-            e.countDepth(), e.countOps(), e.countNbs()));
+            counter.getCountDepth(), counter.getCountOps(), counter.getCountNbs()));
         LOGGER.log(java.util.logging.Level.INFO, () -> "");
     }
 

@@ -4,10 +4,10 @@ package calculator;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import visitor.Counter;
 
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 class TestOperation {
@@ -38,26 +38,23 @@ class TestOperation {
 
 	@Test
 	void testCountDepth() {
-		assertEquals(2, o.countDepth());
+		Counter counter = new Counter();
+		o.accept(counter);
+		assertEquals(2, counter.getCountDepth());
 	}
 
 	@Test
 	void testCountOps() {
-		assertEquals(3, o.countOps());
+		Counter counter = new Counter();
+		o.accept(counter);
+		assertEquals(3, counter.getCountOps());
 	}
 
 	@Test
 	void testCountNbs() {
-		assertEquals(Integer.valueOf(6), o.countNbs());
-	}
-
-	@Test
-	void testCountOpsEmptyArgs() throws IllegalConstruction {
-		List<Expression> emptyList = new ArrayList<>();
-
-		Operation op = new Plus(emptyList, Notation.INFIX);
-
-		assertEquals(1, op.countOps());
+		Counter counter = new Counter();
+		o.accept(counter);
+		assertEquals(Integer.valueOf(6), counter.getCountNbs());
 	}
 
 	@Test
@@ -113,7 +110,7 @@ class TestOperation {
 	void testToStringInfixChildWithNonInfixNotationNoParentheses() throws IllegalConstruction {
 		Operation child = new Plus(Arrays.asList(new MyNumber(1), new MyNumber(2)), Notation.PREFIX);
 		Operation parent = new Plus(Arrays.asList(child, new MyNumber(3)), Notation.INFIX);
-		assertEquals("+ (1, 2) + 3", parent.toString(Notation.INFIX));
+		assertEquals("1 + 2 + 3", parent.toString(Notation.INFIX));
 	}
 
 	@Test

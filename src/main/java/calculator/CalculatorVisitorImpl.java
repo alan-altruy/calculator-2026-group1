@@ -15,7 +15,7 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
     public Expression visitParens(CalculatorParser.ParensContext ctx) {
         return visit(ctx.expr());
     }
-    
+
     @Override
     public Expression visitPrefix(CalculatorParser.PrefixContext ctx) {
         List<Expression> args = new ArrayList<>();
@@ -57,7 +57,7 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
         int val = Integer.parseInt(ctx.NUMBER().getText());
         return new MyNumber(val);
     }
-    
+
     @Override
     public Expression visitImplicitMul(CalculatorParser.ImplicitMulContext ctx) {
         Expression left = visit(ctx.expr(0));
@@ -75,16 +75,22 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
         Collections.addAll(args, left, right);
         return createOperation("**", args, Notation.INFIX);
     }
-    
+
     private Expression createOperation(String op, List<Expression> args, Notation notation) {
         try {
             switch (op) {
-                case "+": return new Plus(args, notation);
-                case "-": return new Minus(args, notation);
-                case "*": return new Times(args, notation);
-                case "/": return new Divides(args, notation);
-                case "**": return new Power(args, notation);
-                default: throw new IllegalArgumentException("Unknown operator: " + op);
+                case "+":
+                    return new Plus(args, notation);
+                case "-":
+                    return new Minus(args, notation);
+                case "*":
+                    return new Times(args, notation);
+                case "/":
+                    return new Divides(args, notation);
+                case "**":
+                    return new Power(args, notation);
+                default:
+                    throw new IllegalArgumentException("Unknown operator: " + op);
             }
         } catch (IllegalConstruction e) {
             throw new IllegalConstruction("Invalid operation construction", e);

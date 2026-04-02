@@ -102,11 +102,13 @@ public class Printer extends Visitor {
     }
 
     private String formatPrefix(Operation o, List<String> childStrings) {
-        return o.getSymbol() + " (" + childStrings.stream().reduce((s1, s2) -> s1 + ", " + s2).get() + ")";
+        String joined = String.join(", ", childStrings);
+        return o.getSymbol() + " (" + joined + ")";
     }
 
     private String formatPostfix(Operation o, List<String> childStrings) {
-        return "(" + childStrings.stream().reduce((s1, s2) -> s1 + ", " + s2).get() + ") " + o.getSymbol();
+        String joined = String.join(", ", childStrings);
+        return "(" + joined + ") " + o.getSymbol();
     }
 
     private boolean childNeedsParens(Operation parent, Expression child, int index) {

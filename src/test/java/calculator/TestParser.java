@@ -69,7 +69,7 @@ class TestParser {
     }
 
     @Test
-    void testFinalParsePathIsReachable() throws Exception {
+    void testFinalParsePathIsReachable() {
         // Attempt to find an input that makes the private tryParse return null
         // (so ExpressionParser will take the final parse path) while
         // ExpressionParser.parse(input) still returns an Expression.

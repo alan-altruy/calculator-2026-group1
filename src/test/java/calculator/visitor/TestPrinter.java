@@ -1,7 +1,6 @@
 package calculator.visitor;
 
 import calculator.MyNumber;
-import calculator.Operation;
 import calculator.Times;
 import visitor.Printer;
 
@@ -10,9 +9,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.sql.Time;
-
 
 class TestPrinter {
 

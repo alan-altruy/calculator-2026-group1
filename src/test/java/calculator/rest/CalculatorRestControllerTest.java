@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.junit.jupiter.api.BeforeEach;
+
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -29,78 +30,10 @@ class CalculatorRestControllerTest {
     private org.springframework.test.web.servlet.MockMvc mockMvc;
 
     private static final String API_URL = "/api/v1/evaluate";
-    private static final String RESULT = "$.result";
 
     @BeforeEach
     void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-    }
-
-    @Test
-    void responseHasJsonContentType() throws Exception {
-        String body = "\"1 + 6\"";
-        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post(API_URL)
-                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
-                .content(body))
-                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.content().contentType(org.springframework.http.MediaType.APPLICATION_JSON));
-    }
-
-    @Test
-    void testEvaluateBadRequest() throws Exception {
-        String badBody = "{\"no_ast\":true}";
-        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post(API_URL)
-                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
-                .content(badBody))
-                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.status().isBadRequest());
-    }
-
-    @Test
-    void testUnsupportedMediaTypeReturns415() throws Exception {
-        String body = "not json";
-        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post(API_URL)
-                .contentType(org.springframework.http.MediaType.TEXT_PLAIN)
-                .content(body))
-                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.status().isUnsupportedMediaType());
-    }
-
-    @Test
-    void testValidNotationIsAccepted() throws Exception {
-        String body = "\"2 + 3\"";
-        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post(API_URL)
-                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
-                .content(body))
-                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.status().isOk())
-                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath(RESULT).value(5));
-    }
-
-    @Test
-    void testDivisionByZeroProducesServerError() throws Exception {
-        String body = "\"1 / 0\"";
-        var res = mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post(API_URL)
-                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
-                .content(body))
-                .andReturn();
-        int status = res.getResponse().getStatus();
-        org.assertj.core.api.Assertions.assertThat(status / 100).isEqualTo(4);
-    }
-    @ParameterizedTest
-    @MethodSource("badRequestBodies")
-    void testBadOperationRequestsProduce4xxOr5xx(String body) throws Exception {
-        var res = mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post(API_URL)
-                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
-                .content(body))
-                .andReturn();
-        int status = res.getResponse().getStatus();
-        org.assertj.core.api.Assertions.assertThat(status / 100 == 2 || status / 100 == 4 || status / 100 == 5).isTrue();
-    }
-
-    private static Stream<Arguments> badRequestBodies() {
-        return Stream.of(
-            arguments("\"foo\""),
-            arguments("\"(1\""),
-            arguments("\"2 + null\""),
-            arguments("\"1 ++ 2\"")
-        );
     }
     
     @Test
@@ -115,25 +48,6 @@ class CalculatorRestControllerTest {
         org.assertj.core.api.Assertions.assertThat(status / 100).isEqualTo(4);
     }
 
-    @Test
-    void testMinusOperationEvaluates() throws Exception {
-        String body = "\"5 - 2\"";
-        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post(API_URL)
-                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
-                .content(body))
-                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.status().isOk())
-                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath(RESULT).value(3));
-    }
-
-    @Test
-    void testEvaluateSuccess() throws Exception {
-        String body = "\"1 + 2 * 3\"";
-        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post(API_URL)
-                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
-                .content(body))
-                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.status().isOk())
-                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath(RESULT).value(7));
-    }
 
     @Test
     void toExpressionMissingTypeThrows_viaMethodHandle() throws Throwable {

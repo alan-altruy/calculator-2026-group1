@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <script src="https://unpkg.com/vue@3"></script>
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+<div id="app">
+<!-- From Uiverse.io by alexruix -->
+<div class="input-group">
+    <input type="text" class="input" ref="InputField"  v-model="display" @keyup.enter="evaluate()" placeholder="Write your computation">
+    <input class="button--submit" value="Compute" type="button"  @click="evaluate()">
+</div>
+
+<div class="res">
+    <p>Result : {{ output }}</p>
+</div>
+
+<div class="eraser">
+    <button @click="remove()">←</button>
+    <button @click="add(' ')">space</button>
+</div>
+
+<div class="number">
+    <button @click="add('1')">1</button>
+    <button @click="add('2')">2</button>
+    <button @click="add('3')">3</button>
+    <button @click="add('4')">4</button>
+    <button @click="add('5')">5</button>
+    <button @click="add('6')">6</button>
+    <button @click="add('7')">7</button>
+    <button @click="add('8')">8</button>
+    <button @click="add('9')">9</button>
+    <button @click="add('0')">0</button>
+    <button @click="add('.')">.</button>
+    <button @click="clear()">C</button>
+</div>
+
+<div class="opbase">
+    <button @click="add('+')">+</button>
+    <button @click="add('-')">-</button>
+    <button @click="add('*')">×</button>
+    <button @click="add('/')">/</button>
+    <button @click="add('(')">(</button>
+    <button @click="add(')')">)</button>
+    <button @click="add('**')">^</button>
+    <button @click="add('%')">mod</button>
+    <button @click="add('//')">//</button>
+</div>
+
+<div class="special">
+    <button @click="add('π')">π</button>
+    <button @click="add('e')">e</button>
+    <button @click="add('φ')">φ</button>
+    <button @click="add('i')">i</button>
+</div>
+
+<div class="otherop">
+    <button @click="add('ln')">ln</button>
+    <button @click="add('log')">log</button>
+    <button @click="add('||')">|x|</button>
+    <button @click="add('!')">x!</button>
+    <button @click="add('sin')">sin</button>
+    <button @click="add('arcsin')">arcsin</button>
+    <button @click="add('cos')">cos</button>
+    <button @click="add('arccos')">arccos</button>
+    <button @click="add('tan')">tan</button>
+    <button @click="add('arctan')">arctan</button>
+</div>
+</div>
+</body>
+
+</html>
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                display: '',
+                output: null
+            }
+        },
+        methods: {
+            async evaluate() {
+                try {
+                    const response = await fetch('/api/v1/evaluate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(this.display)
+                    });
+
+                    const data = await response.json();
+                    this.output = data.result;
+
+                } catch (error) {
+                    this.output = "Error";
+                }
+            },
+
+            add(value) {
+                const input = this.$refs.InputField;
+                const start = input.selectionStart;
+                const end = input.selectionEnd;
+                this.display = this.display.substring(0,start)+value+this.display.substring(end);
+                this.$nextTick(() => {
+                    input.selectionStart = input.selectionEnd = start + value.length;
+                    input.focus();
+                });
+            },
+            remove() {
+                const input = this.$refs.InputField;
+                const start = input.selectionStart;
+                const end = input.selectionEnd;
+                if(start!==end){
+                    this.display = this.display.substring(0,start)+this.display.substring(end);
+                    this.$nextTick(() => {
+                        input.selectionStart = input.selectionEnd = start;
+                        input.focus();
+                    });
+                    return;
+                }
+
+                if (start === 0) return;
+
+                this.display =
+                    this.display.substring(0, start - 1) +
+                    this.display.substring(start);
+
+                this.$nextTick(() => {
+                    input.selectionStart = input.selectionEnd = start - 1;
+                    input.focus();
+                });
+            },
+            clear() {
+                this.display = '';
+                this.output = null;
+            }
+        }
+    });
+
+    app.mount('#app');
+</script>

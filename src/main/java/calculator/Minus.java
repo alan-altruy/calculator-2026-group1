@@ -47,7 +47,7 @@ public final class Minus extends Operation
      * @return The integer that is the result of the subtraction
      */
   public int op(int l, int r) {
-  	return (l-r);
+  	return l-r;
   }
 
   @Override

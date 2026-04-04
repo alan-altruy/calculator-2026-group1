@@ -21,6 +21,10 @@
     <p>Result : {{ output }}</p>
 </div>
 
+<div v-if="errorMessage" class="alert">
+    <p>ERROR : {{ errorMessage }}</p>
+</div>
+
 <div class="eraser">
     <button @click="remove()">←</button>
     <button @click="add(' ')">space</button>
@@ -81,7 +85,8 @@
         data() {
             return {
                 display: '',
-                output: null
+                output: null,
+                errorMessage: null
             }
         },
         methods: {
@@ -96,10 +101,16 @@
                     });
 
                     const data = await response.json();
+                    if (!response.ok) {
+                        throw new Error(data.result);
+                    }
+
                     this.output = data.result;
+                    this.errorMessage = null;
 
                 } catch (error) {
-                    this.output = "Error";
+                    this.output = "NaN";
+                    this.errorMessage = "Invalid input !";
                 }
             },
 
@@ -140,6 +151,7 @@
             clear() {
                 this.display = '';
                 this.output = null;
+                this.errorMessage = null;
             }
         }
     });

@@ -66,6 +66,7 @@ public class CalculatorRestController {
                 examples = @ExampleObject(value = "{\"ast\":{\"type\":\"operation\",\"op\":\"+\",\"args\":[{\"type\":\"number\",\"value\":1},{\"type\":\"operation\",\"op\":\"*\",\"args\":[{\"type\":\"number\",\"value\":2},{\"type\":\"number\",\"value\":3}]}]}}"))        )
     @PostMapping(value = "/evaluate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EvaluateResponse> compute(@RequestBody String input) {
+        input = input.replace("\"", "");
         Expression e = ExpressionParser.parse(input);
         Calculator c = new Calculator();
         int result = c.eval(e);

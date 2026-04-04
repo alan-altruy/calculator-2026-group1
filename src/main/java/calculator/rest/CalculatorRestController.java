@@ -72,10 +72,8 @@ public class CalculatorRestController {
         try {
             int result = c.eval(e);
             return ResponseEntity.ok(new EvaluateResponse(result));
-        } catch (IllegalConstruction ex) {
-            return ResponseEntity.badRequest().build();
         } catch (ArithmeticException ex) {
-            return ResponseEntity.status(400).build(); // I'm a teapot... (used here to indicate an arithmetic error like division by zero)
+            return ResponseEntity.badRequest().build();
         }
     }
 

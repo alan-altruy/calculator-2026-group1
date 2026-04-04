@@ -67,10 +67,10 @@ body {
 
 .alert {
     position: absolute;
-    bottom: 4em;
+    top: 16.5em;
     left: 2em;
     color: #ffffff;
-    font-size: 40px;
+    font-size: 50px;
     font-weight: bolder;
     font-family: URW Chancery L, cursive;
     margin-top: 6px;

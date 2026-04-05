@@ -42,6 +42,11 @@ jobs:
         run: |
           cd target/site/jacoco
           zip -r ../../../jacoco.zip ./*
+      
+      - name: Zip surefire-reports
+        run: |
+          cd target/surefire-reports
+          zip -r ../../surefire-reports.zip ./*
 
       - name: Upload artifacts to release
         uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe
@@ -50,5 +55,6 @@ jobs:
             pmd.zip
             apidocs.zip
             jacoco.zip
+            surefire-reports.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

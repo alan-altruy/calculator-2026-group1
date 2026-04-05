@@ -28,7 +28,7 @@ jobs:
           mkdir -p release-site/$TAG
           cp -r target/reports release-site/$TAG/
           cp -r target/site/jacoco release-site/$TAG/
-          cp -r target/site/apidocs release-site/$TAG/
+          cp -r target/reports/apidocs release-site/$TAG/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e

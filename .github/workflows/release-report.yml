@@ -1,14 +1,10 @@
 name: Release Build
-permissions:
-  contents: write
 on:
-  push:
-    tags:
-      - '*'
+  release:
+    types: [published]
 
 jobs:
   build:
-    name: Create Release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -20,36 +16,29 @@ jobs:
           distribution: temurin
 
       - name: Build, Test & PMD
-        run: mvn clean test pmd:pmd
+        run: mvn clean test pmd:check
 
       - name: Generate JavaDoc
         run: mvn javadoc:javadoc
 
-      - name: Prepare release-site folder
-        run: |
-          TAG=${GITHUB_REF##*/}
-          mkdir -p release-site/$TAG
-          cp -r target/reports release-site/$TAG/
-          cp -r target/site/jacoco release-site/$TAG/
-          cp -r target/reports/apidocs release-site/$TAG/
+      - name: Generate Jacoco report
+        run: mvn jacoco:report
 
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
+      - name: Zip PMD
+        run: zip -r pmd.zip target/reports/pmd
+
+      - name: Zip JavaDoc
+        run: zip -r apidocs.zip target/reports/apidocs
+
+      - name: Zip Jacoco
+        run: zip -r jacoco.zip target/site/jacoco
+
+      - name: Upload artifacts to release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            pmd.zip
+            apidocs.zip
+            jacoco.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref_name }}
-          release_name: Release ${{ github.ref_name }}
-          draft: false
-          prerelease: false
-      - name: Upload Release Assets
-        uses: actions/upload-release-asset@v1
-        env:          
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          asset_content_type: application/zip
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release-site/${{ github.ref_name }}
-          asset_name: release-site-${{ github.ref_name }}.zip
- 

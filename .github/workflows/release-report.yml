@@ -34,7 +34,7 @@ jobs:
         run: zip -r jacoco.zip target/site/jacoco
 
       - name: Upload artifacts to release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe
         with:
           files: |
             pmd.zip

@@ -3,6 +3,9 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: write   # required to upload release assets
+  
 jobs:
   build:
     runs-on: ubuntu-latest

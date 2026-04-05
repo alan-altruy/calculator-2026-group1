@@ -30,13 +30,8 @@ jobs:
           cp -r target/site/jacoco release-site/$TAG/
           cp -r target/reports/apidocs release-site/$TAG/
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./release-site
-
       - name: Create GitHub Release
+        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -45,4 +40,13 @@ jobs:
           release_name: Release ${{ github.ref_name }}
           draft: false
           prerelease: false
+      - name: Upload Release Assets
+        uses: actions/upload-release-asset@v1
+        env:          
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          asset_content_type: application/zip
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release-site/${{ github.ref_name }}
+          asset_name: release-site-${{ github.ref_name }}.zip
  

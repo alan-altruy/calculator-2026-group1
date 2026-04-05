@@ -1,7 +1,8 @@
 name: Release Build
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - '*'
 
 jobs:
   build:
@@ -23,12 +24,25 @@ jobs:
 
       - name: Prepare release-site folder
         run: |
-          mkdir -p release-site/${{ github.event.release.tag_name }}
-          cp -r target/reports release-site/${{ github.event.release.tag_name }}/
-          cp -r target/site/jacoco release-site/${{ github.event.release.tag_name }}/
+          TAG=${GITHUB_REF##*/}
+          mkdir -p release-site/$TAG
+          cp -r target/reports release-site/$TAG/
+          cp -r target/site/jacoco release-site/$TAG/
+          cp -r target/site/apidocs release-site/$TAG/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./release-site
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+ 

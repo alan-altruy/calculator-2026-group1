@@ -236,8 +236,9 @@
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>${pmd.version}</version>
                 <configuration>
-                    <linkXRef>false</linkXRef>
                     <targetJdk>${maven.compiler.release}</targetJdk>
+                    <linkXRef>false</linkXRef>
+                    <outputDirectory>${project.build.directory}/reports/pmd</outputDirectory>
                 </configuration>
                 <executions>
                     <execution>

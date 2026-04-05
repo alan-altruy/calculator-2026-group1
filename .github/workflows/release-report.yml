@@ -5,9 +5,10 @@ on:
 
 permissions:
   contents: write   # required to upload release assets
-  
+
 jobs:
   build:
+    name: Report on Release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -28,13 +29,19 @@ jobs:
         run: mvn jacoco:report
 
       - name: Zip PMD
-        run: zip -r pmd.zip target/reports/pmd
+        run: |
+          cd target/reports/pmd
+          zip -r ../../../pmd.zip ./*
 
       - name: Zip JavaDoc
-        run: zip -r apidocs.zip target/reports/apidocs
+        run: |
+          cd target/reports/apidocs
+          zip -r ../../../apidocs.zip ./*
 
       - name: Zip Jacoco
-        run: zip -r jacoco.zip target/site/jacoco
+        run: |
+          cd target/site/jacoco
+          zip -r ../../../jacoco.zip ./*
 
       - name: Upload artifacts to release
         uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe

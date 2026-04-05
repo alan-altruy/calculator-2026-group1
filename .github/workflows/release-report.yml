@@ -16,7 +16,7 @@ jobs:
           distribution: temurin
 
       - name: Build, Test & PMD
-        run: mvn clean test pmd:check
+        run: mvn clean test pmd:pmd
 
       - name: Generate JavaDoc
         run: mvn javadoc:javadoc

@@ -76,6 +76,11 @@
     <button @click="add('tan')">tan</button>
     <button @click="add('arctan')">arctan</button>
 </div>
+
+<div class="help">
+    <p>{{ helpText }}</p>
+</div>
+
 </div>
 </body>
 
@@ -86,8 +91,16 @@
             return {
                 display: '',
                 output: null,
-                errorMessage: null
+                errorMessage: null,
+                helpText: ''
             }
+        },
+        mounted() {
+            fetch('/helper.txt')
+                .then(response => response.text())
+                .then(text => {
+                    this.helpText = text;
+                });
         },
         methods: {
             async evaluate() {
@@ -110,7 +123,7 @@
 
                 } catch (error) {
                     this.output = "NaN";
-                    this.errorMessage = "Invalid input !";
+                    this.errorMessage = "ERROR : Division By Zero !";
                 }
             },
 

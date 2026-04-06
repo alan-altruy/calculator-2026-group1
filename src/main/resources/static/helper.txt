@@ -1,19 +1,9 @@
-Notre calculatrice est capable d'effectuer une addition, une soustraction, une multiplication et une division. Le résultat de ces opérations est affiché sans que
-le calcul ne soit effacé de le champs d'entrée. Naturellement, notre application gère la division par zéro en affichant le message d'erreur et en donnant
-une valeur indéfinie (NaN). Il gère également les nombres négatifs.
+Our calculator is capable of performing the four basic arithmetic operations: addition, subtraction, multiplication, and division. The result of these operations is displayed without clearing the input field, allowing users to retain and review the original expression. The application properly handles division by zero by displaying an error message and returning an undefined value (NaN). It also supports negative numbers.
 
-Notre calculatrice supporte trois notations différentes : la notation infixée, la notation préfixée et la notation postfixée. La notation infixée est la plus
-courante, l'opérateur est placé entre les nombres (par exemple, 6*7). La notation préfixée, utilisé avec scheme, implique que l'opérateur précède les nombres (par exemple * 3 9).
-Enfin, utilisé avec le langage de prgrammation Forth , la notation postfixée place l'opérateur à la fin (par exemple 0 8 -).
+The calculator supports three different notations: infix, prefix, and postfix notation. Infix notation is the most commonly used form, where the operator is placed between operands (e.g., 6 × 7). Prefix notation, used in languages such as Scheme, places the operator before the operands (e.g., * 3 9). Finally, postfix notation, used in programming languages such as Forth, places the operator after the operands (e.g., 0 8 −).
 
-Notre calculatrice peut gérer une expression composée, que cela soit avec plusieurs nombres pour une opération ou plusieurs opérations. Avec la notation préfixée et
-postfixée, on peut se permettre d'écrire un seul opérateur pour plusieurs nombres (par exemple + 0 1 2 3 4  et 5 6 7 8 9 ×). Notre application admet une notation subtile.
-Soit l'expression infixée suivante : (4+5+6)×(7+(5-2-7))×9. On peut se permettre d'écrire ce même calcul ainsi : ((4 5 6)+ (7 (5 2 7)-)+ 9) = (15 3 9). Ici, l'opération
-appliquer à cette expression est la multiplication. Par conséquent, (15 3 9) = 15*3*9 = 405. Comme dans l'arithmétique classique, les parenthèses forcent la priorité d'un
-opération. Elles ont ce rôle uniquement dans l'écriture infixée.
+The calculator is capable of handling compound expressions, including those involving multiple operands or multiple operations. In prefix and postfix notations, it is possible to use a single operator with several operands (e.g., + 0 1 2 3 4 and 5 6 7 8 9 ×). The application also supports a more advanced notation. For instance, the infix expression (4 + 5 + 6) × (7 + (5 − 2 − 7)) × 9 can be rewritten as ((4 5 6)+ (7 (5 2 7)−)+ 9). In this case, the operation applied to the resulting expression (15 3 9) is multiplication, yielding 15 × 3 × 9 = 405. As in standard arithmetic, parentheses are used to enforce operation precedence, but only in infix notation.
 
-Sur notre calculatrice, on retrouve différent boutons afin d'écrire une expression (nombre et opérateur). Un bouton "clear" permet d'effacer le champs d'entrée. Un
-bouton "delete" permet de d'effacer un caractère dans l'input selon le placement du curseur. Un bouton "compute" permet de calculer le résultat de l'expression écrite dans
-le champs d'entrée.
+The user interface provides several buttons for entering expressions, including both numbers and operators. A “clear” button allows the user to reset the input field entirely. A “delete” button removes a character based on the current cursor position. A “compute” button evaluates the expression entered in the input field.
 
-Concernant des expressions invalides (une notation ambiguë, incomplète ou impliquant des lettres), notre application affiche le message d'erreur et la valeur "NaN".
+Finally, in the case of invalid expressions (such as ambiguous, incomplete, or syntactically incorrect inputs, including the use of unsupported characters), the application displays an error message and returns the value “NaN”.

@@ -175,10 +175,13 @@ button:active {
 
 .help p {
     width: 500px;
-    max-height: 200px;
+    height: 800px;
     margin: 0;
     padding: 20px;
     background: transparent;
     border-radius: 3px;
     border: 5px solid #999dff;
+    overflow-y: auto;
+    overflow-x: hidden;
+    white-space: pre-line;
 }

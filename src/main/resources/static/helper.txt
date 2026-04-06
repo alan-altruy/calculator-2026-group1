@@ -1,5 +1,19 @@
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Notre calculatrice est capable d'effectuer une addition, une soustraction, une multiplication et une division. Le résultat de ces opérations est affiché sans que
+le calcul ne soit effacé de le champs d'entrée. Naturellement, notre application gère la division par zéro en affichant le message d'erreur et en donnant
+une valeur indéfinie (NaN). Il gère également les nombres négatifs.
 
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute iruredolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Notre calculatrice supporte trois notations différentes : la notation infixée, la notation préfixée et la notation postfixée. La notation infixée est la plus
+courante, l'opérateur est placé entre les nombres (par exemple, 6*7). La notation préfixée, utilisé avec scheme, implique que l'opérateur précède les nombres (par exemple * 3 9).
+Enfin, utilisé avec le langage de prgrammation Forth , la notation postfixée place l'opérateur à la fin (par exemple 0 8 -).
+
+Notre calculatrice peut gérer une expression composée, que cela soit avec plusieurs nombres pour une opération ou plusieurs opérations. Avec la notation préfixée et
+postfixée, on peut se permettre d'écrire un seul opérateur pour plusieurs nombres (par exemple + 0 1 2 3 4  et 5 6 7 8 9 ×). Notre application admet une notation subtile.
+Soit l'expression infixée suivante : (4+5+6)×(7+(5-2-7))×9. On peut se permettre d'écrire ce même calcul ainsi : ((4 5 6)+ (7 (5 2 7)-)+ 9) = (15 3 9). Ici, l'opération
+appliquer à cette expression est la multiplication. Par conséquent, (15 3 9) = 15*3*9 = 405. Comme dans l'arithmétique classique, les parenthèses forcent la priorité d'un
+opération. Elles ont ce rôle uniquement dans l'écriture infixée.
+
+Sur notre calculatrice, on retrouve différent boutons afin d'écrire une expression (nombre et opérateur). Un bouton "clear" permet d'effacer le champs d'entrée. Un
+bouton "delete" permet de d'effacer un caractère dans l'input selon le placement du curseur. Un bouton "compute" permet de calculer le résultat de l'expression écrite dans
+le champs d'entrée.
+
+Concernant des expressions invalides (une notation ambiguë, incomplète ou impliquant des lettres), notre application affiche le message d'erreur et la valeur "NaN".

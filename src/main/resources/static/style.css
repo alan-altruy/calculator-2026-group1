@@ -165,17 +165,17 @@ button:active {
 
 .help {
     position: absolute;
-    top: 7em;
+    top: 4em;
     right: 2em;
     color: #E9CBF4FF;
-    font-size: 20px;
+    font-size: 21px;
     font-family: Roboto Thin, sans-serif;
     margin-top: 5px;
     overflow-y: auto;
     overflow-x: hidden;
     white-space: pre-line;
     width: 500px;
-    height: 700px;
+    height: 800px;
     background: transparent;
     border-radius: 3px;
     border: 5px solid #999dff;

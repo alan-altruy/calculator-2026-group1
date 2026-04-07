@@ -92,8 +92,8 @@ class TestMain {
         String output = runMainWithInput("help\nquit\n");
 
         assertTrue(output.contains("--- Calculator Help ---"));
-        assertTrue(output.contains("Supported ops: +, -, *, /, ** (Power)."));
-        assertTrue(output.contains("Implicit multiplication"));
+        assertTrue(output.contains("Supported ops: +, -, *, /, **, mod, //, !, |x|"));
+        assertTrue(output.contains("Supported funcs: sin, cos, tan"));
         assertTrue(output.contains(GOODBYE));
     }
     @ParameterizedTest

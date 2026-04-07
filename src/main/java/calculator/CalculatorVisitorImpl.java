@@ -54,11 +54,52 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
 
     @Override
     public Expression visitNum(CalculatorParser.NumContext ctx) {
-        int val = Integer.parseInt(ctx.NUMBER().getText());
-        if (Main.currentDomain == NumberDomain.RATIONAL) {
-            return new MyNumber(new calculator.value.RationalValue(val));
+        String text = ctx.NUMBER().getText();
+        if (Main.currentDomain == NumberDomain.REAL || text.contains(".") || text.toLowerCase().contains("e")) {
+            return new MyNumber(new calculator.value.RealValue(text));
+        } else if (Main.currentDomain == NumberDomain.RATIONAL) {
+            return new MyNumber(new calculator.value.RationalValue(Integer.parseInt(text)));
+        } else {
+            return new MyNumber(Integer.parseInt(text));
         }
-        return new MyNumber(val);
+    }
+
+    @Override
+    public Expression visitConst(CalculatorParser.ConstContext ctx) {
+        return new MyConstant(ctx.CONSTANT().getText());
+    }
+
+    @Override
+    public Expression visitAbs(CalculatorParser.AbsContext ctx) {
+        Expression arg = visit(ctx.expr());
+        try { return new Abs(java.util.List.of(arg)); } 
+        catch (IllegalConstruction e) { throw new RuntimeException(e); }
+    }
+
+    @Override
+    public Expression visitFactorial(CalculatorParser.FactorialContext ctx) {
+        Expression arg = visit(ctx.expr());
+        try { return new Factorial(java.util.List.of(arg), Notation.POSTFIX); } 
+        catch (IllegalConstruction e) { throw new RuntimeException(e); }
+    }
+
+    @Override
+    public Expression visitFunc(CalculatorParser.FuncContext ctx) {
+        Expression arg = visit(ctx.expr());
+        String func = ctx.func.getText();
+        try {
+            switch(func) {
+                case "sin": return new Sin(java.util.List.of(arg), Notation.PREFIX);
+                case "cos": return new Cos(java.util.List.of(arg), Notation.PREFIX);
+                case "tan": return new Tan(java.util.List.of(arg), Notation.PREFIX);
+                case "arcsin": return new ArcSin(java.util.List.of(arg), Notation.PREFIX);
+                case "arccos": return new ArcCos(java.util.List.of(arg), Notation.PREFIX);
+                case "arctan": return new ArcTan(java.util.List.of(arg), Notation.PREFIX);
+                case "ln": return new Ln(java.util.List.of(arg), Notation.PREFIX);
+                case "log": return new Log(java.util.List.of(arg), Notation.PREFIX);
+                default: throw new IllegalArgumentException("Unknown func: " + func);
+            }
+        } catch (IllegalConstruction e) { throw new RuntimeException(e); }
     }
 
     @Override
@@ -82,18 +123,14 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
     private Expression createOperation(String op, List<Expression> args, Notation notation) {
         try {
             switch (op) {
-                case "+":
-                    return new Plus(args, notation);
-                case "-":
-                    return new Minus(args, notation);
-                case "*":
-                    return new Times(args, notation);
-                case "/":
-                    return new Divides(args, notation);
-                case "**":
-                    return new Power(args, notation);
-                default:
-                    throw new IllegalArgumentException("Unknown operator: " + op);
+                case "+": return new Plus(args, notation);
+                case "-": return new Minus(args, notation);
+                case "*": return new Times(args, notation);
+                case "/": return new Divides(args, notation);
+                case "**": return new Power(args, notation);
+                case "mod": return new Mod(args, notation);
+                case "//": return new IntDiv(args, notation);
+                default: throw new IllegalArgumentException("Unknown operator: " + op);
             }
         } catch (IllegalConstruction e) {
             throw new IllegalConstruction("Invalid operation construction", e);

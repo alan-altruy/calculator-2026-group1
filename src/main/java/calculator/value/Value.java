@@ -47,10 +47,23 @@ public interface Value {
 
     /**
      * Returns the integer approximation of this value.
-     * For integers, this is the exact value.
-     * For rationals, this is the truncated integer division.
-     *
      * @return the integer approximation
      */
     int intValue();
+
+    // --- New Binary Operations ---
+    default Value mod(Value other) { throw new ArithmeticException("mod not supported for " + this.getClass().getSimpleName()); }
+    default Value intDiv(Value other) { throw new ArithmeticException("intDiv not supported for " + this.getClass().getSimpleName()); }
+
+    // --- New Unary Operations & Functions ---
+    default Value ln() { throw new ArithmeticException("ln not supported for " + this.getClass().getSimpleName()); }
+    default Value log() { throw new ArithmeticException("log not supported for " + this.getClass().getSimpleName()); }
+    default Value sin() { throw new ArithmeticException("sin not supported for " + this.getClass().getSimpleName()); }
+    default Value cos() { throw new ArithmeticException("cos not supported for " + this.getClass().getSimpleName()); }
+    default Value tan() { throw new ArithmeticException("tan not supported for " + this.getClass().getSimpleName()); }
+    default Value arcsin() { throw new ArithmeticException("arcsin not supported for " + this.getClass().getSimpleName()); }
+    default Value arccos() { throw new ArithmeticException("arccos not supported for " + this.getClass().getSimpleName()); }
+    default Value arctan() { throw new ArithmeticException("arctan not supported for " + this.getClass().getSimpleName()); }
+    default Value abs() { throw new ArithmeticException("abs not supported for " + this.getClass().getSimpleName()); }
+    default Value fact() { throw new ArithmeticException("factorial not supported for " + this.getClass().getSimpleName()); }
 }

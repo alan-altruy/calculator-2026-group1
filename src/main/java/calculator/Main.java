@@ -38,12 +38,39 @@ public class Main {
  	}
 
 	public static NumberDomain currentDomain = NumberDomain.INTEGER;
+	public static AngleMode currentAngleMode = AngleMode.RAD;
+	public static int currentPrecision = 10;
 
 	static boolean handleInput(String input, Calculator c) {
 		if (input == null || input.isEmpty()) return false;
 
 		if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) {
 			return true;
+		}
+
+		if (input.toLowerCase().startsWith("mode ")) {
+			String[] parts = input.split(" ");
+			if (parts.length > 1) {
+				if (parts[1].equalsIgnoreCase("deg")) {
+					currentAngleMode = AngleMode.DEG;
+					LOGGER.info("Angle mode switched to DEG.");
+				} else {
+					currentAngleMode = AngleMode.RAD;
+					LOGGER.info("Angle mode switched to RAD.");
+				}
+			}
+			return false;
+		}
+
+		if (input.toLowerCase().startsWith("precision ")) {
+			String[] parts = input.split(" ");
+			if (parts.length > 1) {
+				try {
+					currentPrecision = Math.max(1, Integer.parseInt(parts[1]));
+					LOGGER.info("Precision set to " + currentPrecision + ".");
+				} catch (NumberFormatException ignored) { }
+			}
+			return false;
 		}
 
 		if (input.toLowerCase().startsWith("domain ")) {
@@ -83,12 +110,13 @@ public class Main {
 			LOGGER.info("  Commands:");
 			LOGGER.info("    help              - Show this help message");
 			LOGGER.info("    domain <type>     - Switch domain (Z/INTEGER, R/RATIONAL, RE/REAL, I/C/COMPLEX)");
-			LOGGER.info("    quit              - Exit the program");
-			LOGGER.info("    exit              - Exit the program");
+			LOGGER.info("    mode <rad|deg>    - Switch trigonometric mode to Radians or Degrees");
+			LOGGER.info("    precision <n>     - Set precision to n decimal digits (for REAL)");
+			LOGGER.info("    quit/exit         - Exit the program");
 			LOGGER.info("  Expressions:");
-			LOGGER.info("    Type any arithmetic expression.");
-			LOGGER.info("    Supported ops: +, -, *, /, ** (Power).");
-			LOGGER.info("    Implicit multiplication (e.g. '(4+5)(6)') is supported.");
+			LOGGER.info("    Supported ops: +, -, *, /, **, mod, //, !, |x|");
+			LOGGER.info("    Supported funcs: sin, cos, tan, arcsin, arccos, arctan, ln, log");
+			LOGGER.info("    Supported consts: pi, e, phi");
 			return false;
 		}
 

@@ -1,27 +1,84 @@
-const { createApp } = Vue;
-
-createApp({
+const app = Vue.createApp({
     data() {
         return {
-            expression: "",
-            result: null
-        };
+            display: '',
+            output: null,
+            errorMessage: null,
+            helpText: ''
+        }
+    },
+    mounted() {
+        fetch('/helper.txt')
+            .then(response => response.text())
+            .then(text => {
+                this.helpText = text;
+            });
     },
     methods: {
-        compute() {
-            fetch("http://localhost:8080/calculate", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    expression: this.expression
-                })
-            })
-                .then(res => res.json())
-                .then(data => {
-                    this.result = data.result;
+        async evaluate() {
+            try {
+                const response = await fetch('/api/v1/evaluate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(this.display)
                 });
+
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.result);
+                }
+
+                this.output = data.result;
+                this.errorMessage = null;
+
+            } catch (error) {
+                this.output = "NaN";
+                this.errorMessage = "ERROR : Division By Zero !";
+            }
+        },
+
+        add(value) {
+            const input = this.$refs.InputField;
+            const start = input.selectionStart;
+            const end = input.selectionEnd;
+            this.display = this.display.substring(0,start)+value+this.display.substring(end);
+            this.$nextTick(() => {
+                input.selectionStart = input.selectionEnd = start + value.length;
+                input.focus();
+            });
+        },
+        remove() {
+            const input = this.$refs.InputField;
+            const start = input.selectionStart;
+            const end = input.selectionEnd;
+            if(start!==end){
+                this.display = this.display.substring(0,start)+this.display.substring(end);
+                this.$nextTick(() => {
+                    input.selectionStart = input.selectionEnd = start;
+                    input.focus();
+                });
+                return;
+            }
+
+            if (start === 0) return;
+
+            this.display =
+                this.display.substring(0, start - 1) +
+                this.display.substring(start);
+
+            this.$nextTick(() => {
+                input.selectionStart = input.selectionEnd = start - 1;
+                input.focus();
+            });
+        },
+        clear() {
+            this.display = '';
+            this.output = null;
+            this.errorMessage = null;
         }
     }
-}).mount("#app");
+});
+
+app.mount('#app');

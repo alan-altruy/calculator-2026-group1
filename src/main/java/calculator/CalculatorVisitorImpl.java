@@ -55,6 +55,9 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
     @Override
     public Expression visitNum(CalculatorParser.NumContext ctx) {
         int val = Integer.parseInt(ctx.NUMBER().getText());
+        if (Main.currentDomain == NumberDomain.RATIONAL) {
+            return new MyNumber(new calculator.value.RationalValue(val));
+        }
         return new MyNumber(val);
     }
 

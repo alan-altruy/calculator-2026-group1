@@ -1,5 +1,6 @@
 package calculator;
 
+import calculator.value.Value;
 import java.util.List;
 
 /** This class represents the arithmetic sum operation "+".
@@ -18,7 +19,7 @@ public final class Plus extends Operation
    *
    * @param elist The list of Expressions to add
    * @throws IllegalConstruction    If an empty list of expressions if passed as parameter
-   * @see #Plus(List<Expression>,Notation)
+   * @see #Plus(List,Notation)
    */
   public /*constructor*/ Plus(List<Expression> elist) throws IllegalConstruction {
 	this(elist, null);
@@ -31,8 +32,8 @@ public final class Plus extends Operation
    * @param elist The list of Expressions to add
    * @param n The Notation to be used to represent the operation
    * @throws IllegalConstruction    If an empty list of expressions if passed as parameter
-   * @see #Plus(List<Expression>)
-   * @see Operation#Operation(List<Expression>,Notation)
+   * @see #Plus(List)
+   * @see Operation#Operation(List,Notation)
    */
   public Plus(List<Expression> elist, Notation n) throws IllegalConstruction {
   	super(elist,n);
@@ -41,13 +42,13 @@ public final class Plus extends Operation
   }
 
   /**
-   * The actual computation of the (binary) arithmetic addition of two integers
-   * @param l The first integer
-   * @param r The second integer that should be added to the first
-   * @return The integer that is the result of the addition
+   * The actual computation of the (binary) arithmetic addition of two values
+   * @param l The first value
+   * @param r The second value that should be added to the first
+   * @return The value that is the result of the addition
    */
-  public int op(int l, int r) {
-  	return l+r;
+  public Value op(Value l, Value r) {
+  	return l.add(r);
   }
 
   @Override

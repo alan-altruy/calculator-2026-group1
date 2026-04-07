@@ -35,7 +35,7 @@ class TestPower {
 
     @Test
     void testOp() {
-        assertEquals(8, op.op(2, 3));
+        assertEquals(8, op.op(new calculator.value.IntegerValue(2), new calculator.value.IntegerValue(3)).intValue());
     }
 
     @Test

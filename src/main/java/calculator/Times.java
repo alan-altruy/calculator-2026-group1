@@ -1,5 +1,6 @@
 package calculator;
 
+import calculator.value.Value;
 import java.util.List;
 
 /** This class represents the arithmetic multiplication operation "*".
@@ -45,8 +46,8 @@ public final class Times extends Operation
    * @param r The second integer that should be multiplied with the first
    * @return The integer that is the result of the multiplication
    */
-  public int op(int l, int r)
-    { return l*r; }
+  public Value op(Value l, Value r)
+    { return l.mul(r); }
 
   @Override
   public int getPrecedence() {

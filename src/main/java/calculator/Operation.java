@@ -1,5 +1,6 @@
 package calculator;
 
+import calculator.value.Value;
 import visitor.Printer;
 import visitor.Visitor;
 
@@ -104,7 +105,7 @@ public abstract class Operation implements Expression
 	 * @param r	second argument of the binary operation
 	 * @return	result of computing the binary operation
 	 */
-   	public abstract int op(int l, int r);
+   	public abstract Value op(Value l, Value r);
 		// the operation itself is specified in the subclasses
 
 		/** Add more parameters to the existing list of parameters

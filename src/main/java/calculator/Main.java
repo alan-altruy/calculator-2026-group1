@@ -37,6 +37,8 @@ public class Main {
 		LOGGER.info("Goodbye!");
  	}
 
+	public static NumberDomain currentDomain = NumberDomain.INTEGER;
+
 	static boolean handleInput(String input, Calculator c) {
 		if (input == null || input.isEmpty()) return false;
 
@@ -44,12 +46,45 @@ public class Main {
 			return true;
 		}
 
+		if (input.toLowerCase().startsWith("domain ")) {
+			String[] parts = input.split(" ");
+			if (parts.length > 1) {
+				String dom = parts[1].toUpperCase();
+				switch (dom) {
+					case "R":
+					case "RATIONAL":
+						currentDomain = NumberDomain.RATIONAL;
+						LOGGER.info("Number domain switched to RATIONAL.");
+						break;
+					case "RE":
+					case "REAL":
+						currentDomain = NumberDomain.REAL;
+						LOGGER.info("Number domain switched to REAL.");
+						break;
+					case "I":
+					case "C":
+					case "COMPLEX":
+						currentDomain = NumberDomain.COMPLEX;
+						LOGGER.info("Number domain switched to COMPLEX.");
+						break;
+					case "Z":
+					case "INTEGER":
+					default:
+						currentDomain = NumberDomain.INTEGER;
+						LOGGER.info("Number domain switched to INTEGER.");
+						break;
+				}
+			}
+			return false;
+		}
+
 		if (input.equalsIgnoreCase("help")) {
 			LOGGER.info("--- Calculator Help ---");
 			LOGGER.info("  Commands:");
-			LOGGER.info("    help  - Show this help message");
-			LOGGER.info("    quit  - Exit the program");
-			LOGGER.info("    exit  - Exit the program");
+			LOGGER.info("    help              - Show this help message");
+			LOGGER.info("    domain <type>     - Switch domain (Z/INTEGER, R/RATIONAL, RE/REAL, I/C/COMPLEX)");
+			LOGGER.info("    quit              - Exit the program");
+			LOGGER.info("    exit              - Exit the program");
 			LOGGER.info("  Expressions:");
 			LOGGER.info("    Type any arithmetic expression.");
 			LOGGER.info("    Supported ops: +, -, *, /, ** (Power).");

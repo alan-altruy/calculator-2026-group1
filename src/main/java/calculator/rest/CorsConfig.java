@@ -25,7 +25,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
-                        .allowedOrigins("http://localhost:8080");
+                        .allowedOrigins("http://localhost:8080", "https://alan-altruy.alwaysdata.net");
             }
         };
     }

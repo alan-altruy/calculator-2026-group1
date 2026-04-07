@@ -184,5 +184,15 @@ button:active {
 
 .help p {
     margin: 0;
+}
 
+.dom {
+    display: grid;
+    grid-template-columns: repeat(1, 210px);
+    gap: 10px;
+    justify-content: center;
+    margin-top: 50px;
+    position: absolute;
+    top: 10em;
+    left: 35em;
 }

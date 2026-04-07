@@ -65,6 +65,10 @@ jobs:
       - name: Upload JAR to AlwaysData with password authentication
         run: |
           sudo apt-get update && sudo apt-get install -y sshpass
-          sshpass -p "${{ secrets.ALWAYSDATA_PASSWORD }}" scp -o StrictHostKeyChecking=no \
+          sshpass -p "$ALWAYSDATA_PASSWORD" scp -o StrictHostKeyChecking=no \
             target/target/calculator-cucumber-*.jar \
-            ${{ secrets.ALWAYSDATA_USER }}@${{ secrets.ALWAYSDATA_HOST }}:~/apps/calculator.jar
+            $ALWAYSDATA_USER@$ALWAYSDATA_HOST:~/apps/calculator.jar
+        env: 
+          ALWAYSDATA_PASSWORD: ${{ secrets.ALWAYSDATA_PASSWORD }}
+          ALWAYSDATA_USER: ${{ secrets.ALWAYSDATA_USER }}
+          ALWAYSDATA_HOST: ${{ secrets.ALWAYSDATA_HOST }}

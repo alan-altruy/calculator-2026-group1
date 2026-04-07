@@ -62,7 +62,7 @@ public class Printer extends Visitor {
      */
     @Override
     public void visit(MyNumber n) {
-        result = Integer.toString(n.getValue());
+        result = n.toString();
     }
 
     /**

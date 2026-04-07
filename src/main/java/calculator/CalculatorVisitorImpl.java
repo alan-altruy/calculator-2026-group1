@@ -55,7 +55,9 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
     @Override
     public Expression visitNum(CalculatorParser.NumContext ctx) {
         String text = ctx.NUMBER().getText();
-        if (Main.currentDomain == NumberDomain.REAL || text.contains(".") || text.toLowerCase().contains("e")) {
+        if (Main.currentDomain == NumberDomain.COMPLEX) {
+            return new MyNumber(new calculator.value.ComplexValue(Double.parseDouble(text), 0));
+        } else if (Main.currentDomain == NumberDomain.REAL || text.contains(".") || text.toLowerCase().contains("e")) {
             return new MyNumber(new calculator.value.RealValue(text));
         } else if (Main.currentDomain == NumberDomain.RATIONAL) {
             return new MyNumber(new calculator.value.RationalValue(Integer.parseInt(text)));

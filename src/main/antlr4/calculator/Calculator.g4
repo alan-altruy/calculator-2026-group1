@@ -20,5 +20,5 @@ expr: '(' expr ')'                               # Parens
     ;
 
 NUMBER: [0-9]+ ('.' [0-9]+)? ([eE] [+-]? [0-9]+)? ;
-CONSTANT: 'pi' | 'e' | 'phi' ;
+CONSTANT: 'pi' | 'e' | 'phi' | 'i' ;
 WS: [ \t\r\n]+ -> skip ;

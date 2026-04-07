@@ -20,6 +20,7 @@ public class MyConstant extends MyNumber {
             case "pi": return new RealValue(Math.PI);
             case "e": return new RealValue(Math.E);
             case "phi": return new RealValue((1 + Math.sqrt(5)) / 2);
+            case "i": return new calculator.value.ComplexValue(0, 1);
             default: throw new IllegalArgumentException("Unknown constant: " + name);
         }
     }

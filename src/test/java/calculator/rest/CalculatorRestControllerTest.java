@@ -7,12 +7,15 @@ import org.junit.jupiter.params.provider.Arguments;
 import java.util.stream.Stream;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @org.springframework.context.annotation.Import({RestExceptionHandler.class, CorsConfig.class})
@@ -36,7 +39,16 @@ class CalculatorRestControllerTest {
 
         assertThrows(calculator.IllegalConstruction.class, () -> mh.invoke(controller, missingType));
     }
-    
+
+
+    @Test
+    void computeDivisionByZeroThrowsArithmeticException() {
+        CalculatorRestController controller = new CalculatorRestController();
+        ResponseEntity<EvaluateResponse> response = controller.compute("4/0");
+        assertNotNull(response);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
     @ParameterizedTest
     @MethodSource("privateMethodScenarios")
     void privateMethodsConsolidatedTests(String caseType, String json, String expect) throws Throwable {

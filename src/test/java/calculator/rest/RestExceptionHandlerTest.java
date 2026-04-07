@@ -55,4 +55,13 @@ class RestExceptionHandlerTest {
 		assertNotNull(resp.getBody());
 		assertEquals("Internal server error", resp.getBody().get(ERROR_KEY));
 	}
+
+	@Test
+	void handleNoResourceFound_returns404AndMessage() {
+		ResponseEntity<Map<String, String>> resp = handler.handleNoResourceFound(null);
+
+		assertEquals(HttpStatus.NOT_FOUND, resp.getStatusCode());
+		assertNotNull(resp.getBody());
+		assertEquals("Resource not found", resp.getBody().get(ERROR_KEY));
+	}
 }

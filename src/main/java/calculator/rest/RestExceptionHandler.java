@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.Map;
 
@@ -56,6 +57,15 @@ public class RestExceptionHandler {
     @ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
     public ResponseEntity<Map<String, String>> handleBadRequestMessage(org.springframework.http.converter.HttpMessageNotReadableException ex) {
         return ResponseEntity.badRequest().body(Map.of(ERROR_KEY, "Malformed JSON request"));
+    }
+
+    /**
+     * Handles NoResourceFoundException (missing static resources) by returning 404 without error logging.
+     */
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<Map<String, String>> handleNoResourceFound(NoResourceFoundException ex) {
+        return ResponseEntity.status(org.springframework.http.HttpStatus.NOT_FOUND)
+                .body(Map.of(ERROR_KEY, "Resource not found"));
     }
 
     /**

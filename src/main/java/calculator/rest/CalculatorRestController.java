@@ -1,7 +1,18 @@
 package calculator.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import calculator.*;
+
+import calculator.Calculator;
+import calculator.Divides;
+import calculator.Expression;
+import calculator.ExpressionParser;
+import calculator.IllegalConstruction;
+import calculator.Minus;
+import calculator.MyNumber;
+import calculator.Notation;
+import calculator.Plus;
+import calculator.Times;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -69,8 +80,12 @@ public class CalculatorRestController {
         input = input.replace("\"", "");
         Expression e = ExpressionParser.parse(input);
         Calculator c = new Calculator();
-        int result = c.eval(e);
-        return ResponseEntity.ok(new EvaluateResponse(result));
+        try {
+            int result = c.eval(e);
+            return ResponseEntity.ok(new EvaluateResponse(result));
+        } catch (ArithmeticException ex) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     /**

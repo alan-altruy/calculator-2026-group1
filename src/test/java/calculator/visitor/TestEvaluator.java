@@ -14,6 +14,9 @@ import calculator.operations.Minus;
 import calculator.MyNumber;
 import calculator.operations.Plus;
 import calculator.operations.Times;
+import calculator.operations.unaryoperations.Sin;
+import calculator.value.RealValue;
+import visitor.Evaluator;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
@@ -129,4 +132,14 @@ class TestEvaluator {
         }
     }
 
+    @Test
+    void singleArgBranchEvaluatesWithReal() {
+        try {
+            Sin s = new Sin(List.of(new MyNumber(new RealValue(0.0))));
+            Evaluator ev = new Evaluator();
+            s.accept(ev);
+            assertNotNull(ev.getResult());
+            assertEquals(0, ev.getResult().intValue());
+        } catch (IllegalConstruction e) { fail(); }
+    }
 }

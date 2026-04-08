@@ -22,7 +22,6 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import calculator.enums.AngleMode;
 import calculator.enums.NumberDomain;
-import io.cucumber.java.lu.a;
 
 import java.util.stream.Stream;
 import static org.junit.jupiter.params.provider.Arguments.arguments;

@@ -77,12 +77,31 @@
     <button @click="add('arctan')">arctan</button>
 </div>
 
-<div class="dom">
-    <button  @click="dom('INTEGER')">INTEGER</button>
-    <button  @click="dom('REAL')">REAL</button>
-    <button  @click="dom('RATIONAL')">RATIONAL</button>
-    <button  @click="dom('COMPLEX')">COMPLEX</button>
-</div>
+    <div class="dom">
+        <button
+                @click="dom('INTEGER')"
+                :class="{ active: currentDomain === 'INTEGER' }">
+            INTEGER
+        </button>
+
+        <button
+                @click="dom('REAL')"
+                :class="{ active: currentDomain === 'REAL' }">
+            REAL
+        </button>
+
+        <button
+                @click="dom('RATIONAL')"
+                :class="{ active: currentDomain === 'RATIONAL' }">
+            RATIONAL
+        </button>
+
+        <button
+                @click="dom('COMPLEX')"
+                :class="{ active: currentDomain === 'COMPLEX' }">
+            COMPLEX
+        </button>
+    </div>
 
 <div class="help">
     <p>{{ helpText }}</p>

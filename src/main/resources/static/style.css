@@ -196,3 +196,13 @@ button:active {
     top: 10em;
     left: 35em;
 }
+
+.dom button {
+    transition: 0.5s;
+}
+
+/* bouton actif */
+.dom button.active {
+    background-color: #FF00D0FF;
+    border-color: #000000;
+}

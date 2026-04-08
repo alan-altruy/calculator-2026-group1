@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import io.cucumber.java.sl.In;
-
 class IntegerValueTest {
 
     @Test

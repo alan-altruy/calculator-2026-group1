@@ -14,14 +14,14 @@ public abstract class UnaryOperation extends Operation {
 
     private static final int UNARY_ARG_COUNT = 1;
 
-    public UnaryOperation(List<Expression> elist) throws IllegalConstruction {
+    protected UnaryOperation(List<Expression> elist) throws IllegalConstruction {
         super(elist);
         if (elist.size() != UNARY_ARG_COUNT) {
             throw new IllegalConstruction("Unary operation requires exactly one argument");
         }
     }
 
-    public UnaryOperation(List<Expression> elist, Notation n) throws IllegalConstruction {
+    protected UnaryOperation(List<Expression> elist, Notation n) throws IllegalConstruction {
         super(elist, n);
         if (elist.size() != UNARY_ARG_COUNT) {
             throw new IllegalConstruction("Unary operation requires exactly one argument");
@@ -34,13 +34,4 @@ public abstract class UnaryOperation extends Operation {
     }
 
     public abstract Value unOp(Value v);
-
-    @Override
-    public void accept(visitor.Visitor v) {
-        // We override this in subclasses or Evaluator needs to know how to visit UnaryOperation
-        // For simplicity, Evaluator will visit it as a normal operation, but we must override
-        // Evaluator.visit(Operation) to handle unary ops, OR just return unOp in op(l,r) ignoring r?
-        // Let's implement Op by ignoring 'r' to reduce the need to change Evaluator heavily!
-        super.accept(v);
-    }
 }

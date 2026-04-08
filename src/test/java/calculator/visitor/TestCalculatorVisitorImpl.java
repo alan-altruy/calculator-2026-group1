@@ -1,4 +1,4 @@
-package calculator;
+package calculator.visitor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -11,12 +11,14 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 
+import calculator.*;
 import calculator.enums.Notation;
 import calculator.exceptions.IllegalConstruction;
 import calculator.operations.Plus;
 import calculator.operations.Power;
 import calculator.operations.Times;
 import org.junit.jupiter.api.Test;
+import visitor.CalculatorVisitorImpl;
 
 class TestCalculatorVisitorImpl {
 

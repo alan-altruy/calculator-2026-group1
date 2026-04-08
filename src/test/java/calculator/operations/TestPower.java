@@ -1,4 +1,4 @@
-package calculator;
+package calculator.operations;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -7,9 +7,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.util.Arrays;
 import java.util.List;
 
+import calculator.Expression;
+import calculator.MyNumber;
 import calculator.enums.Notation;
 import calculator.exceptions.IllegalConstruction;
-import calculator.operations.Power;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

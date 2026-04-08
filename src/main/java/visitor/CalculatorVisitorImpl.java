@@ -1,5 +1,6 @@
-package calculator;
+package visitor;
 
+import calculator.*;
 import calculator.enums.Notation;
 import calculator.enums.NumberDomain;
 import calculator.exceptions.IllegalConstruction;

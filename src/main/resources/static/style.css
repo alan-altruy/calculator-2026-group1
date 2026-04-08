@@ -203,6 +203,6 @@ button:active {
 
 /* bouton actif */
 .dom button.active {
-    background-color: #FF00D0FF;
+    background-color: #FA42DCFF;
     border-color: #000000;
 }

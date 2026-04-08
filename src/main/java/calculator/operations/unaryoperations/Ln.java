@@ -1,5 +1,8 @@
-package calculator;
+package calculator.operations.unaryoperations;
 
+import calculator.Expression;
+import calculator.enums.Notation;
+import calculator.exceptions.IllegalConstruction;
 import calculator.value.Value;
 import java.util.List;
 

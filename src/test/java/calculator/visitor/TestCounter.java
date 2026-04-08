@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import calculator.Divides;
+import calculator.operations.Divides;
 import calculator.Expression;
-import calculator.IllegalConstruction;
-import calculator.Minus;
+import calculator.exceptions.IllegalConstruction;
+import calculator.operations.Minus;
 import calculator.MyNumber;
-import calculator.Plus;
-import calculator.Times;
+import calculator.operations.Plus;
+import calculator.operations.Times;
 
 import static org.junit.jupiter.api.Assertions.*;
 

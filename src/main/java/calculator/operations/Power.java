@@ -1,5 +1,8 @@
-package calculator;
+package calculator.operations;
 
+import calculator.Expression;
+import calculator.enums.Notation;
+import calculator.exceptions.IllegalConstruction;
 import calculator.value.Value;
 import java.util.List;
 
@@ -32,7 +35,7 @@ public class Power extends Operation {
      * @param n The Notation to be used to represent the operation
      * @throws IllegalConstruction  If an empty list of expressions if passed as parameter
       * @see #Power(List<Expression>)
-      * @see Operation#Operation(List<Expression>,Notation)
+      * @see Operation#Operation(List<Expression>, Notation )
      */
     public Power(List<Expression> elist, Notation n) throws IllegalConstruction {
         super(elist, n);

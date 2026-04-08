@@ -1,5 +1,8 @@
-package calculator;
+package calculator.operations;
 
+import calculator.Expression;
+import calculator.enums.Notation;
+import calculator.exceptions.IllegalConstruction;
 import calculator.value.Value;
 import java.util.List;
 
@@ -18,7 +21,7 @@ public final class Times extends Operation
    *
    * @param elist The list of Expressions to multiply
    * @throws IllegalConstruction    If an empty list of expressions if passed as parameter
-   * @see #Times(List<Expression>,Notation)
+   * @see #Times(List< Expression >, Notation )
    */
   public /*constructor*/ Times(List<Expression> elist) throws IllegalConstruction {
   	this(elist, null);

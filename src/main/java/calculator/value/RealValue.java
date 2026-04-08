@@ -1,5 +1,7 @@
 package calculator.value;
 
+import calculator.enums.AngleMode;
+
 import java.math.BigDecimal;
 import java.math.MathContext;
 
@@ -113,14 +115,14 @@ public class RealValue implements Value {
     }
 
     private double getAngle() {
-        if (calculator.Main.currentAngleMode == calculator.AngleMode.DEG) {
+        if (calculator.Main.currentAngleMode == AngleMode.DEG) {
             return Math.toRadians(this.value.doubleValue());
         }
         return this.value.doubleValue();
     }
 
     private RealValue fromAngle(double rads) {
-        if (calculator.Main.currentAngleMode == calculator.AngleMode.DEG) {
+        if (calculator.Main.currentAngleMode == AngleMode.DEG) {
             return new RealValue(Math.toDegrees(rads));
         }
         return new RealValue(rads);

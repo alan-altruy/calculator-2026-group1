@@ -7,6 +7,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.util.Arrays;
 import java.util.List;
 
+import calculator.enums.Notation;
+import calculator.exceptions.IllegalConstruction;
+import calculator.operations.Power;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

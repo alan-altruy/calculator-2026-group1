@@ -1,5 +1,8 @@
 package calculator;
 
+import calculator.enums.AngleMode;
+import calculator.enums.NumberDomain;
+
 import java.util.Locale;
 
 /**

@@ -1,5 +1,11 @@
 package calculator;
 
+import calculator.enums.Notation;
+import calculator.enums.NumberDomain;
+import calculator.exceptions.IllegalConstruction;
+import calculator.operations.*;
+import calculator.operations.unaryoperations.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -75,7 +81,7 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
     @Override
     public Expression visitAbs(CalculatorParser.AbsContext ctx) {
         Expression arg = visit(ctx.expr());
-        try { return new Abs(java.util.List.of(arg)); } 
+        try { return new Abs(java.util.List.of(arg)); }
         catch (IllegalConstruction e) { throw new RuntimeException(e); }
     }
 

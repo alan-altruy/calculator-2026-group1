@@ -1,6 +1,8 @@
 package calculator;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import calculator.exceptions.IllegalConstruction;
 import org.junit.jupiter.api.Test;
 
 class IllegalConstructionTest {

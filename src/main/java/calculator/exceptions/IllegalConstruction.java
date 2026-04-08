@@ -1,4 +1,4 @@
-package calculator;
+package calculator.exceptions;
 
 /**
  * Exception that will be used when an incorrectly constructed arithmetic expression is encountered.

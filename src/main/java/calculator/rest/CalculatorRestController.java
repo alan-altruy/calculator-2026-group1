@@ -4,16 +4,16 @@ import calculator.value.Value;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import calculator.Calculator;
-import calculator.Divides;
+import calculator.operations.Divides;
 import calculator.Expression;
 import calculator.ExpressionParser;
-import calculator.IllegalConstruction;
-import calculator.Minus;
+import calculator.exceptions.IllegalConstruction;
+import calculator.operations.Minus;
 import calculator.MyNumber;
-import calculator.Notation;
-import calculator.Plus;
-import calculator.Times;
-import calculator.NumberDomain;
+import calculator.enums.Notation;
+import calculator.operations.Plus;
+import calculator.operations.Times;
+import calculator.enums.NumberDomain;
 import calculator.Main;
 
 import org.springframework.http.MediaType;

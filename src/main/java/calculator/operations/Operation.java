@@ -1,5 +1,9 @@
-package calculator;
+package calculator.operations;
 
+import calculator.Expression;
+import calculator.MyNumber;
+import calculator.enums.Notation;
+import calculator.exceptions.IllegalConstruction;
 import calculator.value.Value;
 import visitor.Printer;
 import visitor.Visitor;
@@ -43,7 +47,7 @@ public abstract class Operation implements Expression
 	 * Note that it is allowed to have an EMPTY list of arguments.
 	 *
 	 * @param elist	The list of expressions passed as argument to the arithmetic operation
-	 * @throws IllegalConstruction	Exception thrown if a null list of expressions is passed as argument
+	 * @throws IllegalConstruction    Exception thrown if a null list of expressions is passed as argument
 	 */
   	protected /*constructor*/ Operation(List<Expression> elist) throws IllegalConstruction  {
 		this(elist, null);

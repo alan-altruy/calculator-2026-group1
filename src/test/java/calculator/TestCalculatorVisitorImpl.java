@@ -10,6 +10,12 @@ import java.util.List;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+
+import calculator.enums.Notation;
+import calculator.exceptions.IllegalConstruction;
+import calculator.operations.Plus;
+import calculator.operations.Power;
+import calculator.operations.Times;
 import org.junit.jupiter.api.Test;
 
 class TestCalculatorVisitorImpl {

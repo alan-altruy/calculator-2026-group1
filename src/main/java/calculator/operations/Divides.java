@@ -1,5 +1,8 @@
-package calculator;
+package calculator.operations;
 
+import calculator.Expression;
+import calculator.enums.Notation;
+import calculator.exceptions.IllegalConstruction;
 import calculator.value.Value;
 import java.util.List;
 
@@ -19,7 +22,7 @@ public final class Divides extends Operation
    *
    * @param elist The list of Expressions to divide
    * @throws IllegalConstruction    If an empty list of expressions if passed as parameter
-   * @see #Divides(List<Expression>,Notation)
+   * @see #Divides(List< Expression >, Notation )
    */
   public /*constructor*/ Divides(List<Expression> elist) throws IllegalConstruction {
 	this(elist, null);

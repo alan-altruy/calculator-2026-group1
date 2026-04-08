@@ -83,7 +83,6 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
         Expression arg = visit(ctx.expr());
         try { return new Abs(java.util.List.of(arg)); }
         catch (IllegalConstruction e) {
-            e.printStackTrace();
             throw new IllegalConstruction("Invalid construction of Abs", e);
         }
     }
@@ -93,7 +92,6 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
         Expression arg = visit(ctx.expr());
         try { return new Factorial(java.util.List.of(arg), Notation.POSTFIX); }
         catch (IllegalConstruction e) {
-            e.printStackTrace();
             throw new IllegalConstruction("Invalid construction of Factorial", e);
         }
     }
@@ -115,7 +113,6 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
                 default: throw new IllegalArgumentException("Unknown func: " + func);
             }
         } catch (IllegalConstruction e) {
-            e.printStackTrace();
             throw new IllegalConstruction("Invalid construction of Function", e);
         }
     }

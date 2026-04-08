@@ -1,6 +1,7 @@
 package calculator;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -19,6 +20,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import calculator.enums.AngleMode;
+import calculator.enums.NumberDomain;
+import io.cucumber.java.lu.a;
 
 import java.util.stream.Stream;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -168,5 +172,93 @@ class TestMain {
         Calculator calc = new Calculator();
         assertFalse(Main.handleInput(null, calc));
         assertFalse(Main.handleInput("", calc));
+    }
+
+    @Test
+    void testHandleModePrecisionAndDomainCommands() {
+        Calculator calc = new Calculator();
+
+        // save originals
+        AngleMode origMode = Main.getCurrentAngleMode();
+        int origPrecision = Main.getCurrentPrecision();
+        NumberDomain origDomain = Main.getCurrentDomain();
+        try {
+            // mode
+            boolean resMode = Main.handleInput("mode deg", calc);
+            assertFalse(resMode);
+            assertEquals(AngleMode.DEG, Main.getCurrentAngleMode());
+
+            resMode = Main.handleInput("mode rad", calc);
+            assertFalse(resMode);
+            assertEquals(AngleMode.RAD, Main.getCurrentAngleMode());
+
+            // mod with 1 argument should not change mode
+            resMode = Main.handleInput("mode ", calc);
+            assertFalse(resMode);
+            assertEquals(origMode, Main.getCurrentAngleMode());
+
+            // precision
+            boolean resPrec = Main.handleInput("precision 4", calc);
+            assertFalse(resPrec);
+            assertEquals(4, Main.getCurrentPrecision());
+
+            // invalid precision should not change
+            Main.setCurrentPrecision(origPrecision);
+            resPrec = Main.handleInput("precision notanumber", calc);
+            assertFalse(resPrec);
+            assertEquals(origPrecision, Main.getCurrentPrecision());
+
+
+            // precision with missing argument should not change
+            resPrec = Main.handleInput("precision ", calc);
+            assertFalse(resPrec);
+            assertEquals(origPrecision, Main.getCurrentPrecision());
+
+            // domain
+            boolean resDom = Main.handleInput("domain real", calc);
+            assertFalse(resDom);
+            assertEquals(NumberDomain.REAL, Main.getCurrentDomain());
+
+            resDom = Main.handleInput("domain complex", calc);
+            assertFalse(resDom);
+            assertEquals(NumberDomain.COMPLEX, Main.getCurrentDomain());
+
+            resDom = Main.handleInput("domain rational", calc);
+            assertFalse(resDom);
+            assertEquals(NumberDomain.RATIONAL, Main.getCurrentDomain());
+
+            resDom = Main.handleInput("domain integer", calc);
+            assertFalse(resDom);
+            assertEquals(NumberDomain.INTEGER, Main.getCurrentDomain());
+
+            // domain with missing argument should not change
+            resDom = Main.handleInput("domain ", calc);
+            assertFalse(resDom);
+            assertEquals(origDomain , Main.getCurrentDomain());
+
+        } finally {
+            // restore
+            Main.setCurrentAngleMode(origMode);
+            Main.setCurrentPrecision(origPrecision);
+            Main.setCurrentDomain(origDomain);
+        }
+    }
+
+    @Test
+    void testSettersAndGettersForAngleModeAndPrecision() {
+        // save originals
+        AngleMode origMode = Main.getCurrentAngleMode();
+        int origPrecision = Main.getCurrentPrecision();
+        try {
+            Main.setCurrentAngleMode(AngleMode.DEG);
+            assertEquals(AngleMode.DEG, Main.getCurrentAngleMode());
+
+            Main.setCurrentPrecision(3);
+            assertEquals(3, Main.getCurrentPrecision());
+        } finally {
+            // restore
+            Main.setCurrentAngleMode(origMode);
+            Main.setCurrentPrecision(origPrecision);
+        }
     }
 }

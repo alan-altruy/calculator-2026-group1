@@ -41,11 +41,21 @@ public class Main {
 		LOGGER.info("Goodbye!");
  	}
 
-	public static NumberDomain currentDomain = NumberDomain.INTEGER;
-	public static AngleMode currentAngleMode = AngleMode.RAD;
-	public static int currentPrecision = 10;
+	private static NumberDomain currentDomain = NumberDomain.INTEGER;
+	private static AngleMode currentAngleMode = AngleMode.RAD;
+	private static int currentPrecision = 10;
 
 	private static final int MIN_ARG_LENGTH = 2;
+
+	public static NumberDomain getCurrentDomain() { return currentDomain; }
+	public static void setCurrentDomain(NumberDomain domain) { currentDomain = domain; }
+	
+	public static AngleMode getCurrentAngleMode() { return currentAngleMode; }
+	public static void setCurrentAngleMode(AngleMode mode) { currentAngleMode = mode; }
+
+	public static int getCurrentPrecision() { return currentPrecision; }
+	public static void setCurrentPrecision(int precision) { currentPrecision = precision; }
+
 
 	static boolean handleInput(String input, Calculator c) {
 		if (input == null || input.isEmpty()) return false;

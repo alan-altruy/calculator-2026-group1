@@ -150,10 +150,10 @@ public class CalculatorRestController {
     public void switchDomain(@RequestBody Map<String, String> body) {
         String domain = body.get("domain");
         switch (domain) {
-            case "REAL" -> Main.currentDomain = NumberDomain.REAL;
-            case "COMPLEX" -> Main.currentDomain = NumberDomain.COMPLEX;
-            case "RATIONAL" -> Main.currentDomain = NumberDomain.RATIONAL;
-            default -> Main.currentDomain = NumberDomain.INTEGER;
+            case "REAL" -> Main.setCurrentDomain(NumberDomain.REAL);
+            case "COMPLEX" -> Main.setCurrentDomain(NumberDomain.COMPLEX);
+            case "RATIONAL" -> Main.setCurrentDomain(NumberDomain.RATIONAL);
+            default -> Main.setCurrentDomain(NumberDomain.INTEGER);
         }
     }
 }

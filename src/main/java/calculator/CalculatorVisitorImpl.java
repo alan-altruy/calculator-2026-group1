@@ -62,11 +62,11 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
     @Override
     public Expression visitNum(CalculatorParser.NumContext ctx) {
         String text = ctx.NUMBER().getText();
-        if (Main.currentDomain == NumberDomain.COMPLEX) {
+        if (Main.getCurrentDomain() == NumberDomain.COMPLEX) {
             return new MyNumber(new calculator.value.ComplexValue(Double.parseDouble(text), 0));
-        } else if (Main.currentDomain == NumberDomain.REAL || text.contains(".") || text.toLowerCase(Locale.ROOT).contains("e")) {
+        } else if (Main.getCurrentDomain() == NumberDomain.REAL || text.contains(".") || text.toLowerCase(Locale.ROOT).contains("e")) {
             return new MyNumber(new calculator.value.RealValue(text));
-        } else if (Main.currentDomain == NumberDomain.RATIONAL) {
+        } else if (Main.getCurrentDomain() == NumberDomain.RATIONAL) {
             return new MyNumber(new calculator.value.RationalValue(Integer.parseInt(text)));
         } else {
             return new MyNumber(Integer.parseInt(text));

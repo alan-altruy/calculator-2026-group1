@@ -17,6 +17,15 @@ public class MyConstant extends MyNumber {
         this.name = name.toLowerCase(Locale.ROOT);
     }
 
+    /**
+     * Package-private constructor for tests: build a MyConstant with an explicit
+     * Value and name (name may be null).
+     */
+    MyConstant(Value value, String name) {
+        super(value);
+        this.name = (name == null) ? null : name.toLowerCase(Locale.ROOT);
+    }
+
     private static Value resolveValue(String name) {
         switch (name.toLowerCase(Locale.ROOT)) {
             case "pi": return new RealValue(Math.PI);

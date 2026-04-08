@@ -42,6 +42,8 @@ public class Main {
 	public static AngleMode currentAngleMode = AngleMode.RAD;
 	public static int currentPrecision = 10;
 
+	private static final int MIN_ARG_LENGTH = 2;
+
 	static boolean handleInput(String input, Calculator c) {
 		if (input == null || input.isEmpty()) return false;
 
@@ -51,7 +53,7 @@ public class Main {
 
 		if (input.toLowerCase(Locale.ROOT).startsWith("mode ")) {
 			String[] parts = input.split(" ");
-			if (parts.length > 1) {
+			if (parts.length >= MIN_ARG_LENGTH) {
 				if (parts[1].equalsIgnoreCase("deg")) {
 					currentAngleMode = AngleMode.DEG;
 					LOGGER.info("Angle mode switched to DEG.");
@@ -65,7 +67,7 @@ public class Main {
 
 		if (input.toLowerCase(Locale.ROOT).startsWith("precision ")) {
 			String[] parts = input.split(" ");
-			if (parts.length > 1) {
+			if (parts.length >= MIN_ARG_LENGTH) {
 				try {
 					currentPrecision = Math.max(1, Integer.parseInt(parts[1]));
 					LOGGER.info("Precision set to " + currentPrecision + ".");
@@ -76,8 +78,8 @@ public class Main {
 
 		if (input.toLowerCase(Locale.ROOT).startsWith("domain ")) {
 			String[] parts = input.split(" ");
-				if (parts.length > 1) {
-				String dom = parts[1].toUpperCase(Locale.ROOT);
+					if (parts.length >= MIN_ARG_LENGTH) {
+						String dom = parts[1].toUpperCase(Locale.ROOT);
 				switch (dom) {
 					case "R":
 					case "RATIONAL":

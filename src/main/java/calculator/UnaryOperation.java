@@ -8,16 +8,18 @@ import java.util.List;
  */
 public abstract class UnaryOperation extends Operation {
 
+    private static final int UNARY_ARG_COUNT = 1;
+
     public UnaryOperation(List<Expression> elist) throws IllegalConstruction {
         super(elist);
-        if (elist.size() != 1) {
+        if (elist.size() != UNARY_ARG_COUNT) {
             throw new IllegalConstruction("Unary operation requires exactly one argument");
         }
     }
 
     public UnaryOperation(List<Expression> elist, Notation n) throws IllegalConstruction {
         super(elist, n);
-        if (elist.size() != 1) {
+        if (elist.size() != UNARY_ARG_COUNT) {
             throw new IllegalConstruction("Unary operation requires exactly one argument");
         }
     }

@@ -12,6 +12,8 @@ public class RationalValue implements Value {
     private final int numerator;
     private final int denominator;
 
+    private static final int UNIT_DENOMINATOR = 1;
+
     /**
      * @param numerator the numerator
      * @param denominator the denominator (must not be zero)
@@ -24,8 +26,8 @@ public class RationalValue implements Value {
         this.denominator = denominator / g;
     }
 
-    /** @param value an integer value (denominator = 1) */
-    public RationalValue(int value) { this(value, 1); }
+    /** @param value an integer value (denominator = UNIT_DENOMINATOR) */
+    public RationalValue(int value) { this(value, UNIT_DENOMINATOR); }
 
     public int getNumerator() { return numerator; }
     public int getDenominator() { return denominator; }
@@ -85,7 +87,7 @@ public class RationalValue implements Value {
 
     @Override
     public String toString() {
-        if (denominator == 1) return Integer.toString(numerator);
+        if (denominator == UNIT_DENOMINATOR) return Integer.toString(numerator);
         return numerator + "/" + denominator;
     }
 

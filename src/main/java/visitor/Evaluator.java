@@ -26,6 +26,8 @@ public class Evaluator extends Visitor {
     /** The result of the evaluation will be stored in this private variable */
     private Value computedValue;
 
+    private static final int SINGLE_ARG_COUNT = 1;
+
     /** getter method to obtain the result of the evaluation
      *
      * @return a Value object containing the result of the evaluation
@@ -54,7 +56,7 @@ public class Evaluator extends Visitor {
         //second loop to accumulate all the evaluated subresults
         Value temp = evaluatedArgs.get(0);
         int max = evaluatedArgs.size();
-        if (max == 1) {
+        if (max == SINGLE_ARG_COUNT) {
             temp = o.op(temp, null);
         } else {
             for(int counter=1; counter<max; counter++) {

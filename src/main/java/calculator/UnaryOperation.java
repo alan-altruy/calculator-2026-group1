@@ -11,16 +11,18 @@ import java.util.List;
  */
 public abstract class UnaryOperation extends Operation {
 
+    private static final int UNARY_ARITY = 1;
+
     protected UnaryOperation(List<Expression> elist) throws IllegalConstruction {
         super(elist);
-        if (elist.size() != 1) {
+        if (elist.size() != UNARY_ARITY) {
             throw new IllegalConstruction("Unary operation requires exactly one argument");
         }
     }
 
     protected UnaryOperation(List<Expression> elist, Notation n) throws IllegalConstruction {
         super(elist, n);
-        if (elist.size() != 1) {
+        if (elist.size() != UNARY_ARITY) {
             throw new IllegalConstruction("Unary operation requires exactly one argument");
         }
     }

@@ -82,40 +82,31 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
     @Override
     public Expression visitAbs(CalculatorParser.AbsContext ctx) {
         Expression arg = visit(ctx.expr());
-        try { return new Abs(java.util.List.of(arg)); }
-        catch (IllegalConstruction e) {
-            throw new IllegalConstruction("Invalid construction of Abs", e);
-        }
+        return new Abs(java.util.List.of(arg));
+        
     }
 
     @Override
     public Expression visitFactorial(CalculatorParser.FactorialContext ctx) {
         Expression arg = visit(ctx.expr());
-        try { return new Factorial(java.util.List.of(arg), Notation.POSTFIX); }
-        catch (IllegalConstruction e) {
-            throw new IllegalConstruction("Invalid construction of Factorial", e);
-        }
+        return new Factorial(java.util.List.of(arg), Notation.POSTFIX);
     }
 
     @Override
     public Expression visitFunc(CalculatorParser.FuncContext ctx) {
         Expression arg = visit(ctx.expr());
         String func = ctx.func.getText();
-        try {
-            switch(func) {
-                case "sin": return new Sin(java.util.List.of(arg), Notation.PREFIX);
-                case "cos": return new Cos(java.util.List.of(arg), Notation.PREFIX);
-                case "tan": return new Tan(java.util.List.of(arg), Notation.PREFIX);
-                case "arcsin": return new ArcSin(java.util.List.of(arg), Notation.PREFIX);
-                case "arccos": return new ArcCos(java.util.List.of(arg), Notation.PREFIX);
-                case "arctan": return new ArcTan(java.util.List.of(arg), Notation.PREFIX);
-                case "ln": return new Ln(java.util.List.of(arg), Notation.PREFIX);
-                case "log": return new Log(java.util.List.of(arg), Notation.PREFIX);
-                default: throw new IllegalArgumentException("Unknown func: " + func);
-            }
-        } catch (IllegalConstruction e) {
-            throw new IllegalConstruction("Invalid construction of Function", e);
-        }
+        switch(func) {
+            case "sin": return new Sin(java.util.List.of(arg), Notation.PREFIX);
+            case "cos": return new Cos(java.util.List.of(arg), Notation.PREFIX);
+            case "tan": return new Tan(java.util.List.of(arg), Notation.PREFIX);
+            case "arcsin": return new ArcSin(java.util.List.of(arg), Notation.PREFIX);
+            case "arccos": return new ArcCos(java.util.List.of(arg), Notation.PREFIX);
+            case "arctan": return new ArcTan(java.util.List.of(arg), Notation.PREFIX);
+            case "ln": return new Ln(java.util.List.of(arg), Notation.PREFIX);
+            case "log": return new Log(java.util.List.of(arg), Notation.PREFIX);
+            default: throw new IllegalArgumentException("Unknown func: " + func);
+        }   
     }
 
     @Override

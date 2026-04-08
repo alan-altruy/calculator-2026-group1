@@ -31,6 +31,7 @@ class CalculatorRestControllerTest {
     private static final String CASE_PARSEARGS_SIZE = "parseArgs-size";
     private static final String CASE_PARSENOTATION_ENUM = "parseNotation-enum";
     private static final String NOTATION_INFIX = "INFIX";
+    private static final String DOM_STRING = "domain";
 
     @Test
     void toExpressionMissingTypeThrows_viaMethodHandle() throws Throwable {
@@ -141,17 +142,17 @@ class CalculatorRestControllerTest {
     void switchDomainSetsMainCurrentDomain() {
         CalculatorRestController controller = new CalculatorRestController();
 
-        controller.switchDomain(Map.of("domain", "REAL"));
+        controller.switchDomain(Map.of(DOM_STRING, "REAL"));
         assertEquals(NumberDomain.REAL, Main.getCurrentDomain());
 
-        controller.switchDomain(Map.of("domain", "COMPLEX"));
+        controller.switchDomain(Map.of(DOM_STRING, "COMPLEX"));
         assertEquals(NumberDomain.COMPLEX, Main.getCurrentDomain());
 
-        controller.switchDomain(Map.of("domain", "RATIONAL"));
+        controller.switchDomain(Map.of(DOM_STRING, "RATIONAL"));
         assertEquals(NumberDomain.RATIONAL, Main.getCurrentDomain());
 
         // default case -> INTEGER
-        controller.switchDomain(Map.of("domain", "UNKNOWN"));
+        controller.switchDomain(Map.of(DOM_STRING, "UNKNOWN"));
         assertEquals(NumberDomain.INTEGER, Main.getCurrentDomain());
     }
 }

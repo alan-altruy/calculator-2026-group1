@@ -8,6 +8,8 @@ public class IntegerValue implements Value {
 
     private final int value;
 
+    private static final String UNSUPPORTED_VALUE_TYPE = "Unsupported value type";
+
     /** @param value the integer value */
     public IntegerValue(int value) { this.value = value; }
 
@@ -15,21 +17,21 @@ public class IntegerValue implements Value {
     public Value add(Value other) {
         if (other instanceof IntegerValue iv) return new IntegerValue(value + iv.value);
         if (other instanceof RationalValue) return new RationalValue(value, 1).add(other);
-        throw new ArithmeticException("Unsupported value type");
+        throw new ArithmeticException(UNSUPPORTED_VALUE_TYPE);
     }
 
     @Override
     public Value sub(Value other) {
         if (other instanceof IntegerValue iv) return new IntegerValue(value - iv.value);
         if (other instanceof RationalValue) return new RationalValue(value, 1).sub(other);
-        throw new ArithmeticException("Unsupported value type");
+        throw new ArithmeticException(UNSUPPORTED_VALUE_TYPE);
     }
 
     @Override
     public Value mul(Value other) {
         if (other instanceof IntegerValue iv) return new IntegerValue(value * iv.value);
         if (other instanceof RationalValue) return new RationalValue(value, 1).mul(other);
-        throw new ArithmeticException("Unsupported value type");
+        throw new ArithmeticException(UNSUPPORTED_VALUE_TYPE);
     }
 
     @Override
@@ -39,14 +41,14 @@ public class IntegerValue implements Value {
             return new IntegerValue(value / iv.value);
         }
         if (other instanceof RationalValue) return new RationalValue(value, 1).div(other);
-        throw new ArithmeticException("Unsupported value type");
+        throw new ArithmeticException(UNSUPPORTED_VALUE_TYPE);
     }
 
     @Override
     public Value pow(Value other) {
         if (other instanceof IntegerValue iv) return new IntegerValue((int) Math.pow(value, iv.value));
         if (other instanceof RationalValue) return new RationalValue(value, 1).pow(other);
-        throw new ArithmeticException("Unsupported value type");
+        throw new ArithmeticException(UNSUPPORTED_VALUE_TYPE);
     }
 
     @Override public int intValue() { return value; }

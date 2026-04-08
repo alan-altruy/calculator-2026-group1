@@ -4,7 +4,8 @@ const app = Vue.createApp({
             display: '',
             output: null,
             errorMessage: null,
-            helpText: ''
+            helpText: '',
+            currentDomain: 'INTEGER'
         }
     },
     mounted() {
@@ -35,7 +36,7 @@ const app = Vue.createApp({
 
             } catch (error) {
                 this.output = "NaN";
-                this.errorMessage = "ERROR : Invalid input !";
+                this.errorMessage = "Invalid input !";
             }
         },
 
@@ -77,6 +78,7 @@ const app = Vue.createApp({
             this.errorMessage = null;
         },
         async dom(value){
+            this.currentDomain=value;
             await fetch('/api/v1/switchDomain', {
                 method: 'POST',
                 headers: {

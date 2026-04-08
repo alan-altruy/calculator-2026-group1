@@ -40,13 +40,13 @@ public class ComplexValue implements Value {
             return new ComplexValue(new RealValue(num.divide(den, MathContext.DECIMAL64)), new RealValue(0.0));
         }
         if (v instanceof IntegerValue iv) {
-            return new ComplexValue(new RealValue((double)iv.intValue()), new RealValue(0.0));
+            return new ComplexValue(new RealValue(iv.intValue()), new RealValue(0.0));
         }
         throw new ArithmeticException("Cannot convert to ComplexValue");
     }
 
     private static MathContext getContext() {
-        return new MathContext(calculator.Main.currentPrecision);
+        return new MathContext(calculator.Main.getCurrentPrecision());
     }
 
     @Override

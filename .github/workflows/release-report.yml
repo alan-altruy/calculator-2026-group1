@@ -58,3 +58,17 @@ jobs:
             surefire-reports.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Create JAR file
+        run: mvn clean package spring-boot:repackage
+
+      - name: Upload JAR to AlwaysData with password authentication
+        run: |
+          sudo apt-get update && sudo apt-get install -y sshpass
+          sshpass -p "$ALWAYSDATA_PASSWORD" scp -o StrictHostKeyChecking=no \
+            target/calculator-cucumber-*.jar \
+            $ALWAYSDATA_USER@$ALWAYSDATA_HOST:~/calculator.jar
+        env: 
+          ALWAYSDATA_PASSWORD: ${{ secrets.ALWAYSDATA_PASSWORD }}
+          ALWAYSDATA_USER: ${{ secrets.ALWAYSDATA_USER }}
+          ALWAYSDATA_HOST: ${{ secrets.ALWAYSDATA_HOST }}

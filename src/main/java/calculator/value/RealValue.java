@@ -30,7 +30,7 @@ public class RealValue implements Value {
     }
 
     private static MathContext getContext() {
-        return new MathContext(calculator.Main.currentPrecision);
+        return new MathContext(calculator.Main.getCurrentPrecision());
     }
 
     private static RealValue toReal(Value v) {
@@ -115,14 +115,14 @@ public class RealValue implements Value {
     }
 
     private double getAngle() {
-        if (calculator.Main.currentAngleMode == AngleMode.DEG) {
+        if (calculator.Main.getCurrentAngleMode() == AngleMode.DEG) {
             return Math.toRadians(this.value.doubleValue());
         }
         return this.value.doubleValue();
     }
 
     private RealValue fromAngle(double rads) {
-        if (calculator.Main.currentAngleMode == AngleMode.DEG) {
+        if (calculator.Main.getCurrentAngleMode() == AngleMode.DEG) {
             return new RealValue(Math.toDegrees(rads));
         }
         return new RealValue(rads);

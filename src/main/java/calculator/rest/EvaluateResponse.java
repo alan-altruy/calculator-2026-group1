@@ -1,7 +1,5 @@
 package calculator.rest;
 
-import calculator.value.Value;
-
 /**
  * A response object for the evaluate endpoint.
  */
@@ -20,17 +18,11 @@ public class EvaluateResponse {
      */
     public EvaluateResponse() {}
 
-/*    *//**
-     * Constructs a response object with a successful evaluation result.
-     * @param result the result of the evaluation
-     *//*
-    public EvaluateResponse(String result) { this.result = result; }
-
-    *//**
+    /**
      * Constructs a response object with an error message.
      * @param error the error message
-     *//*
-    public EvaluateResponse(String error) { this.error = error; }*/
+     */
+    public EvaluateResponse(String error) { this.error = error; }
 
     public EvaluateResponse(String result, String error) {
         this.result = result;

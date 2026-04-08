@@ -87,7 +87,7 @@ public class CalculatorRestController {
         Calculator c = new Calculator();
         try {
             Value result = c.evalValue(e);
-            return ResponseEntity.ok(new EvaluateResponse(result));
+            return ResponseEntity.ok(new EvaluateResponse(result.toString(),null));
         } catch (ArithmeticException ex) {
             return ResponseEntity.badRequest().build();
         }

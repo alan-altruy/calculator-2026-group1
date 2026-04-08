@@ -30,7 +30,7 @@ const app = Vue.createApp({
                     throw new Error(data.result);
                 }
 
-                this.output = data.result.bigDecimal;
+                this.output = data.result;
                 this.errorMessage = null;
 
             } catch (error) {

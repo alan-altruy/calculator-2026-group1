@@ -1,7 +1,7 @@
 package calculator.visitor;
 
 import calculator.MyNumber;
-import calculator.Times;
+import calculator.operations.Times;
 import visitor.Printer;
 
 import org.junit.jupiter.api.Test;

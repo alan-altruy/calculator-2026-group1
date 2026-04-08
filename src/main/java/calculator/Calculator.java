@@ -2,6 +2,7 @@ package calculator;
 
 import visitor.Counter;
 import visitor.Evaluator;
+import calculator.value.Value;
 import java.util.logging.Logger;
 
 /**
@@ -42,7 +43,7 @@ public class Calculator {
     public void print(Expression e) {
         java.util.Objects.requireNonNull(e, "expression must not be null");
         LOGGER.log(java.util.logging.Level.INFO, () -> String.format("The result of evaluating expression %s", e));
-        LOGGER.log(java.util.logging.Level.INFO, () -> String.format("is: %d.", eval(e)));
+        LOGGER.log(java.util.logging.Level.INFO, () -> String.format("is: %s.", evalValue(e)));
         LOGGER.log(java.util.logging.Level.INFO, () -> "");
     }
 
@@ -68,11 +69,17 @@ public class Calculator {
      * @return The result of the evaluation
      */
     public int eval(Expression e) {
-        // create a new visitor to evaluate expressions
+        return evalValue(e).intValue();
+    }
+
+    /**
+     * Evaluates an arithmetic expression and returns its result as a Value
+     * @param e the arithmetic Expression to be evaluated
+     * @return The Value result of the evaluation
+     */
+    public Value evalValue(Expression e) {
         Evaluator v = new Evaluator();
-        // and ask the expression to accept this visitor to start the evaluation process
         e.accept(v);
-        // and return the result of the evaluation at the end of the process
         return v.getResult();
     }
 

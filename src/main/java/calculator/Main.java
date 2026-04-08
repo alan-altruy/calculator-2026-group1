@@ -1,5 +1,9 @@
 package calculator;
 
+import calculator.enums.AngleMode;
+import calculator.enums.NumberDomain;
+
+import java.util.Locale;
 
 /**
  * A very simple calculator in Java
@@ -37,35 +41,114 @@ public class Main {
 		LOGGER.info("Goodbye!");
  	}
 
+	private static NumberDomain currentDomain = NumberDomain.INTEGER;
+	private static AngleMode currentAngleMode = AngleMode.RAD;
+	private static int currentPrecision = 10;
+
+	private static final int MIN_ARG_LENGTH = 2;
+
+	public static NumberDomain getCurrentDomain() { return currentDomain; }
+	public static void setCurrentDomain(NumberDomain domain) { currentDomain = domain; }
+	
+	public static AngleMode getCurrentAngleMode() { return currentAngleMode; }
+	public static void setCurrentAngleMode(AngleMode mode) { currentAngleMode = mode; }
+
+	public static int getCurrentPrecision() { return currentPrecision; }
+	public static void setCurrentPrecision(int precision) { currentPrecision = precision; }
+
+
 	static boolean handleInput(String input, Calculator c) {
 		if (input == null || input.isEmpty()) return false;
 
-		if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) {
-			return true;
-		}
+		if (isExitCommand(input)) return true;
+		if (handleMode(input)) return false;
+		if (handlePrecision(input)) return false;
+		if (handleDomain(input)) return false;
 
 		if (input.equalsIgnoreCase("help")) {
-			LOGGER.info("--- Calculator Help ---");
-			LOGGER.info("  Commands:");
-			LOGGER.info("    help  - Show this help message");
-			LOGGER.info("    quit  - Exit the program");
-			LOGGER.info("    exit  - Exit the program");
-			LOGGER.info("  Expressions:");
-			LOGGER.info("    Type any arithmetic expression.");
-			LOGGER.info("    Supported ops: +, -, *, /, ** (Power).");
-			LOGGER.info("    Implicit multiplication (e.g. '(4+5)(6)') is supported.");
+			printHelp();
 			return false;
 		}
 
 		try {
 			Expression e = ExpressionParser.parse(input);
-			if (e != null) {
-				c.print(e);
-			}
+			if (e != null) c.print(e);
 		} catch (IllegalArgumentException ex) {
 			LOGGER.severe("Error: " + ex.getMessage());
 		}
 
 		return false;
+	}
+
+	private static boolean isExitCommand(String input) {
+		return input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit");
+	}
+
+	private static boolean handleMode(String input) {
+		if (!input.toLowerCase(Locale.ROOT).startsWith("mode ")) return false;
+		String[] parts = input.split(" ");
+		if (parts.length < MIN_ARG_LENGTH) return true;
+		if (parts[1].equalsIgnoreCase("deg")) {
+			setCurrentAngleMode(AngleMode.DEG);
+			LOGGER.info("Angle mode switched to DEG.");
+		} else {
+			setCurrentAngleMode(AngleMode.RAD);
+			LOGGER.info("Angle mode switched to RAD.");
+		}
+		return true;
+	}
+
+	private static boolean handlePrecision(String input) {
+		if (!input.toLowerCase(Locale.ROOT).startsWith("precision ")) return false;
+		String[] parts = input.split(" ");
+		if (parts.length < MIN_ARG_LENGTH) return true;
+		try {
+			setCurrentPrecision(Math.max(1, Integer.parseInt(parts[1])));
+			LOGGER.info("Precision set to " + getCurrentPrecision() + ".");
+		} catch (NumberFormatException ignored) {
+			LOGGER.warning("Invalid precision value: " + parts[1]);
+		}				
+		return true;
+	}
+
+	private static boolean handleDomain(String input) {
+		if (!input.toLowerCase(Locale.ROOT).startsWith("domain ")) return false;
+		String[] parts = input.split(" ");
+		if (parts.length < MIN_ARG_LENGTH) return true;
+		String dom = parts[1].toUpperCase(Locale.ROOT);
+		switch (dom) {
+			case "R", "RATIONAL":
+				setCurrentDomain(NumberDomain.RATIONAL);
+				LOGGER.info("Number domain switched to RATIONAL.");
+				break;
+			case "RE", "REAL":
+				setCurrentDomain(NumberDomain.REAL);
+				LOGGER.info("Number domain switched to REAL.");
+				break;
+			case "I", "C", "COMPLEX":
+				setCurrentDomain(NumberDomain.COMPLEX);
+				LOGGER.info("Number domain switched to COMPLEX.");
+				break;
+			case "Z", "INTEGER":
+			default:
+				setCurrentDomain(NumberDomain.INTEGER);
+				LOGGER.info("Number domain switched to INTEGER.");
+				break;
+		}
+		return true;
+	}
+
+	private static void printHelp() {
+		LOGGER.info("--- Calculator Help ---");
+		LOGGER.info("  Commands:");
+		LOGGER.info("    help              - Show this help message");
+		LOGGER.info("    domain <type>     - Switch domain (Z/INTEGER, R/RATIONAL, RE/REAL, I/C/COMPLEX)");
+		LOGGER.info("    mode <rad|deg>    - Switch trigonometric mode to Radians or Degrees");
+		LOGGER.info("    precision <n>     - Set precision to n decimal digits (for REAL)");
+		LOGGER.info("    quit/exit         - Exit the program");
+		LOGGER.info("  Expressions:");
+		LOGGER.info("    Supported ops: +, -, *, /, **, mod, //, !, |x|");
+		LOGGER.info("    Supported funcs: sin, cos, tan, arcsin, arccos, arctan, ln, log");
+		LOGGER.info("    Supported consts: pi, e, phi");
 	}
 }

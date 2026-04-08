@@ -1,7 +1,7 @@
 package visitor;
 
 import calculator.MyNumber;
-import calculator.Operation;
+import calculator.operations.Operation;
 
 /**
  * Visitor design pattern

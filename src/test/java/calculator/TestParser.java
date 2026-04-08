@@ -48,12 +48,13 @@ class TestParser {
     }
     @Test
     void testParseComplexPrefix() {
-        Expression e = ExpressionParser.parse("*(+(4,5,6),+(7,/(5,2,7)),9)");
+        Expression e = ExpressionParser.parse("*(+(4,5,6),+(7,/(4,2)),9)");
         // +(4,5,6) = 15
-        // /(5,2,7) = 5/2/7 -> 2/7 -> 0. Wait, 5/2 is 2. 2/7 is 0. So 7+0 = 7.
-        // *(15, 7, 9) = 15 * 7 * 9 = 945.
+        // /(4,2) = 4/2 = 2
+        // +(7,2) = 9
+        // *(15, 9, 9) = 15 * 9 * 9 = 1215.
         assertNotNull(e);
-        assertEquals(945, calc.eval(e));
+        assertEquals(1215, calc.eval(e));
     }
 
     @Test

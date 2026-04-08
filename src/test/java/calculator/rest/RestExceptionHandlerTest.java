@@ -1,6 +1,6 @@
 package calculator.rest;
 
-import calculator.IllegalConstruction;
+import calculator.exceptions.IllegalConstruction;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

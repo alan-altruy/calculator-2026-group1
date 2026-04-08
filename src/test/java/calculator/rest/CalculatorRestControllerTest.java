@@ -1,6 +1,10 @@
 package calculator.rest;
 
+import calculator.enums.Notation;
+import calculator.exceptions.IllegalConstruction;
 import org.junit.jupiter.api.Test;
+import calculator.Main;
+import calculator.enums.NumberDomain;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.Arguments;
@@ -16,6 +20,7 @@ import java.lang.invoke.MethodType;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.Map;
 
 @SpringBootTest
 @org.springframework.context.annotation.Import({RestExceptionHandler.class, CorsConfig.class})
@@ -26,6 +31,7 @@ class CalculatorRestControllerTest {
     private static final String CASE_PARSEARGS_SIZE = "parseArgs-size";
     private static final String CASE_PARSENOTATION_ENUM = "parseNotation-enum";
     private static final String NOTATION_INFIX = "INFIX";
+    private static final String DOM_STRING = "domain";
 
     @Test
     void toExpressionMissingTypeThrows_viaMethodHandle() throws Throwable {
@@ -37,7 +43,7 @@ class CalculatorRestControllerTest {
         com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
         com.fasterxml.jackson.databind.JsonNode missingType = mapper.readTree("{}");
 
-        assertThrows(calculator.IllegalConstruction.class, () -> mh.invoke(controller, missingType));
+        assertThrows(IllegalConstruction.class, () -> mh.invoke(controller, missingType));
     }
 
 
@@ -69,7 +75,7 @@ class CalculatorRestControllerTest {
                 MethodHandle mh = lookup.findVirtual(CalculatorRestController.class, "toExpression",
                         MethodType.methodType(calculator.Expression.class, com.fasterxml.jackson.databind.JsonNode.class));
                 com.fasterxml.jackson.databind.JsonNode node = json == null ? null : mapper.readTree(json);
-                assertThrows(calculator.IllegalConstruction.class, () -> mh.invoke(controller, node));
+                assertThrows(IllegalConstruction.class, () -> mh.invoke(controller, node));
             }
             case CASE_PARSEARGS_SIZE -> {
                 MethodHandle mh = lookup.findVirtual(CalculatorRestController.class, "parseArgs",
@@ -82,16 +88,16 @@ class CalculatorRestControllerTest {
             }
             case CASE_PARSENOTATION_ENUM -> {
                 MethodHandle mh = lookup.findVirtual(CalculatorRestController.class, "parseNotation",
-                        MethodType.methodType(calculator.Notation.class, com.fasterxml.jackson.databind.JsonNode.class));
+                        MethodType.methodType(Notation.class, com.fasterxml.jackson.databind.JsonNode.class));
                 com.fasterxml.jackson.databind.JsonNode node = json == null ? null : mapper.readTree(json);
                 Object res = mh.invoke(controller, node);
-                assertEquals(calculator.Notation.valueOf(expect), res);
+                assertEquals(Notation.valueOf(expect), res);
             }
             case "createOperation-ex" -> {
                 MethodHandle mh = lookup.findVirtual(CalculatorRestController.class, "createOperation",
-                        MethodType.methodType(calculator.Expression.class, String.class, java.util.List.class, calculator.Notation.class));
+                        MethodType.methodType(calculator.Expression.class, String.class, java.util.List.class, Notation.class));
                 java.util.List<calculator.Expression> args = new java.util.ArrayList<>();
-                assertThrows(calculator.IllegalConstruction.class, () -> mh.invoke(controller, json, args, calculator.Notation.INFIX));
+                assertThrows(IllegalConstruction.class, () -> mh.invoke(controller, json, args, Notation.INFIX));
             }
             default -> throw new IllegalArgumentException("Unknown case type " + caseType);
         }
@@ -130,5 +136,23 @@ class CalculatorRestControllerTest {
             // createOperation exception for unknown op
             arguments("createOperation-ex", "unknownop", null)
         );
+    }
+
+    @Test
+    void switchDomainSetsMainCurrentDomain() {
+        CalculatorRestController controller = new CalculatorRestController();
+
+        controller.switchDomain(Map.of(DOM_STRING, "REAL"));
+        assertEquals(NumberDomain.REAL, Main.getCurrentDomain());
+
+        controller.switchDomain(Map.of(DOM_STRING, "COMPLEX"));
+        assertEquals(NumberDomain.COMPLEX, Main.getCurrentDomain());
+
+        controller.switchDomain(Map.of(DOM_STRING, "RATIONAL"));
+        assertEquals(NumberDomain.RATIONAL, Main.getCurrentDomain());
+
+        // default case -> INTEGER
+        controller.switchDomain(Map.of(DOM_STRING, "UNKNOWN"));
+        assertEquals(NumberDomain.INTEGER, Main.getCurrentDomain());
     }
 }

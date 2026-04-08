@@ -1,5 +1,8 @@
 package calculator;
 
+import calculator.operations.Operation;
+import calculator.value.IntegerValue;
+import calculator.value.Value;
 import visitor.Visitor;
 
 /**
@@ -11,22 +14,38 @@ import visitor.Visitor;
  */
 public class MyNumber implements Expression
 {
-  private final int value;
+  private final Value valueObj;
 
-    /** getter method to obtain the value contained in the object
+    /** getter method to obtain the integer value contained in the object
+     * (backward compatible, truncates for non-integer domains)
      *
      * @return The integer number contained in the object
      */
-  public Integer getValue() { return value; }
+  public Integer getValue() { return valueObj.intValue(); }
+
+    /** getter method to obtain the Value object
+     *
+     * @return The Value object contained in the object
+     */
+  public Value getValueObject() { return valueObj; }
 
     /**
-     * Constructor method
+     * Constructor method for integer values
      *
      * @param v The integer value to be contained in the object
      */
     public /*constructor*/ MyNumber(int v) {
-	  value=v;
+	  valueObj = new IntegerValue(v);
 	  }
+
+    /**
+     * Constructor method for any Value type
+     *
+     * @param v The Value to be contained in the object
+     */
+    public /*constructor*/ MyNumber(Value v) {
+      valueObj = v;
+    }
 
     /**
      * accept method to implement the visitor design pattern to traverse arithmetic expressions.
@@ -38,8 +57,6 @@ public class MyNumber implements Expression
       v.visit(this);
   }
 
-
-
     /**
      * Convert a number into a String to allow it to be printed.
      *
@@ -47,7 +64,7 @@ public class MyNumber implements Expression
      */
   @Override
   public String toString() {
-	  return Integer.toString(value);
+	  return valueObj.toString();
   }
 
   /** Two MyNumber expressions are equal if the values they contain are equal
@@ -57,21 +74,10 @@ public class MyNumber implements Expression
    */
   @Override
   public boolean equals(Object o) {
-      // No object should be equal to null (not including this check can result in an exception if a MyNumber is tested against null)
       if (o == null) return false;
-
-      // If the object is compared to itself then return true
-      if (o == this) {
-          return true;
-      }
-
-      // If the object is of another type then return false
-      if (!(o instanceof MyNumber)) {
-            return false;
-      }
-      return this.value == ((MyNumber)o).value;
-      // Used == since the contained value is a primitive value
-      // If it had been a Java object, .equals() would be needed
+      if (o == this) return true;
+      if (!(o instanceof MyNumber)) return false;
+      return this.valueObj.equals(((MyNumber)o).valueObj);
   }
 
     /** The method hashCode needs to be overridden it the equals method is overridden;
@@ -82,7 +88,7 @@ public class MyNumber implements Expression
      */
   @Override
   public int hashCode() {
-		return value;
+		return valueObj.hashCode();
   }
 
   @Override

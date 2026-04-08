@@ -165,7 +165,7 @@ button:active {
 
 .help {
     position: absolute;
-    top: 4em;
+    top: 7em;
     right: 2em;
     color: #E9CBF4FF;
     font-size: 21px;
@@ -174,8 +174,8 @@ button:active {
     overflow-y: auto;
     overflow-x: hidden;
     white-space: pre-line;
-    width: 500px;
-    height: 800px;
+    width: 20em;
+    height: 32em;
     background: transparent;
     border-radius: 3px;
     border: 5px solid #999dff;
@@ -184,5 +184,25 @@ button:active {
 
 .help p {
     margin: 0;
+}
 
+.dom {
+    display: grid;
+    grid-template-columns: repeat(1, 210px);
+    gap: 10px;
+    justify-content: center;
+    margin-top: 50px;
+    position: absolute;
+    top: 10em;
+    left: 35em;
+}
+
+.dom button {
+    transition: 0.5s;
+}
+
+/* bouton actif */
+.dom button.active {
+    background-color: #FA42DCFF;
+    border-color: #000000;
 }

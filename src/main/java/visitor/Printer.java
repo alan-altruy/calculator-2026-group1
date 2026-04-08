@@ -2,8 +2,8 @@ package visitor;
 
 import calculator.Expression;
 import calculator.MyNumber;
-import calculator.Notation;
-import calculator.Operation;
+import calculator.enums.Notation;
+import calculator.operations.Operation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +62,7 @@ public class Printer extends Visitor {
      */
     @Override
     public void visit(MyNumber n) {
-        result = Integer.toString(n.getValue());
+        result = n.toString();
     }
 
     /**

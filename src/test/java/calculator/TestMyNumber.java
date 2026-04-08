@@ -2,6 +2,9 @@ package calculator;
 
 //Import Junit5 libraries for unit testing:
 import static org.junit.jupiter.api.Assertions.*;
+
+import calculator.exceptions.IllegalConstruction;
+import calculator.operations.Times;
 import org.junit.jupiter.api.*;
 import java.util.Objects;
 
@@ -48,6 +51,18 @@ class TestMyNumber {
 	@Test
 	void testGetPrecedence() {
 		assertEquals(5, number.getPrecedence());
+	}
+
+	@Test
+	void testGetValueInteger() {
+		MyNumber n = new MyNumber(42);
+		assertEquals(42, n.getValue());
+	}
+
+	@Test
+	void testGetValueTruncatesReal() {
+		MyNumber n = new MyNumber(new calculator.value.RealValue("3.14"));
+		assertEquals(3, n.getValue());
 	}
 
 }

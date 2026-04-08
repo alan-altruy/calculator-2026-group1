@@ -2,6 +2,9 @@ package calculator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import calculator.enums.Notation;
+import calculator.exceptions.IllegalConstruction;
+import calculator.operations.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -13,7 +16,7 @@ class TestNotation {
 
     /* This is an auxilary method to avoid code duplication.
      */
-	void testNotation(String s,Operation o,Notation n) {
+	void testNotation(String s, Operation o, Notation n) {
 		assertEquals(s, o.toString(n));
 		o.setNotation(n);
 		assertEquals(s, o.toString());

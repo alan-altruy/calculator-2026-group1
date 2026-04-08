@@ -16,8 +16,8 @@ class EvaluateResponseTest {
         assertThat(r.getResult()).isNull();
         assertThat(r.getError()).isNull();
 
-        r.setResult(123);
-        assertThat(r.getResult()).isEqualTo(123);
+        r.setResult("123");
+        assertThat(r.getResult()).isEqualTo("123");
 
         r.setError("boom");
         assertThat(r.getError()).isEqualTo("boom");

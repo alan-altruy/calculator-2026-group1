@@ -2,7 +2,7 @@ package visitor;
 
 import calculator.Expression;
 import calculator.MyNumber;
-import calculator.Operation;
+import calculator.operations.Operation;
 
 /**
  * Counter is a concrete visitor that serves to

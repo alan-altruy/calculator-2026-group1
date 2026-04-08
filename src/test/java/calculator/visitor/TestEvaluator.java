@@ -7,13 +7,16 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import calculator.Calculator;
-import calculator.Divides;
+import calculator.operations.Divides;
 import calculator.Expression;
-import calculator.IllegalConstruction;
-import calculator.Minus;
+import calculator.exceptions.IllegalConstruction;
+import calculator.operations.Minus;
 import calculator.MyNumber;
-import calculator.Plus;
-import calculator.Times;
+import calculator.operations.Plus;
+import calculator.operations.Times;
+import calculator.operations.unaryoperations.Sin;
+import calculator.value.RealValue;
+import visitor.Evaluator;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
@@ -129,4 +132,14 @@ class TestEvaluator {
         }
     }
 
+    @Test
+    void singleArgBranchEvaluatesWithReal() {
+        try {
+            Sin s = new Sin(List.of(new MyNumber(new RealValue(0.0))));
+            Evaluator ev = new Evaluator();
+            s.accept(ev);
+            assertNotNull(ev.getResult());
+            assertEquals(0, ev.getResult().intValue());
+        } catch (IllegalConstruction e) { fail(); }
+    }
 }

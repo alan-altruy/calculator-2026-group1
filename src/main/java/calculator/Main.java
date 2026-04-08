@@ -1,5 +1,6 @@
 package calculator;
 
+import java.util.Locale;
 
 /**
  * A very simple calculator in Java
@@ -48,7 +49,7 @@ public class Main {
 			return true;
 		}
 
-		if (input.toLowerCase().startsWith("mode ")) {
+		if (input.toLowerCase(Locale.ROOT).startsWith("mode ")) {
 			String[] parts = input.split(" ");
 			if (parts.length > 1) {
 				if (parts[1].equalsIgnoreCase("deg")) {
@@ -62,7 +63,7 @@ public class Main {
 			return false;
 		}
 
-		if (input.toLowerCase().startsWith("precision ")) {
+		if (input.toLowerCase(Locale.ROOT).startsWith("precision ")) {
 			String[] parts = input.split(" ");
 			if (parts.length > 1) {
 				try {
@@ -73,10 +74,10 @@ public class Main {
 			return false;
 		}
 
-		if (input.toLowerCase().startsWith("domain ")) {
+		if (input.toLowerCase(Locale.ROOT).startsWith("domain ")) {
 			String[] parts = input.split(" ");
-			if (parts.length > 1) {
-				String dom = parts[1].toUpperCase();
+				if (parts.length > 1) {
+				String dom = parts[1].toUpperCase(Locale.ROOT);
 				switch (dom) {
 					case "R":
 					case "RATIONAL":

@@ -1,5 +1,7 @@
 package calculator;
 
+import java.util.Locale;
+
 import calculator.value.RealValue;
 import calculator.value.Value;
 
@@ -12,11 +14,11 @@ public class MyConstant extends MyNumber {
 
     public MyConstant(String name) {
         super(resolveValue(name));
-        this.name = name.toLowerCase();
+        this.name = name.toLowerCase(Locale.ROOT);
     }
 
     private static Value resolveValue(String name) {
-        switch (name.toLowerCase()) {
+        switch (name.toLowerCase(Locale.ROOT)) {
             case "pi": return new RealValue(Math.PI);
             case "e": return new RealValue(Math.E);
             case "phi": return new RealValue((1 + Math.sqrt(5)) / 2);

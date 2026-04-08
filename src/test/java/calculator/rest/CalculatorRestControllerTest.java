@@ -3,6 +3,8 @@ package calculator.rest;
 import calculator.enums.Notation;
 import calculator.exceptions.IllegalConstruction;
 import org.junit.jupiter.api.Test;
+import calculator.Main;
+import calculator.enums.NumberDomain;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.Arguments;
@@ -18,6 +20,7 @@ import java.lang.invoke.MethodType;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.Map;
 
 @SpringBootTest
 @org.springframework.context.annotation.Import({RestExceptionHandler.class, CorsConfig.class})
@@ -132,5 +135,23 @@ class CalculatorRestControllerTest {
             // createOperation exception for unknown op
             arguments("createOperation-ex", "unknownop", null)
         );
+    }
+
+    @Test
+    void switchDomainSetsMainCurrentDomain() {
+        CalculatorRestController controller = new CalculatorRestController();
+
+        controller.switchDomain(Map.of("domain", "REAL"));
+        assertEquals(NumberDomain.REAL, Main.getCurrentDomain());
+
+        controller.switchDomain(Map.of("domain", "COMPLEX"));
+        assertEquals(NumberDomain.COMPLEX, Main.getCurrentDomain());
+
+        controller.switchDomain(Map.of("domain", "RATIONAL"));
+        assertEquals(NumberDomain.RATIONAL, Main.getCurrentDomain());
+
+        // default case -> INTEGER
+        controller.switchDomain(Map.of("domain", "UNKNOWN"));
+        assertEquals(NumberDomain.INTEGER, Main.getCurrentDomain());
     }
 }

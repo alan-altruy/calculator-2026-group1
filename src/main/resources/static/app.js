@@ -30,7 +30,7 @@ const app = Vue.createApp({
                     throw new Error(data.result);
                 }
 
-                this.output = data.result;
+                this.output = data.result.bigDecimal;
                 this.errorMessage = null;
 
             } catch (error) {
@@ -64,9 +64,7 @@ const app = Vue.createApp({
 
             if (start === 0) return;
 
-            this.display =
-                this.display.substring(0, start - 1) +
-                this.display.substring(start);
+            this.display = this.display.substring(0, start - 1) + this.display.substring(start);
 
             this.$nextTick(() => {
                 input.selectionStart = input.selectionEnd = start - 1;
@@ -77,6 +75,15 @@ const app = Vue.createApp({
             this.display = '';
             this.output = null;
             this.errorMessage = null;
+        },
+        async dom(value){
+            await fetch('/api/v1/switchDomain', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ domain: value })
+            });
         }
     }
 });

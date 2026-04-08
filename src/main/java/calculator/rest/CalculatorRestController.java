@@ -1,5 +1,6 @@
 package calculator.rest;
 
+import calculator.value.Value;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import calculator.Calculator;
@@ -12,6 +13,8 @@ import calculator.MyNumber;
 import calculator.Notation;
 import calculator.Plus;
 import calculator.Times;
+import calculator.NumberDomain;
+import calculator.Main;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +27,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * A REST controller for evaluating calculator expressions represented as ASTs in JSON format.
@@ -43,13 +47,14 @@ public class CalculatorRestController {
      */
     private static final String TYPE_OPERATION = "operation";
 
-        @Operation(
+
+    @Operation(
             summary = "Evaluate an expression AST",
-                description = """
+            description = """
                     Accepts an AST JSON and returns the evaluated integer result.
-
+                    
                     Example fetch call:
-
+                    
                     ´´´javascript
                     fetch('http://localhost:8080/api/v1/evaluate', {
                         method: 'POST',
@@ -59,29 +64,29 @@ public class CalculatorRestController {
                         .then(r => r.json())
                         .then(j => console.log('result:', j.result));
                     ´´´
-
+                    
                     From a Swing app you can either call `Calculator.eval()` locally or use Java `HttpClient` to POST the same AST to this endpoint.
                     """,
             responses = {
-                @ApiResponse(responseCode = "200", description = "evaluation successful",
-                    content = @Content(mediaType = "application/json",
-                        examples = @ExampleObject(value = "{\"result\":7}"))),
-                @ApiResponse(responseCode = "400", description = "Bad Request"),
-                @ApiResponse(responseCode = "415", description = "Unsupported Media Type"),
-                @ApiResponse(responseCode = "418", description = "I'm a teapot..."),
-                @ApiResponse(responseCode = "500", description = "Internal Server Error")
+                    @ApiResponse(responseCode = "200", description = "evaluation successful",
+                            content = @Content(mediaType = "application/json",
+                                    examples = @ExampleObject(value = "{\"result\":7}"))),
+                    @ApiResponse(responseCode = "400", description = "Bad Request"),
+                    @ApiResponse(responseCode = "415", description = "Unsupported Media Type"),
+                    @ApiResponse(responseCode = "418", description = "I'm a teapot..."),
+                    @ApiResponse(responseCode = "500", description = "Internal Server Error")
             }
-        )
-        @io.swagger.v3.oas.annotations.parameters.RequestBody(
+    )
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
             content = @Content(mediaType = "application/json",
-                examples = @ExampleObject(value = "{\"ast\":{\"type\":\"operation\",\"op\":\"+\",\"args\":[{\"type\":\"number\",\"value\":1},{\"type\":\"operation\",\"op\":\"*\",\"args\":[{\"type\":\"number\",\"value\":2},{\"type\":\"number\",\"value\":3}]}]}}"))        )
+                    examples = @ExampleObject(value = "{\"ast\":{\"type\":\"operation\",\"op\":\"+\",\"args\":[{\"type\":\"number\",\"value\":1},{\"type\":\"operation\",\"op\":\"*\",\"args\":[{\"type\":\"number\",\"value\":2},{\"type\":\"number\",\"value\":3}]}]}}")))
     @PostMapping(value = "/evaluate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EvaluateResponse> compute(@RequestBody String input) {
         input = input.replace("\"", "");
         Expression e = ExpressionParser.parse(input);
         Calculator c = new Calculator();
         try {
-            int result = c.eval(e);
+            Value result = c.evalValue(e);
             return ResponseEntity.ok(new EvaluateResponse(result));
         } catch (ArithmeticException ex) {
             return ResponseEntity.badRequest().build();
@@ -90,6 +95,7 @@ public class CalculatorRestController {
 
     /**
      * Converts a JsonNode representing an AST into an Expression object.
+     *
      * @param node the JsonNode to convert
      * @return the corresponding Expression object
      * @throws IllegalConstruction if the AST is malformed or contains unknown types/operations
@@ -138,5 +144,16 @@ public class CalculatorRestController {
             case "divides", "/" -> new Divides(args, notation);
             default -> throw new IllegalConstruction();
         };
+    }
+
+    @PostMapping("/switchDomain")
+    public void switchDomain(@RequestBody Map<String, String> body) {
+        String domain = body.get("domain");
+        switch (domain) {
+            case "REAL" -> Main.currentDomain = NumberDomain.REAL;
+            case "COMPLEX" -> Main.currentDomain = NumberDomain.COMPLEX;
+            case "RATIONAL" -> Main.currentDomain = NumberDomain.RATIONAL;
+            default -> Main.currentDomain = NumberDomain.INTEGER;
+        }
     }
 }

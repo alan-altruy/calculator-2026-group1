@@ -33,4 +33,21 @@ public class MyConstant extends MyNumber {
     public String toString() {
         return name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        if (getClass() != o.getClass()) return false;
+        MyConstant other = (MyConstant) o;
+        if (!super.equals(other)) return false;
+        return name != null ? name.equals(other.name) : other.name == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
+    }
 }

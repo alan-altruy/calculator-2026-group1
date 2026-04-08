@@ -35,7 +35,7 @@ const app = Vue.createApp({
 
             } catch (error) {
                 this.output = "NaN";
-                this.errorMessage = "ERROR : Division By Zero !";
+                this.errorMessage = "ERROR : Invalid input !";
             }
         },
 

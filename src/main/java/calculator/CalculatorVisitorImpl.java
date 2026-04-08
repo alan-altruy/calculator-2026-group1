@@ -82,14 +82,20 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
     public Expression visitAbs(CalculatorParser.AbsContext ctx) {
         Expression arg = visit(ctx.expr());
         try { return new Abs(java.util.List.of(arg)); }
-        catch (IllegalConstruction e) { throw new RuntimeException(e); }
+        catch (IllegalConstruction e) {
+            e.printStackTrace();
+            throw new IllegalConstruction("Invalid construction of Abs", e);
+        }
     }
 
     @Override
     public Expression visitFactorial(CalculatorParser.FactorialContext ctx) {
         Expression arg = visit(ctx.expr());
-        try { return new Factorial(java.util.List.of(arg), Notation.POSTFIX); } 
-        catch (IllegalConstruction e) { throw new RuntimeException(e); }
+        try { return new Factorial(java.util.List.of(arg), Notation.POSTFIX); }
+        catch (IllegalConstruction e) {
+            e.printStackTrace();
+            throw new IllegalConstruction("Invalid construction of Factorial", e);
+        }
     }
 
     @Override
@@ -108,7 +114,10 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
                 case "log": return new Log(java.util.List.of(arg), Notation.PREFIX);
                 default: throw new IllegalArgumentException("Unknown func: " + func);
             }
-        } catch (IllegalConstruction e) { throw new RuntimeException(e); }
+        } catch (IllegalConstruction e) {
+            e.printStackTrace();
+            throw new IllegalConstruction("Invalid construction of Function", e);
+        }
     }
 
     @Override

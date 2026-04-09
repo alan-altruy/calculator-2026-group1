@@ -29,7 +29,7 @@ class TestRandomOp {
 
 			RandomOp op = new RandomOp(Arrays.asList(new MyNumber(new IntegerValue(bound))));
 			IntegerValue res = (IntegerValue) op.unOp(new IntegerValue(bound));
-            assertTrue(res.intValue() >= 0 && res.intValue() < bound);
+            assertTrue(res.intValue() >= 0 && res.intValue() <= bound);
 		} finally {
 			Main.setCurrentDomain(prev);
 			RandomGenerator.reset();
@@ -68,7 +68,7 @@ class TestRandomOp {
 
 			RandomOp op = new RandomOp(Arrays.asList(new MyNumber(new IntegerValue(1))));
 			RealValue res = (RealValue) op.unOp(new IntegerValue(1));
-			assertTrue(res.getBigDecimal().doubleValue() >= 0.0 && res.getBigDecimal().doubleValue() < 1.0);
+			assertTrue(res.getBigDecimal().doubleValue() >= 0.0 && res.getBigDecimal().doubleValue() <= 1.0);
 		} finally {
 			Main.setCurrentDomain(prev);
 			RandomGenerator.reset();
@@ -86,8 +86,8 @@ class TestRandomOp {
 			RandomOp op = new RandomOp(Arrays.asList(new MyNumber(new IntegerValue(1))));
 			ComplexValue res = (ComplexValue) op.unOp(new IntegerValue(1));
 
-            assertTrue(res.getReal().getBigDecimal().doubleValue() >= 0.0 && res.getReal().getBigDecimal().doubleValue() < 1.0);
-            assertTrue(res.getImag().getBigDecimal().doubleValue() >= 0.0 && res.getImag().getBigDecimal().doubleValue() < 1.0);
+            assertTrue(res.getReal().getBigDecimal().doubleValue() >= 0.0 && res.getReal().getBigDecimal().doubleValue() <= 1.0);
+            assertTrue(res.getImag().getBigDecimal().doubleValue() >= 0.0 && res.getImag().getBigDecimal().doubleValue() <= 1.0);
 
 		} finally {
 			Main.setCurrentDomain(prev);

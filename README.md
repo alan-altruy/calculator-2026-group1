@@ -3,7 +3,9 @@
 <tr>
 <td valign="center">
 
-<img src="https://sonarcloud.io/images/project_badges/sonarcloud-highlight.svg" height="75">
+<a href="https://sonarcloud.io/summary/new_code?id=alan-altruy_calculator-2026-group1&branch=main" target="_blank">
+  <img src="https://sonarcloud.io/images/project_badges/sonarcloud-highlight.svg" height="75">
+</a>
 
 </td>
 <td vlign="center">

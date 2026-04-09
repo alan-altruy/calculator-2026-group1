@@ -101,7 +101,7 @@ public class CalculatorSteps {
 			op.orElseThrow(() -> new AssertionError(OPERATION_NOT_INITIALISED)).addMoreParams(params);
 	}
 
-	@Then("^the (.*) is (\\d+)$")
+	@Then("^the (sum|product|quotient|difference) is (\\d+)$")
 	public void thenTheOperationIs(String s, int val) {
 		try {
 			switch (s) {

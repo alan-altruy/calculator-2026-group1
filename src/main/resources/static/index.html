@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,23 +12,20 @@
 <body>
 <div id="app">
 <!-- From Uiverse.io by alexruix -->
-<div class="input-group">
-    <input type="text" class="input" ref="InputField"  v-model="display" @keyup.enter="evaluate()" placeholder="Write your computation">
-    <input class="button--submit" value="Compute" type="button"  @click="evaluate()">
+<div class="header">
+    <div class="input-group">
+        <input type="text" class="input" ref="InputField"  v-model="display" @keyup.enter="evaluate()" placeholder="Write your computation">
+        <input class="button--submit" value="Compute" type="button"  @click="evaluate()">
+    </div>
 </div>
 
 <div class="res">
     <p>Result : {{ output }}</p>
 </div>
 
-<div v-if="errorMessage" class="alert">
+<div v-if="errorMessage" class="alert" @click="clearError">
     <p>ERROR : {{ errorMessage }}</p>
-</div>
-
-<div class="eraser">
-    <button @click="remove()">←</button>
-    <button @click="add(' ')">space</button>
-</div>
+    </div>
 
 <div class="number">
     <button @click="add('1')">1</button>
@@ -45,6 +42,11 @@
     <button @click="clear()">C</button>
 </div>
 
+<div class="eraser">
+    <button @click="remove()">←</button>
+    <button @click="add(' ')">space</button>
+</div>
+
 <div class="opbase">
     <button @click="add('+')">+</button>
     <button @click="add('-')">-</button>
@@ -53,9 +55,65 @@
     <button @click="add('(')">(</button>
     <button @click="add(')')">)</button>
     <button @click="add('**')">^</button>
-    <button @click="add('%')">mod</button>
+    <button @click="add('mod')">mod</button>
     <button @click="add('//')">//</button>
 </div>
+
+<div class="otherop">
+    <button @click="add('ln()')">ln</button>
+    <button @click="add('log()')">log</button>
+    <button @click="add('||')">|x|</button>
+    <button @click="add('!')">x!</button>
+    <button @click="add('sin()')">sin</button>
+    <button @click="add('arcsin()')">arcsin</button>
+    <button @click="add('cos()')">cos</button>
+    <button @click="add('arccos()')">arccos</button>
+    <button @click="add('tan()')">tan</button>
+    <button @click="add('arctan()')">arctan</button>
+</div>
+
+<div class="dom">
+        <button
+                @click="dom('INTEGER')"
+                :class="{ active: currentDomain === 'INTEGER' }"
+                title="INTEGER">
+            ℤ
+        </button>
+
+        <button
+                @click="dom('REAL')"
+                :class="{ active: currentDomain === 'REAL' }"
+                title="REAL">
+            ℝ
+        </button>
+
+        <button
+                @click="dom('RATIONAL')"
+                :class="{ active: currentDomain === 'RATIONAL' }"
+                title="RATIONAL">
+            ℚ
+        </button>
+
+        <button
+                @click="dom('COMPLEX')"
+                :class="{ active: currentDomain === 'COMPLEX' }"
+                title="COMPLEX">
+            ℂ
+        </button>
+
+        <button @click="toggleHelp" class="help-button">{{ helpVisible ? "Hide Help" : "Help" }}</button>
+
+        <div class="help-div" v-show="helpVisible">
+            <div class="help-backdrop" @click="toggleHelp"></div>
+            <div class="help-modal">
+                <div class="help-content">
+                    <p>{{ helpText }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
 <div class="special">
     <button @click="add('pi')">π</button>
@@ -64,49 +122,7 @@
     <button @click="add('i')">i</button>
 </div>
 
-<div class="otherop">
-    <button @click="add('ln')">ln</button>
-    <button @click="add('log')">log</button>
-    <button @click="add('||')">|x|</button>
-    <button @click="add('!')">x!</button>
-    <button @click="add('sin')">sin</button>
-    <button @click="add('arcsin')">arcsin</button>
-    <button @click="add('cos')">cos</button>
-    <button @click="add('arccos')">arccos</button>
-    <button @click="add('tan')">tan</button>
-    <button @click="add('arctan')">arctan</button>
-</div>
 
-    <div class="dom">
-        <button
-                @click="dom('INTEGER')"
-                :class="{ active: currentDomain === 'INTEGER' }">
-            INTEGER
-        </button>
-
-        <button
-                @click="dom('REAL')"
-                :class="{ active: currentDomain === 'REAL' }">
-            REAL
-        </button>
-
-        <button
-                @click="dom('RATIONAL')"
-                :class="{ active: currentDomain === 'RATIONAL' }">
-            RATIONAL
-        </button>
-
-        <button
-                @click="dom('COMPLEX')"
-                :class="{ active: currentDomain === 'COMPLEX' }">
-            COMPLEX
-        </button>
-    </div>
-
-<div class="help">
-    <p>{{ helpText }}</p>
-</div>
-</div>
 <script src="/app.js"></script>
 </body>
 

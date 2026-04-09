@@ -4,7 +4,9 @@ const app = Vue.createApp({
             display: '',
             output: null,
             errorMessage: null,
+            errorTimer: null,
             helpText: '',
+            helpVisible: false,
             currentDomain: 'INTEGER'
         }
     },
@@ -16,6 +18,32 @@ const app = Vue.createApp({
             });
     },
     methods: {
+        showError(msg) {
+            this.errorMessage = msg;
+            if (this.errorTimer) clearTimeout(this.errorTimer);
+            // auto-hide after 3s
+            this.errorTimer = setTimeout(() => {
+                this.clearError();
+            }, 1750);
+            // also allow clearing on any click (one-time)
+            if (this._errorClickHandler) document.removeEventListener('click', this._errorClickHandler);
+            this._errorClickHandler = () => { this.clearError(); };
+            document.addEventListener('click', this._errorClickHandler, { once: true });
+        },
+        clearError() {
+            this.errorMessage = null;
+            if (this.errorTimer) {
+                clearTimeout(this.errorTimer);
+                this.errorTimer = null;
+            }
+            if (this._errorClickHandler) {
+                try { document.removeEventListener('click', this._errorClickHandler); } catch(e){}
+                this._errorClickHandler = null;
+            }
+        },
+        toggleHelp() {
+            this.helpVisible = !this.helpVisible;
+        },
         async evaluate() {
             try {
                 const response = await fetch('/api/v1/evaluate', {
@@ -32,11 +60,11 @@ const app = Vue.createApp({
                 }
 
                 this.output = data.result;
-                this.errorMessage = null;
+                this.clearError();
 
             } catch (error) {
                 this.output = "NaN";
-                this.errorMessage = "Invalid input !";
+                this.showError("Invalid input !");
             }
         },
 

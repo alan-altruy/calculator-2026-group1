@@ -120,6 +120,13 @@
             <version>${spring-doc.version}</version>
         </dependency>
         
+        <!-- Explicit Jackson core/databind versions (upgrade to 3.1.1) -->
+        <dependency>
+            <groupId>tools.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>3.1.1</version>
+        </dependency>
+        
         <!-- Force SLF4J API 2.x to match Logback on classpath -->
         <dependency>
             <groupId>org.slf4j</groupId>

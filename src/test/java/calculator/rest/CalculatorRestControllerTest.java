@@ -14,6 +14,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.JsonNode;
+
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -38,10 +41,10 @@ class CalculatorRestControllerTest {
         CalculatorRestController controller = new CalculatorRestController();
         MethodHandles.Lookup lookup = MethodHandles.privateLookupIn(CalculatorRestController.class, MethodHandles.lookup());
         MethodHandle mh = lookup.findVirtual(CalculatorRestController.class, "toExpression",
-                MethodType.methodType(calculator.Expression.class, com.fasterxml.jackson.databind.JsonNode.class));
+                MethodType.methodType(calculator.Expression.class, JsonNode.class));
 
-        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
-        com.fasterxml.jackson.databind.JsonNode missingType = mapper.readTree("{}");
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode missingType = mapper.readTree("{}");
 
         assertThrows(IllegalConstruction.class, () -> mh.invoke(controller, missingType));
     }
@@ -60,27 +63,27 @@ class CalculatorRestControllerTest {
     void privateMethodsConsolidatedTests(String caseType, String json, String expect) throws Throwable {
         CalculatorRestController controller = new CalculatorRestController();
         MethodHandles.Lookup lookup = MethodHandles.privateLookupIn(CalculatorRestController.class, MethodHandles.lookup());
-        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper();
 
         switch (caseType) {
             case CASE_TOEXPR_EVAL -> {
                 MethodHandle mh = lookup.findVirtual(CalculatorRestController.class, "toExpression",
-                        MethodType.methodType(calculator.Expression.class, com.fasterxml.jackson.databind.JsonNode.class));
-                com.fasterxml.jackson.databind.JsonNode node = mapper.readTree(json);
+                        MethodType.methodType(calculator.Expression.class, JsonNode.class));
+                JsonNode node = mapper.readTree(json);
                 Object e = mh.invoke(controller, node);
                 calculator.Calculator calc = new calculator.Calculator();
                 assertEquals(Integer.parseInt(expect), calc.eval((calculator.Expression) e));
             }
             case CASE_TOEXPR_EX -> {
                 MethodHandle mh = lookup.findVirtual(CalculatorRestController.class, "toExpression",
-                        MethodType.methodType(calculator.Expression.class, com.fasterxml.jackson.databind.JsonNode.class));
-                com.fasterxml.jackson.databind.JsonNode node = json == null ? null : mapper.readTree(json);
+                        MethodType.methodType(calculator.Expression.class, JsonNode.class));
+                JsonNode node = json == null ? null : mapper.readTree(json);
                 assertThrows(IllegalConstruction.class, () -> mh.invoke(controller, node));
             }
             case CASE_PARSEARGS_SIZE -> {
                 MethodHandle mh = lookup.findVirtual(CalculatorRestController.class, "parseArgs",
-                        MethodType.methodType(java.util.List.class, com.fasterxml.jackson.databind.JsonNode.class));
-                com.fasterxml.jackson.databind.JsonNode node = json == null ? null : mapper.readTree(json);
+                        MethodType.methodType(java.util.List.class, JsonNode.class));
+                JsonNode node = json == null ? null : mapper.readTree(json);
                 Object res = mh.invoke(controller, node);
                 @SuppressWarnings("unchecked")
                 java.util.List<calculator.Expression> list = (java.util.List<calculator.Expression>) res;
@@ -88,8 +91,8 @@ class CalculatorRestControllerTest {
             }
             case CASE_PARSENOTATION_ENUM -> {
                 MethodHandle mh = lookup.findVirtual(CalculatorRestController.class, "parseNotation",
-                        MethodType.methodType(Notation.class, com.fasterxml.jackson.databind.JsonNode.class));
-                com.fasterxml.jackson.databind.JsonNode node = json == null ? null : mapper.readTree(json);
+                        MethodType.methodType(Notation.class, JsonNode.class));
+                JsonNode node = json == null ? null : mapper.readTree(json);
                 Object res = mh.invoke(controller, node);
                 assertEquals(Notation.valueOf(expect), res);
             }

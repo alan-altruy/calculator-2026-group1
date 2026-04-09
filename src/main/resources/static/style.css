@@ -17,7 +17,7 @@ body {
         "output other other"
         "keypad eraser otherop"
         "keypad opbase otherop"
-        "keypad opbase otherop"
+        "keypad opbase degrad"
         "keypad opbase trigo"
         "special opbase trigo"
         "special opbase trigo";
@@ -175,6 +175,12 @@ button:active {
     background: #9f79ea;
 }
 
+.degrad button {
+    background: #400960;
+    color: #d49eef;
+    border-color: #d49eef;
+}
+
 .number {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -213,6 +219,14 @@ button:active {
     gap: 10px;
     justify-content: center;
     grid-area: trigo;
+}
+
+.degrad {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 10px;
+    justify-content: center;
+    grid-area: degrad;
 }
 
 .dom {

@@ -7,6 +7,7 @@ const app = Vue.createApp({
             errorTimer: null,
             helpText: '',
             helpVisible: false,
+            trigono: null,
             currentDomain: 'INTEGER'
         }
     },

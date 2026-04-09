@@ -65,12 +65,17 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
         String text = ctx.NUMBER().getText();
         if (Main.getCurrentDomain() == NumberDomain.COMPLEX) {
             return new MyNumber(new calculator.value.ComplexValue(Double.parseDouble(text), 0));
-        } else if (Main.getCurrentDomain() == NumberDomain.REAL || text.contains(".") || text.toLowerCase(Locale.ROOT).contains("e")) {
+        } else if (Main.getCurrentDomain() == NumberDomain.REAL) {
             return new MyNumber(new calculator.value.RealValue(text));
         } else if (Main.getCurrentDomain() == NumberDomain.RATIONAL) {
+            if (text.contains(".") || text.toLowerCase(Locale.ROOT).contains("e")) {
+                return new MyNumber(new calculator.value.RealValue(text));
+            }
             return new MyNumber(new calculator.value.RationalValue(Integer.parseInt(text)));
         } else {
-            return new MyNumber(Integer.parseInt(text));
+            // NumberDomain.INTEGER or default
+            int val = (int) Double.parseDouble(text);
+            return new MyNumber(new calculator.value.IntegerValue(val));
         }
     }
 

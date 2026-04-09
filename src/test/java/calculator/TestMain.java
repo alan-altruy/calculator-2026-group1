@@ -23,6 +23,11 @@ import org.mockito.Mockito;
 import calculator.enums.AngleMode;
 import calculator.enums.NumberDomain;
 
+import java.util.logging.Formatter;
+import java.util.logging.LogRecord;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.Handler;
 import java.util.stream.Stream;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
@@ -164,6 +169,25 @@ class TestMain {
 
         assertTrue(in.isClosed());
         assertTrue(out.toString().contains("Goodbye!"));
+    }
+
+    @Test
+    void testLoggingFormatterUsesSystemLineSeparator() {
+        ByteArrayInputStream in = new ByteArrayInputStream("quit\n".getBytes(StandardCharsets.UTF_8));
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        System.setIn(in);
+        System.setOut(new PrintStream(out));
+
+        Main.main(new String[0]);
+
+        Logger root = Logger.getLogger("");
+        for (Handler h : root.getHandlers()) {
+            Formatter f = h.getFormatter();
+            LogRecord lr = new LogRecord(Level.INFO, "TEST_MESSAGE");
+            String formatted = f.format(lr);
+            assertEquals("TEST_MESSAGE" + System.lineSeparator(), formatted);
+        }
     }
 
     @Test

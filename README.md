@@ -37,6 +37,7 @@
 <img src="https://img.shields.io/github/issues-pr/alan-altruy/calculator-2026-group1" alt="Open PRs">
 <img src="https://img.shields.io/github/license/alan-altruy/calculator-2026-group1" alt="License">
 <img src="https://img.shields.io/github/v/release/alan-altruy/calculator-2026-group1?label=Latest%20Release" alt="Latest Release">
+<img src="https://www.bestpractices.dev/projects/12430/badge" alt="Best Practices"   >
 <br>
 
 <!-- Ligne 2 -->

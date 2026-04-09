@@ -81,6 +81,7 @@ body {
     background-color: #100361CC;
     border-radius: 6px;
     border: 1px solid #f0cfff;
+    max-width: 10em;
 
 }
 

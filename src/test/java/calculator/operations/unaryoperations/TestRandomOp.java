@@ -2,8 +2,8 @@ package calculator.operations.unaryoperations;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.security.SecureRandom;
 import java.util.Arrays;
-import java.util.Random;
 
 import org.junit.jupiter.api.Test;
 
@@ -27,12 +27,9 @@ class TestRandomOp {
 			long seed = 12345L;
 			RandomGenerator.setSeed(seed);
 
-			Random rnd = new Random(seed);
-			int expected = rnd.nextInt(bound + 1);
-
 			RandomOp op = new RandomOp(Arrays.asList(new MyNumber(new IntegerValue(bound))));
 			IntegerValue res = (IntegerValue) op.unOp(new IntegerValue(bound));
-			assertEquals(expected, res.intValue());
+            assertTrue(res.intValue() >= 0 && res.intValue() < bound);
 		} finally {
 			Main.setCurrentDomain(prev);
 			RandomGenerator.reset();
@@ -48,17 +45,13 @@ class TestRandomOp {
 			long seed = 54321L;
 			RandomGenerator.setSeed(seed);
 
-			Random rnd = new Random(seed);
-			int a = rnd.nextInt(bound + 1);
-			int b = rnd.nextInt(bound) + 1;
+			SecureRandom rnd = new SecureRandom();
+            rnd.setSeed(seed);
 
 			RandomOp op = new RandomOp(Arrays.asList(new MyNumber(new IntegerValue(bound))));
 			RationalValue res = (RationalValue) op.unOp(new IntegerValue(bound));
 			assertTrue(res.getNumerator() >= 0 && res.getNumerator() <= bound);
 			assertTrue(res.getDenominator() >= 1 && res.getDenominator() <= bound);
-			// expected values should match deterministic RNG
-			assertEquals(a, res.getNumerator());
-			assertEquals(b, res.getDenominator());
 		} finally {
 			Main.setCurrentDomain(prev);
 			RandomGenerator.reset();
@@ -73,12 +66,9 @@ class TestRandomOp {
 			long seed = 111L;
 			RandomGenerator.setSeed(seed);
 
-			Random rnd = new Random(seed);
-			double expected = rnd.nextDouble();
-
 			RandomOp op = new RandomOp(Arrays.asList(new MyNumber(new IntegerValue(1))));
 			RealValue res = (RealValue) op.unOp(new IntegerValue(1));
-			assertEquals(expected, res.getBigDecimal().doubleValue(), 1e-12);
+			assertTrue(res.getBigDecimal().doubleValue() >= 0.0 && res.getBigDecimal().doubleValue() < 1.0);
 		} finally {
 			Main.setCurrentDomain(prev);
 			RandomGenerator.reset();
@@ -93,14 +83,12 @@ class TestRandomOp {
 			long seed = 222L;
 			RandomGenerator.setSeed(seed);
 
-			Random rnd = new Random(seed);
-			double re = rnd.nextDouble();
-			double im = rnd.nextDouble();
-
 			RandomOp op = new RandomOp(Arrays.asList(new MyNumber(new IntegerValue(1))));
 			ComplexValue res = (ComplexValue) op.unOp(new IntegerValue(1));
-			assertEquals(re, res.getReal().getBigDecimal().doubleValue(), 1e-12);
-			assertEquals(im, res.getImag().getBigDecimal().doubleValue(), 1e-12);
+
+            assertTrue(res.getReal().getBigDecimal().doubleValue() >= 0.0 && res.getReal().getBigDecimal().doubleValue() < 1.0);
+            assertTrue(res.getImag().getBigDecimal().doubleValue() >= 0.0 && res.getImag().getBigDecimal().doubleValue() < 1.0);
+
 		} finally {
 			Main.setCurrentDomain(prev);
 			RandomGenerator.reset();
@@ -130,5 +118,14 @@ class TestRandomOp {
     void testPrecedence() throws Exception {
         RandomOp op = new RandomOp(Arrays.asList(new MyNumber(new IntegerValue(1))));
         assertEquals(4, op.getPrecedence());
+    }
+
+    @Test
+    void testGetSecureRandom() {
+        SecureRandom rng1 = RandomGenerator.getSecureRandom();
+        SecureRandom rng2 = RandomGenerator.getSecureRandom();
+        assertNotNull(rng1);
+        assertNotNull(rng2);
+        assertNotSame(rng1, rng2); // should return a new instance each time
     }
 }

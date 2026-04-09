@@ -4,10 +4,12 @@ on:
     types: [published]
 
 permissions:
-  contents: write   # required to upload release assets
+  contents: read
 
 jobs:
   build:
+    permissions:
+      contents: write
     name: Report on Release
     runs-on: ubuntu-latest
     steps:

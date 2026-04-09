@@ -7,15 +7,16 @@ on:
     branches: [ main ]
 
 permissions:
-  contents: write
-  security-events: write
-  checks: write
-  pull-requests: write  # pour poster le commentaire dans la PR
+  contents: read
 
 jobs:
   coverage-quality:
     name: Run Coverage & PMD Code Quality
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      security-events: write
     # Create max_pmd_violations variable to control build failure threshold
     env:
       MAX_PMD_VIOLATIONS: 5 # 5 or fewer violations is the limit for yellow badge, more than 5 is red badge

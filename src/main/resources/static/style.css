@@ -104,7 +104,7 @@ body {
     font-family: inherit;
     font-size: 20px;
     font-weight: 700;
-    color: #ffffff;
+    color: #fdcbcb;
     max-width: min(90%, 720px);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -123,7 +123,7 @@ button {
     font-family: inherit;
     padding: 0.6em 1.3em;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 21px;
     border: 3px solid #130232;
     border-radius: 0.4em;
     box-shadow: 0.1em 0.1em;
@@ -153,19 +153,19 @@ button:active {
 
 .eraser button {
     width: 100%;
-    background: #e27b7b;
+    background: #f16dcc;
 }
 
 .opbase button {
-    background: #8078f9;
+    background: #8a82fd;
 }
 
 .special button {
-    background: #9af69a;
+    background: #f69ae2;
 }
 
 .otherop button {
-    background: #f7d39c;
+    background: #d171ff;
 }
 
 .number {
@@ -220,8 +220,9 @@ button:active {
 
 /* bouton actif */
 .dom button.active {
-    background-color: #FA42DCFF;
-    border-color: #000000;
+    background-color: #0b0045;
+    border-color: #f0cfff;
+    color: #f0cfff;
 }
 
 
@@ -234,7 +235,7 @@ button:active {
     align-self: start;
     z-index: 2;
     padding: 0.4em 0.9em;
-    font-size: 16px;
+    font-size: 21px;
     margin-left: 2rem;
 }
 
@@ -247,6 +248,7 @@ button:active {
     justify-content: center;
     z-index: 1090;
     padding-left: 1.5rem;
+    font-size: 25px;
 }
 
 .help-backdrop {

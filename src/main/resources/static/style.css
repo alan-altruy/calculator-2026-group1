@@ -18,8 +18,9 @@ body {
         "keypad eraser otherop"
         "keypad opbase otherop"
         "keypad opbase otherop"
-        "keypad opbase otherop"
-        "special special otherop";
+        "keypad opbase trigo"
+        "special opbase trigo"
+        "special opbase trigo";
     gap: 1.5rem;
     padding: 1.5rem;
     justify-content: center;
@@ -106,6 +107,7 @@ body {
     font-size: 20px;
     font-weight: 700;
     color: #fdcbcb;
+    border-color: #fdcbcb;
     max-width: min(90%, 720px);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -154,7 +156,7 @@ button:active {
 
 .eraser button {
     width: 100%;
-    background: #f16dcc;
+    background: #ef75cc;
 }
 
 .opbase button {
@@ -162,11 +164,15 @@ button:active {
 }
 
 .special button {
-    background: #f69ae2;
+    background: #ea79e5;
 }
 
 .otherop button {
     background: #d171ff;
+}
+
+.trigo button {
+    background: #9f79ea;
 }
 
 .number {
@@ -187,7 +193,7 @@ button:active {
 
 .special {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     justify-content: center;
     grid-area: special;
@@ -199,6 +205,14 @@ button:active {
     gap: 10px;
     justify-content: center;
     grid-area: otherop;
+}
+
+.trigo {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    justify-content: center;
+    grid-area: trigo;
 }
 
 .dom {

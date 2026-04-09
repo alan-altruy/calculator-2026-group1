@@ -21,10 +21,9 @@ const app = Vue.createApp({
         showError(msg) {
             this.errorMessage = msg;
             if (this.errorTimer) clearTimeout(this.errorTimer);
-            // auto-hide after 3s
             this.errorTimer = setTimeout(() => {
                 this.clearError();
-            }, 1750);
+            }, 1500);
             // also allow clearing on any click (one-time)
             if (this._errorClickHandler) document.removeEventListener('click', this._errorClickHandler);
             this._errorClickHandler = () => { this.clearError(); };

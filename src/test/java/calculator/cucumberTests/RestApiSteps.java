@@ -12,7 +12,6 @@ import org.json.JSONObject;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
-import java.util.Collections;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.test.web.servlet.MockMvc;

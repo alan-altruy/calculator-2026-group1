@@ -4,6 +4,11 @@ import calculator.enums.AngleMode;
 import calculator.enums.NumberDomain;
 
 import java.util.Locale;
+import java.util.logging.Formatter;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  * A very simple calculator in Java
@@ -15,7 +20,8 @@ import java.util.Locale;
  */
 public class Main {
 
-	private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(Main.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+    private static final String HELP_COLUMN_FORMAT = "  %-20s %s%n";
 
 	/**
 	 * This is the main method of the application.
@@ -24,6 +30,19 @@ public class Main {
 	 * @param args	Command-line parameters are not used in this version
 	 */
 	public static void main(String[] args) {
+
+		// Configure logging: remove timestamp and class from console output
+        System.setProperty("SimpleFormatter.format", "%4$s: %5$s%n");
+        Logger rootLogger = Logger.getLogger("");
+        for (Handler h : rootLogger.getHandlers()) {
+            h.setFormatter(new Formatter() {
+                @Override
+                public String format(LogRecord r) {
+                    return formatMessage(r) + System.lineSeparator();
+                }
+            });
+        }
+
 		LOGGER.info("Calculator CLI");
 		LOGGER.info("Type 'help' for instructions, or 'quit'/'exit' to exit.");
 
@@ -139,16 +158,23 @@ public class Main {
 	}
 
 	private static void printHelp() {
-		LOGGER.info("--- Calculator Help ---");
-		LOGGER.info("  Commands:");
-		LOGGER.info("    help              - Show this help message");
-		LOGGER.info("    domain <type>     - Switch domain (Z/INTEGER, R/RATIONAL, RE/REAL, I/C/COMPLEX)");
-		LOGGER.info("    mode <rad|deg>    - Switch trigonometric mode to Radians or Degrees");
-		LOGGER.info("    precision <n>     - Set precision to n decimal digits (for REAL)");
-		LOGGER.info("    quit/exit         - Exit the program");
-		LOGGER.info("  Expressions:");
-		LOGGER.info("    Supported ops: +, -, *, /, **, mod, //, !, |x|");
-		LOGGER.info("    Supported funcs: sin, cos, tan, arcsin, arccos, arctan, ln, log");
-		LOGGER.info("    Supported consts: pi, e, phi");
-	}
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("--- Calculator Help ---%n%n"));
+        sb.append(String.format("Commands:%n"));
+        sb.append(String.format(HELP_COLUMN_FORMAT, "help", "Show this help message"));
+        sb.append(String.format(HELP_COLUMN_FORMAT, "domain <type>", "Switch domain (Z/INTEGER, R/RATIONAL, RE/REAL, I/C/COMPLEX)"));
+        sb.append(String.format(HELP_COLUMN_FORMAT, "mode <rad|deg>", "Switch trigonometric mode to Radians or Degrees"));
+        sb.append(String.format(HELP_COLUMN_FORMAT, "precision <n>", "Set precision to n decimal digits (for REAL)"));
+        sb.append(String.format(HELP_COLUMN_FORMAT, "quit/exit", "Exit the program"));
+        sb.append(String.format("%nExpressions:%n"));
+        sb.append(String.format("  Supported ops: +, -, *, /, **, mod, //, !, |x|%n"));
+        sb.append(String.format("  Supported funcs: sin, cos, tan, arcsin, arccos, arctan, ln, log%n"));
+        sb.append(String.format("  Supported consts: pi, e, phi%n"));
+        sb.append(String.format("%nCurrent settings:%n"));
+        sb.append(String.format("  Domain: %s%n", getCurrentDomain()));
+        sb.append(String.format("  Angle mode: %s%n", getCurrentAngleMode()));
+        sb.append(String.format("  Precision: %d%n", getCurrentPrecision()));
+
+        LOGGER.log(Level.INFO, sb::toString);
+    }
 }

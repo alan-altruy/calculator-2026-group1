@@ -7,7 +7,7 @@ const app = Vue.createApp({
             errorTimer: null,
             helpText: '',
             helpVisible: false,
-            trigono: null,
+            currentMode: 'RAD',
             currentDomain: 'INTEGER'
         }
     },
@@ -113,6 +113,16 @@ const app = Vue.createApp({
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ domain: value })
+            });
+        },
+        async mode(){
+            this.currentMode = this.currentMode === 'RAD' ? 'DEG' : 'RAD';
+            await fetch('/api/v1/switchTrigonometric', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ trigono: this.currentMode })
             });
         }
     }

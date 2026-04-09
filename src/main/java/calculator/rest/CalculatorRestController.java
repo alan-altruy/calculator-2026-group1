@@ -1,5 +1,6 @@
 package calculator.rest;
 
+import calculator.enums.AngleMode;
 import calculator.value.Value;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -154,6 +155,16 @@ public class CalculatorRestController {
             case "COMPLEX" -> Main.setCurrentDomain(NumberDomain.COMPLEX);
             case "RATIONAL" -> Main.setCurrentDomain(NumberDomain.RATIONAL);
             default -> Main.setCurrentDomain(NumberDomain.INTEGER);
+        }
+    }
+
+    @PostMapping("/switchTrigonometric")
+    public void switchTrigonometric(@RequestBody Map<String, String> body) {
+        String trigono = body.get("trigono");
+        if (trigono.equals("RAD")) {
+            Main.setCurrentAngleMode(AngleMode.RAD);
+        } else {
+            Main.setCurrentAngleMode(AngleMode.DEG);
         }
     }
 }

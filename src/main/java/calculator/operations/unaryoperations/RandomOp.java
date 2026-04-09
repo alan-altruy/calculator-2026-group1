@@ -40,11 +40,6 @@ public class RandomOp extends UnaryOperation {
         NumberDomain domain = Main.getCurrentDomain();
 
         switch (domain) {
-            case INTEGER: {
-                int bound = v.intValue();
-                if (bound < 0) throw new ArithmeticException("random bound must be non-negative");
-                return new IntegerValue(rng.nextInt(bound + 1));
-            }
             case RATIONAL: {
                 int bound = v.intValue();
                 if (bound <= 0) throw new ArithmeticException("random bound must be positive for rational");
@@ -60,8 +55,11 @@ public class RandomOp extends UnaryOperation {
                 double im = rng.nextDouble();
                 return new ComplexValue(re, im);
             }
-            default:
-                throw new ArithmeticException("random not supported for domain: " + domain);
+            default: { // INTEGER and fallback
+                int bound = v.intValue();
+                if (bound < 0) throw new ArithmeticException("random bound must be non-negative");
+                return new IntegerValue(rng.nextInt(bound + 1));
+            }
         }
     }
 

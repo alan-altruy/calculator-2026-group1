@@ -198,13 +198,15 @@ class TestMain {
     }
 
     @Test
-    void testHandleModePrecisionAndDomainCommands() {
+    void testHandleModePrecisionDomainAndSeedCommands() {
         Calculator calc = new Calculator();
 
         // save originals
         AngleMode origMode = Main.getCurrentAngleMode();
         int origPrecision = Main.getCurrentPrecision();
         NumberDomain origDomain = Main.getCurrentDomain();
+        Long origSeed = 1L; // RandomGenerator does not have a getter for the seed, so we just save a default value to restore later
+
         try {
             // mode
             boolean resMode = Main.handleInput("mode deg", calc);
@@ -260,11 +262,24 @@ class TestMain {
             assertFalse(resDom);
             assertEquals(origDomain , Main.getCurrentDomain());
 
+            // seed
+            boolean resSeed = Main.handleInput("seed 12345", calc);
+            assertFalse(resSeed);
+
+            // catch number format exception for seed
+            resSeed = Main.handleInput("seed notanumber", calc);
+            assertFalse(resSeed);
+
+            // return false if args < 2 for seed
+            resSeed = Main.handleInput("seed ", calc);
+            assertFalse(resSeed);
+
         } finally {
             // restore
             Main.setCurrentAngleMode(origMode);
             Main.setCurrentPrecision(origPrecision);
             Main.setCurrentDomain(origDomain);
+            RandomGenerator.setSeed(origSeed);
         }
     }
 

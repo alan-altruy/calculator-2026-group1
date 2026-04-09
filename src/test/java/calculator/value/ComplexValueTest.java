@@ -158,4 +158,30 @@ class ComplexValueTest {
         assertThrows(ArithmeticException.class, () -> a.div(notANumber));
 
     }
+
+    @Test
+    void testSinhCoshTanh() {
+        ComplexValue a = new ComplexValue(1.0, 2.0);
+        Value sinh = a.sinh();
+        Value cosh = a.cosh();
+        Value tanh = a.tanh();
+        
+        // sinh(1+2i) = sinh(1)*cos(2) + cosh(1)*sin(2)i
+        assertTrue(sinh instanceof ComplexValue);
+        ComplexValue sinhC = (ComplexValue) sinh;
+        assertEquals(-0.4890562590412937, sinhC.getReal().getBigDecimal().doubleValue(), 1e-9);
+        assertEquals(1.4031192506220407, sinhC.getImag().getBigDecimal().doubleValue(), 1e-9);
+        
+        // cosh(1+2i) = cosh(1)*cos(2) + sinh(1)*sin(2)i
+        assertTrue(cosh instanceof ComplexValue);
+        ComplexValue coshC = (ComplexValue) cosh;
+        assertEquals(-0.6421481247155201, coshC.getReal().getBigDecimal().doubleValue(), 1e-9);
+        assertEquals(1.0686074213827783, coshC.getImag().getBigDecimal().doubleValue(), 1e-9);
+        
+        // tanh(1+2i) = sinh(1+2i) / cosh(1+2i)
+        assertTrue(tanh instanceof ComplexValue);
+        ComplexValue tanhC = (ComplexValue) tanh;
+        assertEquals(1.166736257, tanhC.getReal().getBigDecimal().doubleValue(), 1e-9);
+        assertEquals(-0.2434582012, tanhC.getImag().getBigDecimal().doubleValue(), 1e-9);   
+    }
 }

@@ -165,7 +165,8 @@ public class Main {
 		try {
 			long seed = Long.parseLong(parts[1]);
 			RandomGenerator.setSeed(seed);
-			LOGGER.info("Random seed set to " + seed + ".");
+			String text = String.format("Random seed set to %d.", seed);
+			LOGGER.info(text);
 		} catch (NumberFormatException ignored) {
 			LOGGER.warning("Invalid seed value: " + parts[1]);
 		}

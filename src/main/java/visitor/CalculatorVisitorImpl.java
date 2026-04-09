@@ -75,7 +75,7 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
         } else {
             // NumberDomain.INTEGER or default
             double d = Double.parseDouble(text);
-            if (d > Integer.MAX_VALUE || d < Integer.MIN_VALUE) {
+            if (d > Integer.MAX_VALUE) {
                 throw new IllegalArgumentException("Number out of integer range: " + text);
             }
             int val = (int) d;

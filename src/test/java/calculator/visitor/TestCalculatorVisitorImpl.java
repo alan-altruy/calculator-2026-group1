@@ -19,6 +19,7 @@ import calculator.operations.Power;
 import calculator.operations.Times;
 import calculator.operations.Mod;
 import calculator.operations.IntDiv;
+import calculator.operations.Minus;
 import calculator.operations.unaryoperations.Abs;
 import calculator.operations.unaryoperations.ArcCos;
 import calculator.operations.unaryoperations.ArcSin;
@@ -138,6 +139,17 @@ class TestCalculatorVisitorImpl {
         assertInstanceOf(MyNumber.class, e);
         MyNumber n = (MyNumber) e;
         assertInstanceOf(RationalValue.class, n.getValueObject());
+
+        // if text contains a dot or exponent, should create a RealValue even in RATIONAL domain
+        e = ExpressionParser.parse("3.14");
+        assertInstanceOf(MyNumber.class, e);
+        n = (MyNumber) e;
+        assertInstanceOf(RealValue.class, n.getValueObject());
+
+        e = ExpressionParser.parse("1e3");
+        assertInstanceOf(MyNumber.class, e);
+        n = (MyNumber) e;
+        assertInstanceOf(RealValue.class, n.getValueObject());
     }
 
     @Test
@@ -147,6 +159,13 @@ class TestCalculatorVisitorImpl {
         assertInstanceOf(MyNumber.class, e);
         MyNumber n = (MyNumber) e;
         assertInstanceOf(IntegerValue.class, n.getValueObject());
+    }
+
+    @Test
+    void testThrowsIfIntegerOverflowInIntegerDomain() {
+        Main.setCurrentDomain(NumberDomain.INTEGER);
+        String bigNum = "9223372036854775808"; // Long.MAX_VALUE + 1
+        assertThrows(IllegalArgumentException.class, () -> ExpressionParser.parse(bigNum));
     }
 
     @Test
@@ -223,7 +242,7 @@ class TestCalculatorVisitorImpl {
         }
     }
     @Test
-    void testVisitFuncTrigonometricAndLog() {
+    void testVisitFuncTrigonometricLogAndRand() {
         NumberDomain previous = Main.getCurrentDomain();
         try {
             Main.setCurrentDomain(NumberDomain.REAL);
@@ -261,10 +280,28 @@ class TestCalculatorVisitorImpl {
             assertInstanceOf(Log.class, log);
             assertEquals(0, calc.eval(log));
 
+            Expression rand = ExpressionParser.parse("random(1)");
+            assertInstanceOf(calculator.operations.unaryoperations.RandomOp.class, rand);
+
         } finally {
             Main.setCurrentDomain(previous);
         }
     }
+
+    @Test
+    void testVisitRandomNoArg() {
+        calc = new Calculator();
+        Expression e = visitor.visitRandomNoArg(null);
+        assertInstanceOf(calculator.operations.unaryoperations.RandomOp.class, e);
+        calculator.operations.unaryoperations.RandomOp randOp = (calculator.operations.unaryoperations.RandomOp) e;
+        assertEquals(1, randOp.getArgs().size());
+        Expression arg = randOp.getArgs().get(0);
+        assertInstanceOf(MyNumber.class, arg);
+        MyNumber n = (MyNumber) arg;
+        assertInstanceOf(IntegerValue.class, n.getValueObject());
+        assertEquals(1, n.getValue());
+    }
+
 
     @Test
     void testVisitFuncDirectUnknownThrowsIllegalArgumentException() {
@@ -281,5 +318,46 @@ class TestCalculatorVisitorImpl {
         CalculatorVisitorImpl vis = new CalculatorVisitorImpl();
         org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class,
             () -> vis.visitFunc(ctx));
+    }
+
+    @Test
+    void testVisitUnaryMinus() {
+        NumberDomain previous = Main.getCurrentDomain();
+        try {
+            // INTEGER domain: -3 -> -3
+            Main.setCurrentDomain(NumberDomain.INTEGER);
+            calc = new Calculator();
+            Expression e = ExpressionParser.parse("-3");
+            assertInstanceOf(Minus.class, e);
+            assertEquals(-3, calc.eval(e));
+
+            // REAL domain: -3.0 -> -3
+            Main.setCurrentDomain(NumberDomain.REAL);
+            calc = new Calculator();
+            e = ExpressionParser.parse("-3.0");
+            assertInstanceOf(Minus.class, e);
+            assertEquals(-3, calc.eval(e));
+
+            // RATIONAL domain: -3 -> -3
+            Main.setCurrentDomain(NumberDomain.RATIONAL);
+            calc = new Calculator();
+            e = ExpressionParser.parse("-3");
+            assertInstanceOf(Minus.class, e);
+            assertEquals(-3, calc.eval(e));
+
+            // COMPLEX domain: expression should be a Minus operation with Complex zero
+            Main.setCurrentDomain(NumberDomain.COMPLEX);
+            e = ExpressionParser.parse("-3");
+            assertInstanceOf(Minus.class, e);
+            Minus m = (Minus) e;
+            assertInstanceOf(calculator.MyNumber.class, m.getArgs().get(0));
+            assertInstanceOf(calculator.MyNumber.class, m.getArgs().get(1));
+            calculator.MyNumber zero = (calculator.MyNumber) m.getArgs().get(0);
+            calculator.MyNumber right = (calculator.MyNumber) m.getArgs().get(1);
+            assertInstanceOf(calculator.value.ComplexValue.class, zero.getValueObject());
+            assertInstanceOf(calculator.value.ComplexValue.class, right.getValueObject());
+        } finally {
+            Main.setCurrentDomain(previous);
+        }
     }
 }

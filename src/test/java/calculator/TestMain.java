@@ -231,6 +231,7 @@ class TestMain {
             assertEquals(NumberDomain.INTEGER, Main.getCurrentDomain());
 
             // domain with missing argument should not change
+            Main.setCurrentDomain(origDomain);
             resDom = Main.handleInput("domain ", calc);
             assertFalse(resDom);
             assertEquals(origDomain , Main.getCurrentDomain());

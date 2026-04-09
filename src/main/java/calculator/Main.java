@@ -64,6 +64,7 @@ public class Main {
 		if (handleMode(input)) return false;
 		if (handlePrecision(input)) return false;
 		if (handleDomain(input)) return false;
+		if (handleSeed(input)) return false;
 
 		if (input.equalsIgnoreCase("help")) {
 			printHelp();
@@ -138,6 +139,20 @@ public class Main {
 		return true;
 	}
 
+	static boolean handleSeed(String input) {
+		if (!input.toLowerCase(Locale.ROOT).startsWith("seed ")) return false;
+		String[] parts = input.split(" ");
+		if (parts.length < MIN_ARG_LENGTH) return true;
+		try {
+			long seed = Long.parseLong(parts[1]);
+			RandomGenerator.setSeed(seed);
+			LOGGER.info("Random seed set to " + seed + ".");
+		} catch (NumberFormatException ignored) {
+			LOGGER.warning("Invalid seed value: " + parts[1]);
+		}
+		return true;
+	}
+
 	private static void printHelp() {
 		LOGGER.info("--- Calculator Help ---");
 		LOGGER.info("  Commands:");
@@ -145,10 +160,11 @@ public class Main {
 		LOGGER.info("    domain <type>     - Switch domain (Z/INTEGER, R/RATIONAL, RE/REAL, I/C/COMPLEX)");
 		LOGGER.info("    mode <rad|deg>    - Switch trigonometric mode to Radians or Degrees");
 		LOGGER.info("    precision <n>     - Set precision to n decimal digits (for REAL)");
+		LOGGER.info("    seed <n>          - Set random seed for deterministic output");
 		LOGGER.info("    quit/exit         - Exit the program");
 		LOGGER.info("  Expressions:");
 		LOGGER.info("    Supported ops: +, -, *, /, **, mod, //, !, |x|");
-		LOGGER.info("    Supported funcs: sin, cos, tan, arcsin, arccos, arctan, ln, log");
+		LOGGER.info("    Supported funcs: sin, cos, tan, arcsin, arccos, arctan, ln, log, random");
 		LOGGER.info("    Supported consts: pi, e, phi");
 	}
 }

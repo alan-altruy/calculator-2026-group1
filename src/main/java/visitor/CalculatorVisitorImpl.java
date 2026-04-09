@@ -74,7 +74,11 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
             return new MyNumber(new calculator.value.RationalValue(Integer.parseInt(text)));
         } else {
             // NumberDomain.INTEGER or default
-            int val = (int) Double.parseDouble(text);
+            double d = Double.parseDouble(text);
+            if (d > Integer.MAX_VALUE || d < Integer.MIN_VALUE) {
+                throw new IllegalArgumentException("Number out of integer range: " + text);
+            }
+            int val = (int) d;
             return new MyNumber(new calculator.value.IntegerValue(val));
         }
     }
@@ -110,8 +114,16 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
             case "arctan": return new ArcTan(java.util.List.of(arg), Notation.PREFIX);
             case "ln": return new Ln(java.util.List.of(arg), Notation.PREFIX);
             case "log": return new Log(java.util.List.of(arg), Notation.PREFIX);
+            case "random": return new RandomOp(java.util.List.of(arg), Notation.PREFIX);
             default: throw new IllegalArgumentException("Unknown func: " + func);
         }   
+    }
+
+    @Override
+    public Expression visitRandomNoArg(CalculatorParser.RandomNoArgContext ctx) {
+        // default argument = 1
+        Expression defaultArg = new MyNumber(new calculator.value.IntegerValue(1));
+        return new RandomOp(java.util.List.of(defaultArg), Notation.PREFIX);
     }
 
     @Override

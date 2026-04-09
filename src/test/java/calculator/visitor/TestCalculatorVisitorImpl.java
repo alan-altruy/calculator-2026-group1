@@ -150,21 +150,25 @@ class TestCalculatorVisitorImpl {
     }
 
     @Test
-    void visitNumProducesRealWhenTextContainsDot() {
+    void visitNumProducesIntegerWhenTextContainsDotInIntegerDomain() {
         Main.setCurrentDomain(NumberDomain.INTEGER);
         Expression e = ExpressionParser.parse("3.14");
         assertInstanceOf(MyNumber.class, e);
         MyNumber n = (MyNumber) e;
-        assertInstanceOf(RealValue.class, n.getValueObject());
+        // In INTEGER domain, floats are truncated to integer
+        assertInstanceOf(IntegerValue.class, n.getValueObject());
+        assertEquals(3, n.getValue());
     }
 
     @Test
-    void visitNumProducesRealWhenTextContainsExponent() {
+    void visitNumProducesIntegerWhenTextContainsExponentInIntegerDomain() {
         Main.setCurrentDomain(NumberDomain.INTEGER);
         Expression e = ExpressionParser.parse("1e3");
         assertInstanceOf(MyNumber.class, e);
         MyNumber n = (MyNumber) e;
-        assertInstanceOf(RealValue.class, n.getValueObject());
+        // In INTEGER domain, scientific notation is truncated to integer
+        assertInstanceOf(IntegerValue.class, n.getValueObject());
+        assertEquals(1000, n.getValue());
     }
 
     @Test

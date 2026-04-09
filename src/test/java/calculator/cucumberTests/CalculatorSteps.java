@@ -1,7 +1,9 @@
-package calculator;
+package calculator.cucumberTests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import calculator.Expression;
+import calculator.MyNumber;
 import calculator.enums.Notation;
 import calculator.exceptions.IllegalConstruction;
 import calculator.operations.*;
@@ -18,19 +20,18 @@ public class CalculatorSteps {
 
 	private ArrayList<Expression> params = new ArrayList<>();
 	private Optional<Operation> op = Optional.empty();
-	private Calculator c;
+	private CalculatorContext c;
 
 	private static final String OPERATION_NOT_INITIALISED = "Operation not initialised";
+
+	public CalculatorSteps(CalculatorContext context) {
+		this.c = context;
+	}
 
 	@Before
 	public void resetMemoryBeforeEachScenario() {
 		params.clear();
 		op = Optional.empty();
-	}
-
-	@Given("I initialise a calculator")
-	public void givenIInitialiseACalculator() {
-		c = new Calculator();
 	}
 
 	@Given("an integer operation {string}")
@@ -110,7 +111,7 @@ public class CalculatorSteps {
 				case "difference" 	->	op = Optional.of(new Minus(params));
 				default -> fail();
 			}
-			assertEquals(val, c.eval(op.orElseThrow(() -> new AssertionError(OPERATION_NOT_INITIALISED))));
+			assertEquals(val, c.getCalculator().eval(op.orElseThrow(() -> new AssertionError(OPERATION_NOT_INITIALISED))));
 		} catch (IllegalConstruction e) {
 			fail();
 		}
@@ -118,7 +119,7 @@ public class CalculatorSteps {
 
 	@Then("the operation evaluates to {int}")
 	public void thenTheOperationEvaluatesTo(int val) {
-		assertEquals(val, c.eval(op.orElseThrow(() -> new AssertionError(OPERATION_NOT_INITIALISED))));
+		assertEquals(val, c.getCalculator().eval(op.orElseThrow(() -> new AssertionError(OPERATION_NOT_INITIALISED))));
 	}
 
 }

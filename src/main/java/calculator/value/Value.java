@@ -61,6 +61,9 @@ public interface Value {
     default Value sin() { throw new ArithmeticException("sin not supported for " + this.getClass().getSimpleName()); }
     default Value cos() { throw new ArithmeticException("cos not supported for " + this.getClass().getSimpleName()); }
     default Value tan() { throw new ArithmeticException("tan not supported for " + this.getClass().getSimpleName()); }
+    default Value sinh() { throw new ArithmeticException("sinh not supported for " + this.getClass().getSimpleName()); }
+    default Value cosh() { throw new ArithmeticException("cosh not supported for " + this.getClass().getSimpleName()); }
+    default Value tanh() { throw new ArithmeticException("tanh not supported for " + this.getClass().getSimpleName()); }
     default Value arcsin() { throw new ArithmeticException("arcsin not supported for " + this.getClass().getSimpleName()); }
     default Value arccos() { throw new ArithmeticException("arccos not supported for " + this.getClass().getSimpleName()); }
     default Value arctan() { throw new ArithmeticException("arctan not supported for " + this.getClass().getSimpleName()); }

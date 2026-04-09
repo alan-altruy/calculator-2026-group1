@@ -139,6 +139,21 @@ public class RealValue implements Value {
     }
 
     @Override
+    public Value sinh() {
+        return new RealValue(Math.sinh(this.value.doubleValue()));
+    }
+
+    @Override
+    public Value cosh() {
+        return new RealValue(Math.cosh(this.value.doubleValue()));
+    }
+
+    @Override
+    public Value tanh() {
+        return new RealValue(Math.tanh(this.value.doubleValue()));
+    }
+
+    @Override
     public Value tan() {
         return new RealValue(Math.tan(getAngle()));
     }

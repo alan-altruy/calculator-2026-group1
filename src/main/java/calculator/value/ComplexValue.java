@@ -140,6 +140,27 @@ public class ComplexValue implements Value {
     }
 
     @Override
+    public Value sinh() {
+        double x = real.getBigDecimal().doubleValue();
+        double y = imag.getBigDecimal().doubleValue();
+        return new ComplexValue(Math.sinh(x) * Math.cos(y), Math.cosh(x) * Math.sin(y));
+    }
+
+    @Override
+    public Value cosh() {
+        double x = real.getBigDecimal().doubleValue();
+        double y = imag.getBigDecimal().doubleValue();
+        return new ComplexValue(Math.cosh(x) * Math.cos(y), Math.sinh(x) * Math.sin(y));
+    }
+
+    @Override
+    public Value tanh() {
+        Value s = this.sinh();
+        Value c = this.cosh();
+        return s.div(c);
+    }
+
+    @Override
     public Value arcsin() {
         throw new ArithmeticException("ArcSin not implemented for complex numbers");
     }

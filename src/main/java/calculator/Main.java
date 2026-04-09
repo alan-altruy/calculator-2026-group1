@@ -83,6 +83,7 @@ public class Main {
 		if (handleMode(input)) return false;
 		if (handlePrecision(input)) return false;
 		if (handleDomain(input)) return false;
+		if (handleSeed(input)) return false;
 
 		if (input.equalsIgnoreCase("help")) {
 			printHelp();
@@ -157,6 +158,21 @@ public class Main {
 		return true;
 	}
 
+	static boolean handleSeed(String input) {
+		if (!input.toLowerCase(Locale.ROOT).startsWith("seed ")) return false;
+		String[] parts = input.split(" ");
+		if (parts.length < MIN_ARG_LENGTH) return true;
+		try {
+			long seed = Long.parseLong(parts[1]);
+			RandomGenerator.setSeed(seed);
+			String text = String.format("Random seed set to %d.", seed);
+			LOGGER.info(text);
+		} catch (NumberFormatException ignored) {
+			LOGGER.warning("Invalid seed value: " + parts[1]);
+		}
+		return true;
+	}
+
 	private static void printHelp() {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("--- Calculator Help ---%n%n"));
@@ -165,6 +181,7 @@ public class Main {
         sb.append(String.format(HELP_COLUMN_FORMAT, "domain <type>", "Switch domain (Z/INTEGER, R/RATIONAL, RE/REAL, I/C/COMPLEX)"));
         sb.append(String.format(HELP_COLUMN_FORMAT, "mode <rad|deg>", "Switch trigonometric mode to Radians or Degrees"));
         sb.append(String.format(HELP_COLUMN_FORMAT, "precision <n>", "Set precision to n decimal digits (for REAL)"));
+		sb.append(String.format(HELP_COLUMN_FORMAT, "seed <n>", "Set random seed for deterministic output"));
         sb.append(String.format(HELP_COLUMN_FORMAT, "quit/exit", "Exit the program"));
         sb.append(String.format("%nExpressions:%n"));
         sb.append(String.format("  Supported ops: +, -, *, /, **, mod, //, !, |x|%n"));

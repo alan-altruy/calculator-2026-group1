@@ -4,17 +4,19 @@ on:
     types: [published]
 
 permissions:
-  contents: write   # required to upload release assets
+  contents: read
 
 jobs:
   build:
+    permissions:
+      contents: write
     name: Report on Release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
 
       - name: Set up JDK 25
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654
         with:
           java-version: 25
           distribution: temurin

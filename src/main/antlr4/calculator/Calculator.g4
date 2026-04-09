@@ -10,6 +10,7 @@ expr: '(' expr ')'                               # Parens
     | func=('sin'|'cos'|'tan'|'arcsin'|'arccos'|'arctan'|'ln'|'log') '(' expr ')' # Func
     | op=('*'|'/'|'+'|'-'|'**'|'mod'|'//') '(' exprList ')' # Prefix
     | '(' exprList ')' op=('*'|'/'|'+'|'-'|'**'|'mod'|'//') # Postfix
+    | op='-' expr                                # UnaryMinus
     | <assoc=right> expr '**' expr               # Power
     | expr '(' expr ')'                          # ImplicitMul
     | '(' expr ')' expr                          # ImplicitMul

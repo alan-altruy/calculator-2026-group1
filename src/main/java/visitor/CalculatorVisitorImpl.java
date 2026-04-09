@@ -127,6 +127,24 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
         return createOperation("**", args, Notation.INFIX);
     }
 
+    @Override
+    public Expression visitUnaryMinus(CalculatorParser.UnaryMinusContext ctx) {
+        Expression right = visit(ctx.expr());
+        Expression zero;
+        if (Main.getCurrentDomain() == NumberDomain.COMPLEX) {
+            zero = new MyNumber(new calculator.value.ComplexValue(0, 0));
+        } else if (Main.getCurrentDomain() == NumberDomain.REAL) {
+            zero = new MyNumber(new calculator.value.RealValue(0.0));
+        } else if (Main.getCurrentDomain() == NumberDomain.RATIONAL) {
+            zero = new MyNumber(new calculator.value.RationalValue(0, 1));
+        } else {
+            zero = new MyNumber(new calculator.value.IntegerValue(0));
+        }
+        List<Expression> args = new ArrayList<>();
+        Collections.addAll(args, zero, right);
+        return createOperation("-", args, Notation.INFIX);
+    }
+
     private Expression createOperation(String op, List<Expression> args, Notation notation) {
         try {
             switch (op) {

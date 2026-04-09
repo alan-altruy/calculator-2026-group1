@@ -7,15 +7,17 @@ exprList: expr (','? expr)* ;
 expr: '(' expr ')'                               # Parens
     | '|' expr '|'                               # Abs
     | expr '!'                                   # Factorial
-    | func=('sin'|'cos'|'tan'|'arcsin'|'arccos'|'arctan'|'ln'|'log') '(' expr ')' # Func
+    | func=('sin'|'cos'|'tan'|'sinh'|'cosh'|'tanh'|'arcsin'|'arccos'|'arctan'|'ln'|'log'|'random') '(' expr ')' # Func
     | op=('*'|'/'|'+'|'-'|'**'|'mod'|'//') '(' exprList ')' # Prefix
     | '(' exprList ')' op=('*'|'/'|'+'|'-'|'**'|'mod'|'//') # Postfix
+    | op='-' expr                                # UnaryMinus
     | <assoc=right> expr '**' expr               # Power
     | expr '(' expr ')'                          # ImplicitMul
     | '(' expr ')' expr                          # ImplicitMul
     | expr op=('*' | '/' | 'mod' | '//') expr    # MulDiv
     | expr op=('+' | '-') expr                   # AddSub
     | NUMBER                                     # Num
+    | 'random'                                   # RandomNoArg
     | CONSTANT                                   # Const
     ;
 

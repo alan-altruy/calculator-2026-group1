@@ -65,12 +65,21 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
         String text = ctx.NUMBER().getText();
         if (Main.getCurrentDomain() == NumberDomain.COMPLEX) {
             return new MyNumber(new calculator.value.ComplexValue(Double.parseDouble(text), 0));
-        } else if (Main.getCurrentDomain() == NumberDomain.REAL || text.contains(".") || text.toLowerCase(Locale.ROOT).contains("e")) {
+        } else if (Main.getCurrentDomain() == NumberDomain.REAL) {
             return new MyNumber(new calculator.value.RealValue(text));
         } else if (Main.getCurrentDomain() == NumberDomain.RATIONAL) {
+            if (text.contains(".") || text.toLowerCase(Locale.ROOT).contains("e")) {
+                return new MyNumber(new calculator.value.RealValue(text));
+            }
             return new MyNumber(new calculator.value.RationalValue(Integer.parseInt(text)));
         } else {
-            return new MyNumber(Integer.parseInt(text));
+            // NumberDomain.INTEGER or default
+            double d = Double.parseDouble(text);
+            if (d > Integer.MAX_VALUE) {
+                throw new IllegalArgumentException("Number out of integer range: " + text);
+            }
+            int val = (int) d;
+            return new MyNumber(new calculator.value.IntegerValue(val));
         }
     }
 
@@ -100,13 +109,24 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
             case "sin": return new Sin(java.util.List.of(arg), Notation.PREFIX);
             case "cos": return new Cos(java.util.List.of(arg), Notation.PREFIX);
             case "tan": return new Tan(java.util.List.of(arg), Notation.PREFIX);
+            case "sinh": return new Sinh(java.util.List.of(arg), Notation.PREFIX);
+            case "cosh": return new Cosh(java.util.List.of(arg), Notation.PREFIX);
+            case "tanh": return new Tanh(java.util.List.of(arg), Notation.PREFIX);
             case "arcsin": return new ArcSin(java.util.List.of(arg), Notation.PREFIX);
             case "arccos": return new ArcCos(java.util.List.of(arg), Notation.PREFIX);
             case "arctan": return new ArcTan(java.util.List.of(arg), Notation.PREFIX);
             case "ln": return new Ln(java.util.List.of(arg), Notation.PREFIX);
             case "log": return new Log(java.util.List.of(arg), Notation.PREFIX);
+            case "random": return new RandomOp(java.util.List.of(arg), Notation.PREFIX);
             default: throw new IllegalArgumentException("Unknown func: " + func);
         }   
+    }
+
+    @Override
+    public Expression visitRandomNoArg(CalculatorParser.RandomNoArgContext ctx) {
+        // default argument = 1
+        Expression defaultArg = new MyNumber(new calculator.value.IntegerValue(1));
+        return new RandomOp(java.util.List.of(defaultArg), Notation.PREFIX);
     }
 
     @Override
@@ -125,6 +145,24 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
         List<Expression> args = new ArrayList<>();
         Collections.addAll(args, left, right);
         return createOperation("**", args, Notation.INFIX);
+    }
+
+    @Override
+    public Expression visitUnaryMinus(CalculatorParser.UnaryMinusContext ctx) {
+        Expression right = visit(ctx.expr());
+        Expression zero;
+        if (Main.getCurrentDomain() == NumberDomain.COMPLEX) {
+            zero = new MyNumber(new calculator.value.ComplexValue(0, 0));
+        } else if (Main.getCurrentDomain() == NumberDomain.REAL) {
+            zero = new MyNumber(new calculator.value.RealValue(0.0));
+        } else if (Main.getCurrentDomain() == NumberDomain.RATIONAL) {
+            zero = new MyNumber(new calculator.value.RationalValue(0, 1));
+        } else {
+            zero = new MyNumber(new calculator.value.IntegerValue(0));
+        }
+        List<Expression> args = new ArrayList<>();
+        Collections.addAll(args, zero, right);
+        return createOperation("-", args, Notation.INFIX);
     }
 
     private Expression createOperation(String op, List<Expression> args, Notation notation) {

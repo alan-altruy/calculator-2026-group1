@@ -26,5 +26,8 @@ class TestValues {
         assertThrows(ArithmeticException.class, v::arctan);
         assertThrows(ArithmeticException.class, v::abs);
         assertThrows(ArithmeticException.class, v::fact);
+        assertThrows(ArithmeticException.class, v::sinh);
+        assertThrows(ArithmeticException.class, v::cosh);
+        assertThrows(ArithmeticException.class, v::tanh);
     }
 }

@@ -164,7 +164,7 @@ public class Main {
 		LOGGER.info("    quit/exit         - Exit the program");
 		LOGGER.info("  Expressions:");
 		LOGGER.info("    Supported ops: +, -, *, /, **, mod, //, !, |x|");
-		LOGGER.info("    Supported funcs: sin, cos, tan, arcsin, arccos, arctan, ln, log, random");
+		LOGGER.info("    Supported funcs: sin, cos, tan, sinh, cosh, tanh, arcsin, arccos, arctan, ln, log, random");
 		LOGGER.info("    Supported consts: pi, e, phi");
 	}
 }

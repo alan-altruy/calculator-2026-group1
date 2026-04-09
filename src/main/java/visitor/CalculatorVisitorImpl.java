@@ -109,6 +109,9 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
             case "sin": return new Sin(java.util.List.of(arg), Notation.PREFIX);
             case "cos": return new Cos(java.util.List.of(arg), Notation.PREFIX);
             case "tan": return new Tan(java.util.List.of(arg), Notation.PREFIX);
+            case "sinh": return new Sinh(java.util.List.of(arg), Notation.PREFIX);
+            case "cosh": return new Cosh(java.util.List.of(arg), Notation.PREFIX);
+            case "tanh": return new Tanh(java.util.List.of(arg), Notation.PREFIX);
             case "arcsin": return new ArcSin(java.util.List.of(arg), Notation.PREFIX);
             case "arccos": return new ArcCos(java.util.List.of(arg), Notation.PREFIX);
             case "arctan": return new ArcTan(java.util.List.of(arg), Notation.PREFIX);

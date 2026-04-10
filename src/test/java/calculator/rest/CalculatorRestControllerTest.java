@@ -5,10 +5,14 @@ import calculator.exceptions.IllegalConstruction;
 import org.junit.jupiter.api.Test;
 import calculator.Main;
 import calculator.enums.NumberDomain;
+import calculator.RandomGenerator;
+import calculator.enums.AngleMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.Arguments;
 import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -20,9 +24,6 @@ import tools.jackson.databind.JsonNode;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.Map;
 
 @SpringBootTest
@@ -35,6 +36,9 @@ class CalculatorRestControllerTest {
     private static final String CASE_PARSENOTATION_ENUM = "parseNotation-enum";
     private static final String NOTATION_INFIX = "INFIX";
     private static final String DOM_STRING = "domain";
+    private static final String TRIG_STRING = "trigono";
+    private static final String SEED_STRING = "seed";
+    private static final String ACC_STRING = "accuracy";
 
     @Test
     void toExpressionMissingTypeThrows_viaMethodHandle() throws Throwable {
@@ -157,5 +161,41 @@ class CalculatorRestControllerTest {
         // default case -> INTEGER
         controller.switchDomain(Map.of(DOM_STRING, "UNKNOWN"));
         assertEquals(NumberDomain.INTEGER, Main.getCurrentDomain());
+    }
+
+    @Test
+    void switchTrigonometricSetsAngleMode() {
+        CalculatorRestController controller = new CalculatorRestController();
+
+        controller.switchTrigonometric(Map.of(TRIG_STRING, "RAD"));
+        assertEquals(AngleMode.RAD, Main.getCurrentAngleMode());
+
+        controller.switchTrigonometric(Map.of(TRIG_STRING, "DEG"));
+        assertEquals(AngleMode.DEG, Main.getCurrentAngleMode());
+    }
+
+    @Test
+    void setSeedSetsRandomGenerator() {
+        CalculatorRestController controller = new CalculatorRestController();
+
+        controller.setSeed(Map.of(SEED_STRING, "420"));
+        int first = RandomGenerator.getRandom().nextInt();
+
+        controller.setSeed(Map.of(SEED_STRING, "42"));
+        int second = RandomGenerator.getRandom().nextInt();
+
+        // même seed → même suite aléatoire
+        assertNotEquals(first, second);
+    }
+
+    @Test
+    void setAccuracySetsPrecision() {
+        CalculatorRestController controller = new CalculatorRestController();
+
+        controller.setAccuracy(Map.of(ACC_STRING, "5"));
+        assertEquals(5, Main.getCurrentPrecision());
+
+        controller.setAccuracy(Map.of(ACC_STRING, "10"));
+        assertEquals(10, Main.getCurrentPrecision());
     }
 }

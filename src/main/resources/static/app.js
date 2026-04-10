@@ -30,6 +30,35 @@ const app = Vue.createApp({
             };
             return availableOps[this.currentDomain]?.includes(operation) ?? false;
         },
+        canAddOperation(operation) {
+            // Les parenthèses sont toujours disponibles
+            if (operation === ')') {
+                const openCount = (this.display.match(/\(/g) || []).length;
+                const closeCount = (this.display.match(/\)/g) || []).length;
+                return openCount > closeCount;
+            }
+            
+            if (operation === '(') {
+                return true; // Les parenthèses ouvertes sont toujours disponibles
+            }
+            
+            // Vérifier d'abord si l'opération est disponible dans le domaine
+            if (!this.isOperationAvailable(operation)) {
+                return false;
+            }
+            
+            // Pour mod, !, ^, et e (10^x), il faut quelque chose avant (un nombre ou une parenthèse fermante)
+            if (['mod', '!', '^', 'e'].includes(operation)) {
+                if (this.display.length === 0) {
+                    return false;
+                }
+                const lastChar = this.display[this.display.length - 1];
+                // Doit finir par un chiffre, une parenthèse fermante, ou une constante
+                return /[\d\)e\u03c0\u03c6i]/.test(lastChar);
+            }
+            
+            return true;
+        },
         showError(msg) {
             this.errorMessage = msg;
             if (this.errorTimer) clearTimeout(this.errorTimer);

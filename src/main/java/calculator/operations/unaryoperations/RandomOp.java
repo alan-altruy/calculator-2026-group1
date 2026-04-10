@@ -24,16 +24,32 @@ import java.util.Random;
  */
 public class RandomOp extends UnaryOperation {
 
+    /**
+     * Constructor for Random operation.
+     * @param elist List of expressions (should contain exactly one expression for unary operation)
+     * @throws IllegalConstruction if the number of expressions is not exactly one
+     */
     public RandomOp(List<Expression> elist) throws IllegalConstruction {
         super(elist);
         symbol = "random";
     }
 
+    /**
+     * Constructor for Random operation with specified notation.
+     * @param elist List of expressions (should contain exactly one expression for unary operation)
+     * @param n Notation to be used for this operation
+     * @throws IllegalConstruction if the number of expressions is not exactly one
+     */
     public RandomOp(List<Expression> elist, Notation n) throws IllegalConstruction {
         super(elist, n);
         symbol = "random";
     }
 
+    /**
+     * Applies the random operation to the given value, generating a pseudorandom number based on the current number domain.
+     * @param v The value to which the random operation will be applied (used as a bound for INTEGER and RATIONAL domains)
+     * @return A pseudorandom number generated according to the current number domain
+     */
     @Override
     public Value unOp(Value v) {
         Random rng = RandomGenerator.getRandom();
@@ -63,6 +79,10 @@ public class RandomOp extends UnaryOperation {
         }
     }
 
+    /**
+     * Returns the precedence of the random operation.
+     * @return The precedence level of the random operation
+     */
     @Override
     public int getPrecedence() {
         return 4;

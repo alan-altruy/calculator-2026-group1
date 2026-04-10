@@ -182,6 +182,10 @@ button:active {
     box-shadow: 0.05em 0.05em;
 }
 
+button:disabled {
+    cursor: not-allowed;
+}
+
 .eraser {
     /* place two buttons in a small grid so each matches .opbase column width */
     display: grid;

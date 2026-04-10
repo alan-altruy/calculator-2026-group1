@@ -87,6 +87,13 @@
             <version>${cucumber.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Cucumber PicoContainer for dependency injection in step definitions -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-picocontainer</artifactId>
+            <version>7.15.0</version> <scope>test</scope>
+        </dependency>
         
         <!-- Spring Boot Web (for REST API) - exclude embedded Tomcat to use Jetty instead -->
         <dependency>

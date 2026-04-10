@@ -9,7 +9,7 @@ const app = Vue.createApp({
             helpVisible: false,
             currentMode: 'RAD',
             currentDomain: 'INTEGER',
-            seedValue: 42,
+            seedValue: 67,
             accuracy: 10
         }
     },

@@ -24,6 +24,15 @@ public class ParserSteps {
         Main.setCurrentDomain(calculator.enums.NumberDomain.valueOf(domain));
     }
 
+    @Given("I set the angle unit to {string}")
+    public void givenISetTheAngleUnitTo(String angleUnit) {
+        if (angleUnit.equalsIgnoreCase("RAD") || angleUnit.equalsIgnoreCase("DEG")) {
+            Main.setCurrentAngleMode(calculator.enums.AngleMode.valueOf(angleUnit.toUpperCase()));
+        } else {
+            throw new IllegalArgumentException("Invalid angle unit: " + angleUnit);
+        }
+    }
+
     @When("I provide the input {string}")
     public void whenIProvideTheInput(String input) {
         e = ExpressionParser.parse(input);

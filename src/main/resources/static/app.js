@@ -47,8 +47,8 @@ const app = Vue.createApp({
                 return false;
             }
             
-            // Pour mod, !, ^, et e (10^x), il faut quelque chose avant (un nombre ou une parenthèse fermante)
-            if (['mod', '!', '^', 'e'].includes(operation)) {
+            // Pour mod, !, et ^ il faut quelque chose avant (un nombre ou une parenthèse fermante)
+            if (['mod', '!', '^'].includes(operation)) {
                 if (this.display.length === 0) {
                     return false;
                 }

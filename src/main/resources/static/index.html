@@ -70,7 +70,7 @@
     <button :disabled="!canAddOperation(')')" @click="add(')')">)</button>
     <button :disabled="!canAddOperation('mod')" @click="add('mod')">mod</button>
     <button :disabled="!canAddOperation('^')" @click="add('**')">^</button>
-    <button :disabled="!canAddOperation('e')" @click="add('e')">10^x</button>
+    <button @click="add('e')">10^x</button>
 </div>
 
 

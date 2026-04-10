@@ -33,6 +33,7 @@ Feature: Advanced Operations
 
     Scenario Outline: Trigonometric Functions
         Given I set the current domain to "REAL"
+        Given I set the angle unit to "RAD"
         When I provide the input <input>
         Then the output is <output>
 
@@ -50,6 +51,7 @@ Feature: Advanced Operations
 
     Scenario: Advanced trigonometric functions
         Given I set the current domain to "REAL"
+        Given I set the angle unit to "RAD"
         When I provide the input <input>
         Then the output is <output>
 

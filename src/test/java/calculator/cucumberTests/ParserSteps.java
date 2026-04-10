@@ -3,6 +3,8 @@ package calculator.cucumberTests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.util.Locale;
+
 import calculator.Expression;
 import calculator.ExpressionParser;
 import calculator.Main;
@@ -22,6 +24,15 @@ public class ParserSteps {
     @Given("I set the current domain to {string}")
     public void givenISetTheCurrentDomainTo(String domain) {
         Main.setCurrentDomain(calculator.enums.NumberDomain.valueOf(domain));
+    }
+
+    @Given("I set the angle unit to {string}")
+    public void givenISetTheAngleUnitTo(String angleUnit) {
+        if (angleUnit.equalsIgnoreCase("RAD") || angleUnit.equalsIgnoreCase("DEG")) {
+            Main.setCurrentAngleMode(calculator.enums.AngleMode.valueOf(angleUnit.toUpperCase(Locale.ROOT)));
+        } else {
+            throw new IllegalArgumentException("Invalid angle unit: " + angleUnit);
+        }
     }
 
     @When("I provide the input {string}")

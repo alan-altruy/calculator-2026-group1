@@ -83,3 +83,29 @@ Feature: Advanced Operations
         Given I set the current domain to "REAL"
         When I provide the input "10 // 3"
         Then the output is "3"
+
+    Scenario: Modulo by zero
+        When I provide the input "7 mod 0"
+        Then an error is raised with message "Modulo by zero"
+
+    Scenario: Factorial of a negative number
+        When I provide the input "(-5)!"
+        Then an error is raised with message "Factorial of negative integer"
+
+    Scenario: Factorial of a non-integer
+        When I provide the input "5.5!"
+        Then an error is raised with message "Rounding necessary"
+
+    Scenario: Logarithm of a non-positive number
+        When I provide the input "log(-1)"
+        Then an error is raised with message "Logarithm of non-positive number"
+
+    Scenario: Natural logarithm of zero
+        When I provide the input "ln(0)"
+        Then an error is raised with message "Logarithm of non-positive number"
+
+    Scenario: Trigonometric functions with invalid input
+        When I provide the input "arcsin(2)"
+        Then an error is raised with message "Infinite or NaN"
+
+    

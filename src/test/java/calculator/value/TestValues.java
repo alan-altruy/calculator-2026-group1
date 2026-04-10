@@ -8,8 +8,31 @@ class TestValues {
     
     @Test
     void testThrowsForInterfaceClass() {
-        Value v = new IntegerValue(5);
-        Value other = new RationalValue(1, 2);
+
+        // create a value class that implements Value but does not implement any of the operations, to test that all operations throw an exception
+        class DummyValue implements Value {
+            private static final String UNSUPPORTED_VALUE_TYPE = "Unsupported value type";  
+
+            @Override
+            public Value add(Value other) { throw new ArithmeticException(UNSUPPORTED_VALUE_TYPE); }
+
+            @Override
+            public Value sub(Value other) { throw new ArithmeticException(UNSUPPORTED_VALUE_TYPE); }
+
+            @Override
+            public Value mul(Value other) { throw new ArithmeticException(UNSUPPORTED_VALUE_TYPE); }
+
+            @Override
+            public Value div(Value other) { throw new ArithmeticException(UNSUPPORTED_VALUE_TYPE); }
+
+            @Override
+            public Value pow(Value other) { throw new ArithmeticException(UNSUPPORTED_VALUE_TYPE); }
+
+            @Override
+            public int intValue() { throw new ArithmeticException(UNSUPPORTED_VALUE_TYPE); }
+        }
+        Value v = new DummyValue();
+        Value other = new DummyValue();
 
         // Binary operations
         assertThrows(ArithmeticException.class, () -> v.mod(other));
@@ -24,8 +47,8 @@ class TestValues {
         assertThrows(ArithmeticException.class, v::arcsin);
         assertThrows(ArithmeticException.class, v::arccos);
         assertThrows(ArithmeticException.class, v::arctan);
-        assertThrows(ArithmeticException.class, v::abs);
         assertThrows(ArithmeticException.class, v::fact);
+        assertThrows(ArithmeticException.class, v::abs);
         assertThrows(ArithmeticException.class, v::sinh);
         assertThrows(ArithmeticException.class, v::cosh);
         assertThrows(ArithmeticException.class, v::tanh);

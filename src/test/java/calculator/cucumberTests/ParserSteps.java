@@ -51,4 +51,15 @@ public class ParserSteps {
         double resultDouble = Double.parseDouble(result);
         assertEquals(expectedDouble, resultDouble, 1e-9, "Expected result mismatch. Expression: " + e.toString());
     }
+
+    @Then("an error is raised with message {string}")
+    public void an_error_is_raised_with_message(String s) {
+        try {
+            c.getCalculator().evalValue(e);
+        } catch (IllegalArgumentException | ArithmeticException ex) {
+            assertEquals(s, ex.getMessage(), "Expected error message mismatch. Expression: " + e.toString());
+            return;
+        }
+        throw new AssertionError("Expected an exception with message: " + s + " but no exception was thrown. Expression: " + e.toString());
+    }
 }

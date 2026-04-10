@@ -75,6 +75,24 @@ class IntegerValueTest {
         assertThrows(ArithmeticException.class, () -> a.pow(real));
         assertThrows(ArithmeticException.class, () -> a.pow(complex));
     }
+
+    @Test
+    void testAbsModAndFact() {
+        IntegerValue a = new IntegerValue(-5);
+        assertEquals(new IntegerValue(5), a.abs());
+
+        // mod and fact should throw for integer values
+        IntegerValue b = new IntegerValue(5);
+        IntegerValue c = new IntegerValue(2);
+        assertEquals(new IntegerValue(1), b.mod(c));
+        assertEquals(new IntegerValue(120), b.fact());
+
+        IntegerValue zero = new IntegerValue(0);
+        assertEquals(new IntegerValue(1), zero.fact());
+
+        assertThrows(ArithmeticException.class, () -> b.mod(zero));
+        assertThrows(ArithmeticException.class, a::fact);
+    }
     
     @Test
     void testEquals() {

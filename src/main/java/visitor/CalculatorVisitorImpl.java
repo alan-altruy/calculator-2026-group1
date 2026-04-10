@@ -91,14 +91,14 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
     @Override
     public Expression visitAbs(CalculatorParser.AbsContext ctx) {
         Expression arg = visit(ctx.expr());
-        return new Abs(java.util.List.of(arg));
+        return new Abs(List.of(arg));
         
     }
 
     @Override
     public Expression visitFactorial(CalculatorParser.FactorialContext ctx) {
         Expression arg = visit(ctx.expr());
-        return new Factorial(java.util.List.of(arg), Notation.POSTFIX);
+        return new Factorial(List.of(arg), Notation.POSTFIX);
     }
 
     @Override
@@ -106,18 +106,18 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
         Expression arg = visit(ctx.expr());
         String func = ctx.func.getText();
         switch(func) {
-            case "sin": return new Sin(java.util.List.of(arg), Notation.PREFIX);
-            case "cos": return new Cos(java.util.List.of(arg), Notation.PREFIX);
-            case "tan": return new Tan(java.util.List.of(arg), Notation.PREFIX);
-            case "sinh": return new Sinh(java.util.List.of(arg), Notation.PREFIX);
-            case "cosh": return new Cosh(java.util.List.of(arg), Notation.PREFIX);
-            case "tanh": return new Tanh(java.util.List.of(arg), Notation.PREFIX);
-            case "arcsin": return new ArcSin(java.util.List.of(arg), Notation.PREFIX);
-            case "arccos": return new ArcCos(java.util.List.of(arg), Notation.PREFIX);
-            case "arctan": return new ArcTan(java.util.List.of(arg), Notation.PREFIX);
-            case "ln": return new Ln(java.util.List.of(arg), Notation.PREFIX);
-            case "log": return new Log(java.util.List.of(arg), Notation.PREFIX);
-            case "random": return new RandomOp(java.util.List.of(arg), Notation.PREFIX);
+            case "sin": return new Sin(List.of(arg), Notation.PREFIX);
+            case "cos": return new Cos(List.of(arg), Notation.PREFIX);
+            case "tan": return new Tan(List.of(arg), Notation.PREFIX);
+            case "sinh": return new Sinh(List.of(arg), Notation.PREFIX);
+            case "cosh": return new Cosh(List.of(arg), Notation.PREFIX);
+            case "tanh": return new Tanh(List.of(arg), Notation.PREFIX);
+            case "arcsin": return new ArcSin(List.of(arg), Notation.PREFIX);
+            case "arccos": return new ArcCos(List.of(arg), Notation.PREFIX);
+            case "arctan": return new ArcTan(List.of(arg), Notation.PREFIX);
+            case "ln": return new Ln(List.of(arg), Notation.PREFIX);
+            case "log": return new Log(List.of(arg), Notation.PREFIX);
+            case "random": return new RandomOp(List.of(arg), Notation.PREFIX);
             default: throw new IllegalArgumentException("Unknown func: " + func);
         }   
     }
@@ -126,7 +126,7 @@ public class CalculatorVisitorImpl extends CalculatorBaseVisitor<Expression> {
     public Expression visitRandomNoArg(CalculatorParser.RandomNoArgContext ctx) {
         // default argument = 1
         Expression defaultArg = new MyNumber(new calculator.value.IntegerValue(1));
-        return new RandomOp(java.util.List.of(defaultArg), Notation.PREFIX);
+        return new RandomOp(List.of(defaultArg), Notation.PREFIX);
     }
 
     @Override

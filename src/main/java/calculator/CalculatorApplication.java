@@ -12,6 +12,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CalculatorApplication {
 
     /**
+     * Default constructor for the CalculatorApplication class. This constructor is not strictly necessary, as Java provides a default no-argument constructor if no other constructors are defined. However, it is included here for clarity and to explicitly indicate that this class can be instantiated without any parameters.
+     */
+    public CalculatorApplication() {
+        // Default constructor
+    }
+
+    /**
      * The main method that serves as the entry point of the application. It uses SpringApplication.run() to launch the application.
      * @param args the command-line arguments passed to the application (not used in this case)
      */

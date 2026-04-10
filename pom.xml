@@ -271,6 +271,7 @@
                 <version>${javadoc.version}</version>
                 <configuration>
                     <detectJavaApiLink>false</detectJavaApiLink>
+                    <failOnError>true</failOnError>
                 </configuration>
                 <executions>
                     <execution>

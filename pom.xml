@@ -87,6 +87,13 @@
             <version>${cucumber.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Cucumber PicoContainer for dependency injection in step definitions -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-picocontainer</artifactId>
+            <version>7.15.0</version> <scope>test</scope>
+        </dependency>
         
         <!-- Spring Boot Web (for REST API) - exclude embedded Tomcat to use Jetty instead -->
         <dependency>
@@ -118,6 +125,13 @@
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>${spring-doc.version}</version>
+        </dependency>
+        
+        <!-- Explicit Jackson core/databind versions (upgrade to 3.1.1) -->
+        <dependency>
+            <groupId>tools.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>3.1.1</version>
         </dependency>
         
         <!-- Force SLF4J API 2.x to match Logback on classpath -->
@@ -257,6 +271,7 @@
                 <version>${javadoc.version}</version>
                 <configuration>
                     <detectJavaApiLink>false</detectJavaApiLink>
+                    <failOnError>true</failOnError>
                 </configuration>
                 <executions>
                     <execution>

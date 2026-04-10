@@ -17,9 +17,10 @@ body {
         "output other other"
         "keypad eraser otherop"
         "keypad opbase otherop"
-        "keypad opbase otherop"
-        "keypad opbase otherop"
-        "special special otherop";
+        "keypad opbase degrad"
+        "keypad opbase trigo"
+        "special accurate trigo"
+        "special random trigo";
     gap: 1.5rem;
     padding: 1.5rem;
     justify-content: center;
@@ -39,9 +40,25 @@ body {
     justify-content: space-between;
 }
 
+.random {
+    grid-area: random;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: space-between;
+}
+
+.accurate {
+    grid-area: accurate;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: space-between;
+}
+
 .input {
     min-height: 60px;
-    max-width: 1250px;
+    width: 20em;
     padding: 0 1rem;
     color: #fff;
     font-size: 22px;
@@ -106,6 +123,7 @@ body {
     font-size: 20px;
     font-weight: 700;
     color: #fdcbcb;
+    border-color: #fdcbcb;
     max-width: min(90%, 720px);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -154,7 +172,7 @@ button:active {
 
 .eraser button {
     width: 100%;
-    background: #f16dcc;
+    background: #ef75cc;
 }
 
 .opbase button {
@@ -162,11 +180,21 @@ button:active {
 }
 
 .special button {
-    background: #f69ae2;
+    background: #ea79e5;
 }
 
 .otherop button {
     background: #d171ff;
+}
+
+.trigo button {
+    background: #9f79ea;
+}
+
+.degrad button {
+    background: #400960;
+    color: #d49eef;
+    border-color: #d49eef;
 }
 
 .number {
@@ -187,7 +215,7 @@ button:active {
 
 .special {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     justify-content: center;
     grid-area: special;
@@ -199,6 +227,22 @@ button:active {
     gap: 10px;
     justify-content: center;
     grid-area: otherop;
+}
+
+.trigo {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    justify-content: center;
+    grid-area: trigo;
+}
+
+.degrad {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 10px;
+    justify-content: center;
+    grid-area: degrad;
 }
 
 .dom {

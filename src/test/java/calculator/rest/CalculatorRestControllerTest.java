@@ -5,21 +5,25 @@ import calculator.exceptions.IllegalConstruction;
 import org.junit.jupiter.api.Test;
 import calculator.Main;
 import calculator.enums.NumberDomain;
+import calculator.RandomGenerator;
+import calculator.enums.AngleMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.Arguments;
 import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.JsonNode;
+
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.Map;
 
 @SpringBootTest
@@ -32,16 +36,19 @@ class CalculatorRestControllerTest {
     private static final String CASE_PARSENOTATION_ENUM = "parseNotation-enum";
     private static final String NOTATION_INFIX = "INFIX";
     private static final String DOM_STRING = "domain";
+    private static final String TRIG_STRING = "trigono";
+    private static final String SEED_STRING = "seed";
+    private static final String ACC_STRING = "accuracy";
 
     @Test
     void toExpressionMissingTypeThrows_viaMethodHandle() throws Throwable {
         CalculatorRestController controller = new CalculatorRestController();
         MethodHandles.Lookup lookup = MethodHandles.privateLookupIn(CalculatorRestController.class, MethodHandles.lookup());
         MethodHandle mh = lookup.findVirtual(CalculatorRestController.class, "toExpression",
-                MethodType.methodType(calculator.Expression.class, com.fasterxml.jackson.databind.JsonNode.class));
+                MethodType.methodType(calculator.Expression.class, JsonNode.class));
 
-        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
-        com.fasterxml.jackson.databind.JsonNode missingType = mapper.readTree("{}");
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode missingType = mapper.readTree("{}");
 
         assertThrows(IllegalConstruction.class, () -> mh.invoke(controller, missingType));
     }
@@ -60,27 +67,27 @@ class CalculatorRestControllerTest {
     void privateMethodsConsolidatedTests(String caseType, String json, String expect) throws Throwable {
         CalculatorRestController controller = new CalculatorRestController();
         MethodHandles.Lookup lookup = MethodHandles.privateLookupIn(CalculatorRestController.class, MethodHandles.lookup());
-        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper();
 
         switch (caseType) {
             case CASE_TOEXPR_EVAL -> {
                 MethodHandle mh = lookup.findVirtual(CalculatorRestController.class, "toExpression",
-                        MethodType.methodType(calculator.Expression.class, com.fasterxml.jackson.databind.JsonNode.class));
-                com.fasterxml.jackson.databind.JsonNode node = mapper.readTree(json);
+                        MethodType.methodType(calculator.Expression.class, JsonNode.class));
+                JsonNode node = mapper.readTree(json);
                 Object e = mh.invoke(controller, node);
                 calculator.Calculator calc = new calculator.Calculator();
                 assertEquals(Integer.parseInt(expect), calc.eval((calculator.Expression) e));
             }
             case CASE_TOEXPR_EX -> {
                 MethodHandle mh = lookup.findVirtual(CalculatorRestController.class, "toExpression",
-                        MethodType.methodType(calculator.Expression.class, com.fasterxml.jackson.databind.JsonNode.class));
-                com.fasterxml.jackson.databind.JsonNode node = json == null ? null : mapper.readTree(json);
+                        MethodType.methodType(calculator.Expression.class, JsonNode.class));
+                JsonNode node = json == null ? null : mapper.readTree(json);
                 assertThrows(IllegalConstruction.class, () -> mh.invoke(controller, node));
             }
             case CASE_PARSEARGS_SIZE -> {
                 MethodHandle mh = lookup.findVirtual(CalculatorRestController.class, "parseArgs",
-                        MethodType.methodType(java.util.List.class, com.fasterxml.jackson.databind.JsonNode.class));
-                com.fasterxml.jackson.databind.JsonNode node = json == null ? null : mapper.readTree(json);
+                        MethodType.methodType(java.util.List.class, JsonNode.class));
+                JsonNode node = json == null ? null : mapper.readTree(json);
                 Object res = mh.invoke(controller, node);
                 @SuppressWarnings("unchecked")
                 java.util.List<calculator.Expression> list = (java.util.List<calculator.Expression>) res;
@@ -88,8 +95,8 @@ class CalculatorRestControllerTest {
             }
             case CASE_PARSENOTATION_ENUM -> {
                 MethodHandle mh = lookup.findVirtual(CalculatorRestController.class, "parseNotation",
-                        MethodType.methodType(Notation.class, com.fasterxml.jackson.databind.JsonNode.class));
-                com.fasterxml.jackson.databind.JsonNode node = json == null ? null : mapper.readTree(json);
+                        MethodType.methodType(Notation.class, JsonNode.class));
+                JsonNode node = json == null ? null : mapper.readTree(json);
                 Object res = mh.invoke(controller, node);
                 assertEquals(Notation.valueOf(expect), res);
             }
@@ -154,5 +161,41 @@ class CalculatorRestControllerTest {
         // default case -> INTEGER
         controller.switchDomain(Map.of(DOM_STRING, "UNKNOWN"));
         assertEquals(NumberDomain.INTEGER, Main.getCurrentDomain());
+    }
+
+    @Test
+    void switchTrigonometricSetsAngleMode() {
+        CalculatorRestController controller = new CalculatorRestController();
+
+        controller.switchTrigonometric(Map.of(TRIG_STRING, "RAD"));
+        assertEquals(AngleMode.RAD, Main.getCurrentAngleMode());
+
+        controller.switchTrigonometric(Map.of(TRIG_STRING, "DEG"));
+        assertEquals(AngleMode.DEG, Main.getCurrentAngleMode());
+    }
+
+    @Test
+    void setSeedSetsRandomGenerator() {
+        CalculatorRestController controller = new CalculatorRestController();
+
+        controller.setSeed(Map.of(SEED_STRING, "420"));
+        int first = RandomGenerator.getRandom().nextInt();
+
+        controller.setSeed(Map.of(SEED_STRING, "42"));
+        int second = RandomGenerator.getRandom().nextInt();
+
+        // même seed → même suite aléatoire
+        assertNotEquals(first, second);
+    }
+
+    @Test
+    void setAccuracySetsPrecision() {
+        CalculatorRestController controller = new CalculatorRestController();
+
+        controller.setAccuracy(Map.of(ACC_STRING, "5"));
+        assertEquals(5, Main.getCurrentPrecision());
+
+        controller.setAccuracy(Map.of(ACC_STRING, "10"));
+        assertEquals(10, Main.getCurrentPrecision());
     }
 }

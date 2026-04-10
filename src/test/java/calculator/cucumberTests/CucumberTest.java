@@ -1,5 +1,5 @@
 
-package calculator;
+package calculator.cucumberTests;
 
 import static io.cucumber.junit.platform.engine.Constants.GLUE_PROPERTY_NAME;
 
@@ -14,5 +14,5 @@ import org.junit.platform.suite.api.Suite;
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "calculator")
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
 public class CucumberTest {
-
+    // This class is empty, it is used only as a holder for the above annotations
 }

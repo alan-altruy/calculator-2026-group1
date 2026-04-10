@@ -1,20 +1,17 @@
 package calculator.rest;
 
+import calculator.*;
+import calculator.enums.AngleMode;
 import calculator.value.Value;
-import com.fasterxml.jackson.databind.JsonNode;
+import tools.jackson.databind.JsonNode;
 
-import calculator.Calculator;
 import calculator.operations.Divides;
-import calculator.Expression;
-import calculator.ExpressionParser;
 import calculator.exceptions.IllegalConstruction;
 import calculator.operations.Minus;
-import calculator.MyNumber;
 import calculator.enums.Notation;
 import calculator.operations.Plus;
 import calculator.operations.Times;
 import calculator.enums.NumberDomain;
-import calculator.Main;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -102,12 +99,12 @@ public class CalculatorRestController {
      */
     private Expression toExpression(JsonNode node) throws IllegalConstruction {
         if (node == null) throw new IllegalConstruction();
-        String type = node.has("type") ? node.get("type").asText() : null;
+        String type = node.has("type") ? node.get("type").stringValue() : null;
         if (TYPE_NUMBER.equalsIgnoreCase(type)) {
             int v = node.get("value").asInt();
             return new MyNumber(v);
         } else if (TYPE_OPERATION.equalsIgnoreCase(type)) {
-            String op = node.has("op") ? node.get("op").asText() : null;
+            String op = node.has("op") ? node.get("op").stringValue() : null;
             List<Expression> args = parseArgs(node.get("args"));
             Notation notation = parseNotation(node);
             if (op == null) throw new IllegalConstruction();
@@ -129,7 +126,7 @@ public class CalculatorRestController {
     private Notation parseNotation(JsonNode node) {
         if (node == null || !node.has("notation")) return Notation.INFIX;
         try {
-            return Notation.valueOf(node.get("notation").asText().toUpperCase(Locale.ROOT));
+            return Notation.valueOf(node.get("notation").stringValue().toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException ignored) {
             return Notation.INFIX;
         }
@@ -156,4 +153,27 @@ public class CalculatorRestController {
             default -> Main.setCurrentDomain(NumberDomain.INTEGER);
         }
     }
+
+    @PostMapping("/switchTrigonometric")
+    public void switchTrigonometric(@RequestBody Map<String, String> body) {
+        String trigono = body.get("trigono");
+        if (trigono.equals("RAD")) {
+            Main.setCurrentAngleMode(AngleMode.RAD);
+        } else {
+            Main.setCurrentAngleMode(AngleMode.DEG);
+        }
+    }
+
+    @PostMapping("/setSeed")
+    public void setSeed(@RequestBody Map<String, String> body) {
+        String seed = body.get("seed");
+        RandomGenerator.setSeed(Long.parseLong(seed));
+    }
+
+    @PostMapping("/setAccuracy")
+    public void setAccuracy(@RequestBody Map<String, String> body) {
+        String accuracy = body.get("accuracy");
+        Main.setCurrentPrecision(Integer.parseInt(accuracy));
+    }
+
 }

@@ -14,10 +14,24 @@
 <!-- From Uiverse.io by alexruix -->
 <div class="header">
     <div class="input-group">
-        <input type="text" class="input" ref="InputField"  v-model="display" @keyup.enter="evaluate()" placeholder="Write your computation">
+        <input type="text" class="input" ref="InputField"  v-model="display" @keyup.enter="evaluate()" placeholder="Your calculation">
         <input class="button--submit" value="Compute" type="button"  @click="evaluate()">
     </div>
 </div>
+
+    <div class="random">
+        <div class="input-group">
+            <input type="text" class="input" ref="InputRandom"  v-model="seedValue" @keyup.enter="setSeed()" placeholder="Seed Value">
+            <input class="button--submit" value="Set seed" type="button"  @click="setSeed()">
+        </div>
+    </div>
+
+    <div class="accurate">
+        <div class="input-group">
+            <input type="text" class="input" ref="InputAccuracy"  v-model="accuracy" @keyup.enter="setAccuracy()" placeholder="Precision">
+            <input class="button--submit" value="Precision" type="button"  @click="setAccuracy()">
+        </div>
+    </div>
 
 <div class="res">
     <p>Result : {{ output }}</p>
@@ -25,7 +39,7 @@
 
 <div v-if="errorMessage" class="alert" @click="clearError">
     <p>ERROR : {{ errorMessage }}</p>
-    </div>
+</div>
 
 <div class="number">
     <button @click="add('1')">1</button>
@@ -54,22 +68,33 @@
     <button @click="add('/')">/</button>
     <button @click="add('(')">(</button>
     <button @click="add(')')">)</button>
-    <button @click="add('**')">^</button>
     <button @click="add('mod')">mod</button>
-    <button @click="add('//')">//</button>
+    <button @click="add('**')">^</button>
+    <button @click="add('e')">10^x</button>
 </div>
+
 
 <div class="otherop">
     <button @click="add('ln()')">ln</button>
     <button @click="add('log()')">log</button>
     <button @click="add('||')">|x|</button>
     <button @click="add('!')">x!</button>
+</div>
+
+<div class="degrad">
+    <button @click="mode()">{{ currentMode }}</button>
+</div>
+
+<div class="trigo">
     <button @click="add('sin()')">sin</button>
     <button @click="add('arcsin()')">arcsin</button>
+    <button @click="add('sinh()')">sinh</button>
     <button @click="add('cos()')">cos</button>
     <button @click="add('arccos()')">arccos</button>
+    <button @click="add('cosh()')">cosh</button>
     <button @click="add('tan()')">tan</button>
     <button @click="add('arctan()')">arctan</button>
+    <button @click="add('tanh()')">tanh</button>
 </div>
 
 <div class="dom">
@@ -122,7 +147,7 @@
     <button @click="add('i')">i</button>
 </div>
 
-
+</div>
 <script src="/app.js"></script>
 </body>
 

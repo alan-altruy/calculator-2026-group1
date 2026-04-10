@@ -7,7 +7,10 @@ const app = Vue.createApp({
             errorTimer: null,
             helpText: '',
             helpVisible: false,
-            currentDomain: 'INTEGER'
+            currentMode: 'RAD',
+            currentDomain: 'INTEGER',
+            seedValue: 67,
+            accuracy: 10
         }
     },
     mounted() {
@@ -21,10 +24,9 @@ const app = Vue.createApp({
         showError(msg) {
             this.errorMessage = msg;
             if (this.errorTimer) clearTimeout(this.errorTimer);
-            // auto-hide after 3s
             this.errorTimer = setTimeout(() => {
                 this.clearError();
-            }, 1750);
+            }, 1500);
             // also allow clearing on any click (one-time)
             if (this._errorClickHandler) document.removeEventListener('click', this._errorClickHandler);
             this._errorClickHandler = () => { this.clearError(); };
@@ -113,6 +115,34 @@ const app = Vue.createApp({
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ domain: value })
+            });
+        },
+        async mode(){
+            this.currentMode = this.currentMode === 'RAD' ? 'DEG' : 'RAD';
+            await fetch('/api/v1/switchTrigonometric', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ trigono: this.currentMode })
+            });
+        },
+        async setSeed(){
+            await fetch('/api/v1/setSeed', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ seed: Number(this.seedValue )})
+            });
+        },
+        async setAccuracy(){
+            await fetch('/api/v1/setAccuracy', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ accuracy: Number(this.accuracy )})
             });
         }
     }

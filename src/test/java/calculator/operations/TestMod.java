@@ -86,8 +86,8 @@ class TestMod {
 		try {
 			Mod m = new Mod(Arrays.asList(new MyNumber(8), new MyNumber(3)));
 			Calculator calc = new Calculator();
-			assertThrows(ArithmeticException.class, () -> calc.eval(m));
+			int result = calc.eval(m);
+			assertEquals(2, result);
 		} catch (IllegalConstruction e) { fail(); }
 	}
-
 }

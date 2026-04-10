@@ -71,7 +71,7 @@ public class IntegerValue implements Value {
 
     @Override
     public Value mod(Value other) {
-        if (value == 0) {
+        if (other.intValue() == 0) {
             throw new ArithmeticException("Modulo by zero");
         }
         return new IntegerValue(value % other.intValue());

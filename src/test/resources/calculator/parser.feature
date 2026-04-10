@@ -49,3 +49,7 @@ Feature: Parser for Integer Arithmetic Expressions
     Scenario: Multiple operations with POSTFIX notation and parentheses
         When I provide the input "(8, (6, 2) *) +"
         Then the output is "20"
+
+    Scenario: Division by zero
+        When I provide the input "7 / 0"
+        Then an error is raised with message "Division by zero"

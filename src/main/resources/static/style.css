@@ -19,7 +19,7 @@ body {
         "keypad opbase otherop"
         "keypad opbase degrad"
         "keypad opbase trigo"
-        "special opbase trigo"
+        "special accurate trigo"
         "special random trigo";
     gap: 1.5rem;
     padding: 1.5rem;
@@ -42,6 +42,14 @@ body {
 
 .random {
     grid-area: random;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: space-between;
+}
+
+.accurate {
+    grid-area: accurate;
     display: flex;
     align-items: center;
     gap: 1rem;

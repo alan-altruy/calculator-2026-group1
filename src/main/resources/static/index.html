@@ -26,6 +26,13 @@
         </div>
     </div>
 
+    <div class="accurate">
+        <div class="input-group">
+            <input type="text" class="input" ref="InputAccuracy"  v-model="accuracy" @keyup.enter="setAccuracy()" placeholder="Precision">
+            <input class="button--submit" value="Precision" type="button"  @click="setAccuracy()">
+        </div>
+    </div>
+
 <div class="res">
     <p>Result : {{ output }}</p>
 </div>

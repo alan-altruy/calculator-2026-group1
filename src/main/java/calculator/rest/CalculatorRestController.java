@@ -170,4 +170,10 @@ public class CalculatorRestController {
         RandomGenerator.setSeed(Long.parseLong(seed));
     }
 
+    @PostMapping("/setAccuracy")
+    public void setAccuracy(@RequestBody Map<String, String> body) {
+        String accuracy = body.get("accuracy");
+        Main.setCurrentPrecision(Integer.parseInt(accuracy));
+    }
+
 }

@@ -9,7 +9,8 @@ const app = Vue.createApp({
             helpVisible: false,
             currentMode: 'RAD',
             currentDomain: 'INTEGER',
-            seedValue: 42
+            seedValue: 42,
+            accuracy: 10
         }
     },
     mounted() {
@@ -133,6 +134,15 @@ const app = Vue.createApp({
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ seed: Number(this.seedValue )})
+            });
+        },
+        async setAccuracy(){
+            await fetch('/api/v1/setAccuracy', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ accuracy: Number(this.accuracy )})
             });
         }
     }

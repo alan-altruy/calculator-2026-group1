@@ -78,6 +78,18 @@ public class IntegerValue implements Value {
     }
 
     @Override
+    public Value fact() {
+        if (value < 0) {
+            throw new ArithmeticException("Factorial of negative number is not defined");
+        }
+        int result = 1;
+        for (int i = 2; i <= value; i++) {
+            result *= i;
+        }
+        return new IntegerValue(result);
+    }
+
+    @Override
     public int intValue() {
         return value;
     }

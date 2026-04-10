@@ -14,7 +14,7 @@
 <!-- From Uiverse.io by alexruix -->
 <div class="header">
     <div class="input-group">
-        <input type="text" class="input" ref="InputField"  v-model="display" @keyup.enter="evaluate()" placeholder="Write your computation">
+        <input type="text" class="input" ref="InputField"  v-model="display" @keyup.enter="evaluate()" placeholder="Your calculation">
         <input class="button--submit" value="Compute" type="button"  @click="evaluate()">
     </div>
 </div>
@@ -59,7 +59,10 @@
     <button @click="add('e')">10^x</button>
 </div>
 
-
+<div class="random">
+    <button @click="add()">Random</button>
+    <input type="text" class="input" ref="InputRandom" v-model="display" placeholder="Seed value">
+</div>
 
 <div class="otherop">
     <button @click="add('ln()')">ln</button>

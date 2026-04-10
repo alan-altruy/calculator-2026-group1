@@ -20,7 +20,7 @@ body {
         "keypad opbase degrad"
         "keypad opbase trigo"
         "special opbase trigo"
-        "special opbase trigo";
+        "special random trigo";
     gap: 1.5rem;
     padding: 1.5rem;
     justify-content: center;
@@ -316,4 +316,12 @@ button:active {
 .help-content p {
     margin: 0;
     white-space: pre-line;
+}
+
+.random{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    justify-content: center;
+    grid-area: random;
 }

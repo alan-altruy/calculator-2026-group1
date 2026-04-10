@@ -21,6 +21,44 @@ const app = Vue.createApp({
             });
     },
     methods: {
+        isOperationAvailable(operation) {
+            const availableOps = {
+                'INTEGER': ['+', '-', '*', '/', '^', 'mod', '!', 'abs'],
+                'RATIONAL': ['+', '-', '*', '/', '^'],
+                'REAL': ['+', '-', '*', '/', '^', 'mod', '!', 'abs', 'ln', 'log', 'sin', 'cos', 'tan', 'sinh', 'cosh', 'tanh', 'arcsin', 'arccos', 'arctan'],
+                'COMPLEX': ['+', '-', '*', '/', 'sinh', 'cosh', 'i']
+            };
+            return availableOps[this.currentDomain]?.includes(operation) ?? false;
+        },
+        canAddOperation(operation) {
+            // Les parenthèses sont toujours disponibles
+            if (operation === ')') {
+                const openCount = (this.display.match(/\(/g) || []).length;
+                const closeCount = (this.display.match(/\)/g) || []).length;
+                return openCount > closeCount;
+            }
+            
+            if (operation === '(') {
+                return true; // Les parenthèses ouvertes sont toujours disponibles
+            }
+            
+            // Vérifier d'abord si l'opération est disponible dans le domaine
+            if (!this.isOperationAvailable(operation)) {
+                return false;
+            }
+            
+            // Pour mod, !, et ^ il faut quelque chose avant (un nombre ou une parenthèse fermante)
+            if (['mod', '!', '^'].includes(operation)) {
+                if (this.display.length === 0) {
+                    return false;
+                }
+                const lastChar = this.display[this.display.length - 1];
+                // Doit finir par un chiffre, une parenthèse fermante, ou une constante
+                return /[\d\)e\u03c0\u03c6i]/.test(lastChar);
+            }
+            
+            return true;
+        },
         showError(msg) {
             this.errorMessage = msg;
             if (this.errorTimer) clearTimeout(this.errorTimer);
@@ -74,9 +112,34 @@ const app = Vue.createApp({
             const input = this.$refs.InputField;
             const start = input.selectionStart;
             const end = input.selectionEnd;
+            
+            // Cas spécial pour "i": ajouter "*" avant si y a un chiffre avant
+            if (value === 'i' && start > 0) {
+                const charBefore = this.display[start - 1];
+                // Si le caractère avant est un chiffre ou une parenthèse fermante, ajouter "*"
+                if (/[\d\)]/.test(charBefore)) {
+                    value = '*i';
+                }
+            }
+            
             this.display = this.display.substring(0,start)+value+this.display.substring(end);
+            
+            // Cases spéciaux pour positionner le curseur
+            let cursorPos = start + value.length; // défaut: fin du texte inséré
+            
+            if (value === 'mod') {
+                // Pour mod: curseur avant "mod" si rien avant, après sinon
+                cursorPos = start === 0 ? start : start + value.length;
+            } else if (value === '||') {
+                // Pour ||: curseur entre les deux barres
+                cursorPos = start + 1;
+            } else if (value.endsWith('()')) {
+                // Pour les fonctions (ln(), log(), sin(), etc): curseur en dedans des parenthèses
+                cursorPos = start + value.length - 1;
+            }
+            
             this.$nextTick(() => {
-                input.selectionStart = input.selectionEnd = start + value.length;
+                input.selectionStart = input.selectionEnd = cursorPos;
                 input.focus();
             });
         },

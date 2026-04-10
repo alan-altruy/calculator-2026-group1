@@ -62,23 +62,23 @@
 </div>
 
 <div class="opbase">
-    <button @click="add('+')">+</button>
-    <button @click="add('-')">-</button>
-    <button @click="add('*')">×</button>
-    <button @click="add('/')">/</button>
-    <button @click="add('(')">(</button>
-    <button @click="add(')')">)</button>
-    <button @click="add('mod')">mod</button>
-    <button @click="add('**')">^</button>
+    <button :disabled="!isOperationAvailable('+')" @click="add('+')">+</button>
+    <button :disabled="!isOperationAvailable('-')" @click="add('-')">-</button>
+    <button :disabled="!isOperationAvailable('*')" @click="add('*')">×</button>
+    <button :disabled="!isOperationAvailable('/')" @click="add('/')">/</button>
+    <button :disabled="!isOperationAvailable('+')" @click="add('(')">(</button>
+    <button :disabled="!canAddOperation(')')" @click="add(')')">)</button>
+    <button :disabled="!canAddOperation('mod')" @click="add('mod')">mod</button>
+    <button :disabled="!canAddOperation('^')" @click="add('**')">^</button>
     <button @click="add('e')">10^x</button>
 </div>
 
 
 <div class="otherop">
-    <button @click="add('ln()')">ln</button>
-    <button @click="add('log()')">log</button>
-    <button @click="add('||')">|x|</button>
-    <button @click="add('!')">x!</button>
+    <button :disabled="!isOperationAvailable('ln')" @click="add('ln()')">ln</button>
+    <button :disabled="!isOperationAvailable('log')" @click="add('log()')">log</button>
+    <button :disabled="!isOperationAvailable('abs')" @click="add('||')">|x|</button>
+    <button :disabled="!canAddOperation('!')" @click="add('!')">x!</button>
 </div>
 
 <div class="degrad">
@@ -86,15 +86,15 @@
 </div>
 
 <div class="trigo">
-    <button @click="add('sin()')">sin</button>
-    <button @click="add('arcsin()')">arcsin</button>
-    <button @click="add('sinh()')">sinh</button>
-    <button @click="add('cos()')">cos</button>
-    <button @click="add('arccos()')">arccos</button>
-    <button @click="add('cosh()')">cosh</button>
-    <button @click="add('tan()')">tan</button>
-    <button @click="add('arctan()')">arctan</button>
-    <button @click="add('tanh()')">tanh</button>
+    <button :disabled="!isOperationAvailable('sin')" @click="add('sin()')">sin</button>
+    <button :disabled="!isOperationAvailable('arcsin')" @click="add('arcsin()')">arcsin</button>
+    <button :disabled="!isOperationAvailable('sinh')" @click="add('sinh()')">sinh</button>
+    <button :disabled="!isOperationAvailable('cos')" @click="add('cos()')">cos</button>
+    <button :disabled="!isOperationAvailable('arccos')" @click="add('arccos()')">arccos</button>
+    <button :disabled="!isOperationAvailable('cosh')" @click="add('cosh()')">cosh</button>
+    <button :disabled="!isOperationAvailable('tan')" @click="add('tan()')">tan</button>
+    <button :disabled="!isOperationAvailable('arctan')" @click="add('arctan()')">arctan</button>
+    <button :disabled="!isOperationAvailable('tanh')" @click="add('tanh()')">tanh</button>
 </div>
 
 <div class="dom">
@@ -144,7 +144,7 @@
     <button @click="add('pi')">π</button>
     <button @click="add('e')">e</button>
     <button @click="add('phi')">φ</button>
-    <button @click="add('i')">i</button>
+    <button :disabled="!isOperationAvailable('i')" @click="currentDomain === 'COMPLEX' && add('i')">i</button>
 </div>
 
 </div>

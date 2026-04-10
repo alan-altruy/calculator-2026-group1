@@ -325,3 +325,18 @@ button:active {
     justify-content: center;
     grid-area: random;
 }
+
+.random button{
+    background: #9dafe3;
+}
+
+.random input{
+    height: 2.9em;
+    max-width: 12em;
+    color: #fff;
+    padding: 0 1em;
+    font-size: 22px;
+    border: 1px solid #5e4dcd;
+    border-radius: 6px;
+    background-color: transparent;
+}

@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import calculator.Expression;
 import calculator.ExpressionParser;
+import calculator.Main;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
@@ -15,6 +17,11 @@ public class ParserSteps {
 
     public ParserSteps(CalculatorContext context) {
         this.c = context;
+    }
+
+    @Given("I set the current domain to {string}")
+    public void givenISetTheCurrentDomainTo(String domain) {
+        Main.setCurrentDomain(calculator.enums.NumberDomain.valueOf(domain));
     }
 
     @When("I provide the input {string}")

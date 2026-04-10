@@ -50,7 +50,8 @@ public class RestApiSteps {
         var mvcResult = this.mockMvc
             .perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/v1/evaluate")
                 .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
-                .content(jsonBody))
+                // send as a JSON string by surrounding with quotes so Jackson can bind to String
+                .content('"' + jsonBody + '"'))
             .andReturn();
         response = mvcResult.getResponse().getContentAsString();
         httpStatus = mvcResult.getResponse().getStatus();

@@ -4,6 +4,7 @@ Feature: Parser for Integer Arithmetic Expressions
     
     Background:
         Given I initialise a calculator
+        Given I set the current domain to "INTEGER"
 
     Scenario: Adding two integer numbers
         When I provide the input "4 + 5"

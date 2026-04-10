@@ -50,7 +50,7 @@ body {
 
 .input {
     min-height: 60px;
-    max-width: 1250px;
+    width: 20em;
     padding: 0 1rem;
     color: #fff;
     font-size: 22px;

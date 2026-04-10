@@ -13,6 +13,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.Locale;
 import java.nio.charset.StandardCharsets;
 
 public class CliSteps {
@@ -30,14 +31,13 @@ public class CliSteps {
         out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));
         cliOutput = "";
-        lastInput = null;
     }
 
     @When("I provide the input {string} in the cli")
     public void i_provide_the_input_in_the_cli(String input) {
         lastInput = input;
 
-        String lower = input.toLowerCase();
+        String lower = input.toLowerCase(Locale.ROOT);
 
         // For commands and help/exit we run a short Main session so logging is configured and output is printed
         if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit") || input.equalsIgnoreCase("help") || lower.startsWith("domain ") || lower.startsWith("mode ") || lower.startsWith("precision ") || lower.startsWith("seed ")) {

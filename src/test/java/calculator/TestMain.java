@@ -216,11 +216,11 @@ class TestMain {
             resMode = Main.handleInput("mode rad", calc);
             assertFalse(resMode);
             assertEquals(AngleMode.RAD, Main.getCurrentAngleMode());
-
+            AngleMode beforeMode = Main.getCurrentAngleMode();
             // mod with 1 argument should not change mode
             resMode = Main.handleInput("mode ", calc);
             assertFalse(resMode);
-            assertEquals(origMode, Main.getCurrentAngleMode());
+            assertEquals(beforeMode, Main.getCurrentAngleMode());
 
             // precision
             boolean resPrec = Main.handleInput("precision 4", calc);

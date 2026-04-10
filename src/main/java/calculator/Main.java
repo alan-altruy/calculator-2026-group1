@@ -93,7 +93,7 @@ public class Main {
 		try {
 			Expression e = ExpressionParser.parse(input);
 			if (e != null) c.print(e);
-		} catch (IllegalArgumentException ex) {
+		} catch (IllegalArgumentException | ArithmeticException ex) {
 			LOGGER.severe("Error: " + ex.getMessage());
 		}
 

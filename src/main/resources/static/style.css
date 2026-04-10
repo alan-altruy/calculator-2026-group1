@@ -40,6 +40,14 @@ body {
     justify-content: space-between;
 }
 
+.random {
+    grid-area: random;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: space-between;
+}
+
 .input {
     min-height: 60px;
     max-width: 1250px;
@@ -316,27 +324,4 @@ button:active {
 .help-content p {
     margin: 0;
     white-space: pre-line;
-}
-
-.random{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    justify-content: center;
-    grid-area: random;
-}
-
-.random button{
-    background: #9dafe3;
-}
-
-.random input{
-    height: 2.9em;
-    max-width: 12em;
-    color: #fff;
-    padding: 0 1em;
-    font-size: 22px;
-    border: 1px solid #5e4dcd;
-    border-radius: 6px;
-    background-color: transparent;
 }

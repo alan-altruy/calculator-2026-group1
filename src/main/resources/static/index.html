@@ -19,6 +19,13 @@
     </div>
 </div>
 
+    <div class="random">
+        <div class="input-group">
+            <input type="text" class="input" ref="InputRandom"  v-model="seedValue" @keyup.enter="setSeed()" placeholder="Seed Value">
+            <input class="button--submit" value="Set seed" type="button"  @click="setSeed()">
+        </div>
+    </div>
+
 <div class="res">
     <p>Result : {{ output }}</p>
 </div>
@@ -59,10 +66,6 @@
     <button @click="add('e')">10^x</button>
 </div>
 
-<div class="random">
-    <button @click="add()">Random</button>
-    <input type="text" ref="InputRandom" placeholder="Seed value">
-</div>
 
 <div class="otherop">
     <button @click="add('ln()')">ln</button>

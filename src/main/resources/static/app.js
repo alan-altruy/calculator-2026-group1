@@ -8,7 +8,8 @@ const app = Vue.createApp({
             helpText: '',
             helpVisible: false,
             currentMode: 'RAD',
-            currentDomain: 'INTEGER'
+            currentDomain: 'INTEGER',
+            seedValue: 42
         }
     },
     mounted() {
@@ -123,6 +124,15 @@ const app = Vue.createApp({
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ trigono: this.currentMode })
+            });
+        },
+        async setSeed(){
+            await fetch('/api/v1/setSeed', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ seed: Number(this.seedValue )})
             });
         }
     }

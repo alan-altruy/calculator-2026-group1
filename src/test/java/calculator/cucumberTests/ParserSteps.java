@@ -35,7 +35,9 @@ public class ParserSteps {
             throw new IllegalStateException("Expression should not be null");
         }
         assertNotNull(e);
-        int result = c.getCalculator().eval(e);
-        assertEquals(Integer.parseInt(expected), result);
+        String result = c.getCalculator().evalValue(e).toString();
+        double expectedDouble = Double.parseDouble(expected);
+        double resultDouble = Double.parseDouble(result);
+        assertEquals(expectedDouble, resultDouble, 1e-9, "Expected result mismatch. Expression: " + e.toString());
     }
 }

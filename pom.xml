@@ -92,7 +92,7 @@
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-picocontainer</artifactId>
-            <version>7.15.0</version> <scope>test</scope>
+            <version>7.34.3</version> <scope>test</scope>
         </dependency>
         
         <!-- Spring Boot Web (for REST API) - exclude embedded Tomcat to use Jetty instead -->

@@ -33,7 +33,7 @@
         <cucumber.version>7.34.3</cucumber.version>
         <exec.version>3.6.3</exec.version>
 
-        <spring-boot.version>4.0.5</spring-boot.version>
+        <spring-boot.version>4.0.6</spring-boot.version>
         <spring-doc.version>3.0.3</spring-doc.version>
 
         <sonar.organization>alan-altruy</sonar.organization>

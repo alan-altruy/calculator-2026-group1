@@ -32,4 +32,4 @@ jobs:
 
       - name: Publish test report
         if: always()
-        uses: scacap/action-surefire-report@c534cea38c961ea629b2dca6931972b971603a85
+        uses: scacap/action-surefire-report@3dacff26879cd2a7f2160d101254032a3707fe6f

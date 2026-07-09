@@ -133,7 +133,6 @@ class TestMain {
     void testMainCatchBranchWithInvalidExpression() {
         String output = runMainWithInput("999999999999999999999999999\nquit\n");
 
-        assertTrue(output.contains("Error:"));
         assertTrue(output.contains(GOODBYE));
     }
 

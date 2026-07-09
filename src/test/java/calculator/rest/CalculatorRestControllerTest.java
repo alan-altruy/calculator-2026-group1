@@ -57,7 +57,7 @@ class CalculatorRestControllerTest {
     @Test
     void computeDivisionByZeroThrowsArithmeticException() {
         CalculatorRestController controller = new CalculatorRestController();
-        ResponseEntity<EvaluateResponse> response = controller.compute("4/0");
+        ResponseEntity<Map<String, String>> response = controller.compute("4/0");
         assertNotNull(response);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }

@@ -25,11 +25,9 @@ class CorsConfigTest {
 
     @Test
     void corsAllowsAnyOrigin() throws Exception {
-        String body = "{\"ast\":{\"type\":\"number\",\"value\":1}}";
-        var res = mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/v1/evaluate")
-                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+        var res = mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options("/api/v1/evaluate")
                 .header("Origin", "http://localhost:8080")
-                .content(body))
+            .header("Access-Control-Request-Method", "POST"))
                 .andReturn();
         int status = res.getResponse().getStatus();
         assertThat(status).isEqualTo(200);

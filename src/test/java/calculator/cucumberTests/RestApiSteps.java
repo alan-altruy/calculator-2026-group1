@@ -60,21 +60,22 @@ public class RestApiSteps {
     @Then("the response status code is {int}")
     public void thenTheResponseShouldBe(int expectedStatusCode) {
         assertNotNull(response);
-        try {
-            JSONObject jsonResponse = new JSONObject(response);
-            String resultStr = jsonResponse.optString("result", null);
-            if (resultStr != null && !resultStr.isEmpty()) {
-                result = Integer.parseInt(resultStr);
-            }
-        } catch (org.json.JSONException e) {
-            throw new RuntimeException("Response is not a valid JSON", e);
-        }
-
         assertEquals(expectedStatusCode, httpStatus);
     }
 
     @And("the response body is {string}")
     public void thenTheResponseBodyShouldBe(String expectedResponseBody) {
-        assertEquals(expectedResponseBody, String.valueOf(result));
+        String actualBody = response == null ? null : response.trim();
+        try {
+            JSONObject jsonResponse = new JSONObject(actualBody);
+            String resultStr = jsonResponse.optString("result", null);
+            if (resultStr != null && !resultStr.isEmpty()) {
+                actualBody = resultStr;
+            }
+        } catch (org.json.JSONException ignored) {
+            // Keep the raw response body when the endpoint does not return JSON.
+        }
+
+        assertEquals(expectedResponseBody, actualBody);
     }
 }

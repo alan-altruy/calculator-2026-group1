@@ -31,7 +31,7 @@
         <antlr.version>4.13.2</antlr.version>
         <logback.version>1.4.5</logback.version>        
         <cucumber.version>7.34.4</cucumber.version>
-        <exec.version>3.6.3</exec.version>
+        <exec.version>3.6.4</exec.version>
 
         <spring-boot.version>4.1.0</spring-boot.version>
         <spring-doc.version>3.0.3</spring-doc.version>
